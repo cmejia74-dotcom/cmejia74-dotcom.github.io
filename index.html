@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cristian Mejia — Stanford Mechanical Engineering portfolio. CAD design, CubeSat subsystems, and fabrication." />
+  <title>Cristian Mejia — Mechanical Engineering Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Boot / schematic loader -->
+  <div class="boot" id="boot" aria-hidden="true">
+    <div class="boot__grid"></div>
+    <div class="boot__panel">
+      <div class="boot__line">> INIT AXIS.SYS</div>
+      <div class="boot__line">> LOADING DRAWINGS <span class="boot__dots"></span></div>
+      <div class="boot__bar"><span></span></div>
+      <div class="boot__line boot__line--muted">rev. 04 · ISO 128 · mm</div>
+    </div>
+  </div>
+
+  <!-- Crosshair cursor -->
+  <div class="cursor" id="cursor" aria-hidden="true">
+    <div class="cursor__h"></div>
+    <div class="cursor__v"></div>
+    <div class="cursor__dot"></div>
+    <div class="cursor__label" id="cursorLabel">X: 000  Y: 000</div>
+  </div>
+
+  <!-- Blueprint background -->
+  <div class="blueprint" aria-hidden="true"></div>
+
+  <!-- Corner ticks / registration marks -->
+  <svg class="ticks ticks--tl" viewBox="0 0 60 60" aria-hidden="true"><path d="M0 0 H30 M0 0 V30" /></svg>
+  <svg class="ticks ticks--tr" viewBox="0 0 60 60" aria-hidden="true"><path d="M60 0 H30 M60 0 V30" /></svg>
+  <svg class="ticks ticks--bl" viewBox="0 0 60 60" aria-hidden="true"><path d="M0 60 H30 M0 60 V30" /></svg>
+  <svg class="ticks ticks--br" viewBox="0 0 60 60" aria-hidden="true"><path d="M60 60 H30 M60 60 V30" /></svg>
+
+  <!-- Nav -->
+  <header class="nav">
+    <a class="nav__brand" href="#top">
+      <svg class="nav__logo" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="1.2" />
+        <circle cx="20" cy="20" r="3" fill="currentColor" />
+        <path d="M20 4 V10 M20 30 V36 M4 20 H10 M30 20 H36" stroke="currentColor" stroke-width="1.2" />
+      </svg>
+      <span>C.MEJIA<span class="nav__brand-dim">/ME</span></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#work">01 · Work</a>
+      <a href="#about">02 · About</a>
+      <a href="#skills">03 · Skills</a>
+      <a href="#contact">04 · Contact</a>
+    </nav>
+    <div class="nav__meta">
+      <span class="dot"></span>
+      <span id="clock">00:00:00 UTC</span>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero__left">
+        <div class="tag">
+          <span class="tag__code">CM-001</span>
+          <span class="tag__sep">|</span>
+          <span>PORTFOLIO · REV 04</span>
+        </div>
+        <h1 class="hero__title">
+          <span class="line"><span class="num">A</span>Designs that</span>
+          <span class="line"><span class="num">B</span>lift, orbit,</span>
+          <span class="line accent"><span class="num">C</span>and endure.</span>
+        </h1>
+        <p class="hero__lede">
+          I'm <strong>Cristian Mejia</strong> — a Stanford engineer intending Mechanical Engineering
+          with a minor in Aeronautics &amp; Astronautics. This is a personal scratchpad of the
+          designs, sketches, and concept studies I work on outside of coursework.
+        </p>
+        <div class="hero__cta">
+          <a href="#work" class="btn btn--primary">
+            <span>View the set</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+          </a>
+          <a href="#contact" class="btn btn--ghost">Get in touch →</a>
+        </div>
+        <dl class="hero__stats">
+          <div><dt>Class</dt><dd>'29</dd></div>
+          <div><dt>School</dt><dd>Stanford</dd></div>
+          <div><dt>Focus</dt><dd>ME + A/A</dd></div>
+          <div><dt>Units</dt><dd>mm / in</dd></div>
+        </dl>
+      </div>
+
+      <div class="hero__right">
+        <!-- 3D canvas + annotation overlay -->
+        <div class="stage" id="stage">
+          <canvas id="gear"></canvas>
+          <svg class="annot" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+            <!-- Measurement callouts -->
+            <g class="annot__meas">
+              <line x1="80" y1="120" x2="220" y2="200" />
+              <circle cx="80" cy="120" r="3" />
+              <text x="40" y="110">Ø 120.00</text>
+            </g>
+            <g class="annot__meas annot__meas--2">
+              <line x1="520" y1="160" x2="380" y2="230" />
+              <circle cx="520" cy="160" r="3" />
+              <text x="490" y="150">TEETH: 24</text>
+            </g>
+            <g class="annot__meas annot__meas--3">
+              <line x1="540" y1="460" x2="380" y2="380" />
+              <circle cx="540" cy="460" r="3" />
+              <text x="460" y="480">MOD 2.5</text>
+            </g>
+            <g class="annot__meas annot__meas--4">
+              <line x1="80" y1="480" x2="220" y2="400" />
+              <circle cx="80" cy="120" r="3" />
+              <text x="30" y="495">MAT: 6061-T6</text>
+            </g>
+
+            <!-- Reticle -->
+            <g class="annot__reticle">
+              <circle cx="300" cy="300" r="90" />
+              <circle cx="300" cy="300" r="140" />
+              <line x1="300" y1="150" x2="300" y2="450" />
+              <line x1="150" y1="300" x2="450" y2="300" />
+            </g>
+          </svg>
+          <div class="stage__badge">
+            <span class="stage__badge-dot"></span>
+            LIVE · drag to rotate
+          </div>
+          <div class="stage__label">
+            <span>PART N°</span>
+            <strong>CM-SAT-01</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__scroll">
+        <span>SCROLL</span>
+        <div class="hero__scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- SECTION DIVIDER -->
+    <div class="divider">
+      <span class="divider__dim">SECTION</span>
+      <span class="divider__num">01</span>
+      <span class="divider__title">SELECTED WORK</span>
+      <span class="divider__dim divider__right">06 DRAWINGS</span>
+    </div>
+
+    <!-- WORK -->
+    <section class="work" id="work">
+      <div class="work__intro">
+        <h2>Selected Work <span>/ 2025–2026</span></h2>
+        <p>Personal concept studies I'm working on outside of coursework — small design exercises, sketches, and sizing problems I find interesting.</p>
+      </div>
+
+      <div class="work__grid">
+        <!-- Project 1 · Deployable solar array hinge (personal concept) -->
+        <article class="card" data-title="Deployable Solar Array Hinge" style="--i:1">
+          <div class="card__sheet">
+            <span class="status status--concept">CONCEPT</span>
+            <svg viewBox="0 0 200 200" aria-hidden="true" class="cad cad--hinge">
+              <rect x="20" y="90" width="60" height="20" class="outline" />
+              <circle cx="85" cy="100" r="6" class="outline" />
+              <circle cx="85" cy="100" r="2" class="fill accent" />
+              <g class="tilt" style="transform-origin:85px 100px">
+                <rect x="85" y="90" width="90" height="20" class="outline" />
+                <line x1="95" y1="95" x2="170" y2="95" class="dim" />
+                <line x1="95" y1="105" x2="170" y2="105" class="dim" />
+              </g>
+              <line x1="20" y1="130" x2="175" y2="130" class="dim dash" />
+              <text x="100" y="145" class="label" text-anchor="middle">DEPLOY 0° → 90°</text>
+              <text x="20" y="80" class="label">2U BUS</text>
+              <text x="120" y="80" class="label">SOLAR PANEL</text>
+            </svg>
+          </div>
+          <div class="card__meta">
+            <span class="card__num">01</span>
+            <h3>Deployable Solar Array Hinge</h3>
+            <p>Personal concept study: a spring-loaded hinge sized for a small CubeSat-class deployable solar panel. Exploring the 0°→90° deploy kinematics and hard-stop geometry.</p>
+            <ul class="card__tags">
+              <li>Fusion 360</li><li>Kinematics</li><li>CubeSat</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Project 2 · Star tracker baffle -->
+        <article class="card" data-title="Star Tracker Optical Baffle" style="--i:2">
+          <div class="card__sheet">
+            <span class="status status--concept">CONCEPT</span>
+            <svg viewBox="0 0 200 200" aria-hidden="true" class="cad cad--baffle">
+              <rect x="30" y="70" width="50" height="60" class="outline" />
+              <circle cx="55" cy="100" r="10" class="fill" />
+              <line x1="80" y1="80" x2="170" y2="60" class="outline thick" />
+              <line x1="80" y1="120" x2="170" y2="140" class="outline thick" />
+              <line x1="80" y1="90" x2="160" y2="75" class="dim dash" />
+              <line x1="80" y1="110" x2="160" y2="125" class="dim dash" />
+              <g class="airflow">
+                <path d="M170 70 Q100 100, 170 130" class="flow-line" />
+                <path d="M165 85 Q110 100, 165 115" class="flow-line" />
+              </g>
+              <text x="55" y="60" class="label">SENSOR</text>
+              <text x="140" y="55" class="label">FOV 12°</text>
+            </svg>
+          </div>
+          <div class="card__meta">
+            <span class="card__num">02</span>
+            <h3>Star Tracker Optical Baffle</h3>
+            <p>Personal concept: a stray-light baffle sized for a 12° FOV star-tracker. Simple ray-angle geometry to set vane depth, spacing, and inner-wall angles.</p>
+            <ul class="card__tags">
+              <li>Fusion 360</li><li>Optics</li><li>Geometry</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Project 3 · Cold Gas Thruster (concept) -->
+        <article class="card card--wide" data-title="Cold Gas Thruster Nozzle" style="--i:3">
+          <div class="card__sheet">
+            <span class="status status--concept">CONCEPT · 2026</span>
+            <svg viewBox="0 0 400 200" aria-hidden="true" class="cad cad--nozzle">
+              <path d="M40 60 L160 60 L220 40 L360 40 L360 160 L220 160 L160 140 L40 140 Z" class="outline" />
+              <path d="M220 40 L260 100 L220 160" class="dim dash" />
+              <g class="flow">
+                <line x1="60" y1="100" x2="350" y2="100" class="axis" />
+                <circle cx="80" cy="100" r="3" class="particle" />
+                <circle cx="140" cy="100" r="3" class="particle" />
+                <circle cx="220" cy="100" r="3" class="particle" />
+                <circle cx="300" cy="100" r="3" class="particle" />
+              </g>
+              <text x="80" y="30" class="label">INLET</text>
+              <text x="310" y="30" class="label">EXIT · Mach 3.1</text>
+              <text x="200" y="190" class="label" text-anchor="middle">CONVERGENT — THROAT — DIVERGENT</text>
+            </svg>
+          </div>
+          <div class="card__meta">
+            <span class="card__num">03</span>
+            <h3>Cold Gas Attitude Thruster</h3>
+            <p>Draft De Laval nozzle sized for a sub-newton CubeSat attitude thruster. Analytical sizing in MATLAB, geometry modeled in Fusion 360 — a self-driven study linked to my A/A minor interests.</p>
+            <ul class="card__tags">
+              <li>MATLAB</li><li>Fusion 360</li><li>Propulsion</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Project 4 · Reaction wheel assembly (concept) -->
+        <article class="card" data-title="Reaction Wheel Assembly" style="--i:4">
+          <div class="card__sheet">
+            <span class="status status--concept">CONCEPT</span>
+            <svg viewBox="0 0 200 200" aria-hidden="true" class="cad cad--wheel">
+              <circle cx="100" cy="100" r="55" class="outline" />
+              <circle cx="100" cy="100" r="40" class="dim" />
+              <circle cx="100" cy="100" r="10" class="outline" />
+              <circle cx="100" cy="100" r="3" class="fill accent" />
+              <g class="spin spin--slow" style="transform-origin:100px 100px">
+                <rect x="98" y="50" width="4" height="12" class="outline" />
+                <rect x="98" y="138" width="4" height="12" class="outline" />
+                <rect x="50" y="98" width="12" height="4" class="outline" />
+                <rect x="138" y="98" width="12" height="4" class="outline" />
+              </g>
+              <line x1="40" y1="170" x2="160" y2="170" class="dim" />
+              <text x="100" y="185" class="label" text-anchor="middle">Ø 110 · MOI tuned</text>
+            </svg>
+          </div>
+          <div class="card__meta">
+            <span class="card__num">04</span>
+            <h3>Reaction Wheel Assembly</h3>
+            <p>Draft concept for a single-axis momentum wheel sized for a 2U CubeSat. Exploring bearing pre-load and rotor inertia using solid mechanics from ENGR 14.</p>
+            <ul class="card__tags">
+              <li>Fusion 360</li><li>Solid Mechanics</li><li>ACS</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Project 5 · NACA airfoil rig -->
+        <article class="card" data-title="Airfoil Test Rig" style="--i:5">
+          <div class="card__sheet">
+            <span class="status status--concept">CONCEPT</span>
+            <svg viewBox="0 0 200 200" aria-hidden="true" class="cad cad--airfoil">
+              <path d="M30 110 C70 70, 130 70, 180 100 C130 110, 70 115, 30 110 Z" class="outline" />
+              <line x1="30" y1="110" x2="180" y2="100" class="dim dash" />
+              <g class="airflow">
+                <path d="M5 80 Q100 60, 195 90" class="flow-line" />
+                <path d="M5 110 Q100 95, 195 105" class="flow-line" />
+                <path d="M5 140 Q100 130, 195 125" class="flow-line" />
+              </g>
+              <text x="100" y="180" class="label" text-anchor="middle">NACA 2412 · α = 4°</text>
+            </svg>
+          </div>
+          <div class="card__meta">
+            <span class="card__num">05</span>
+            <h3>NACA 2412 Airfoil Study</h3>
+            <p>Self-driven aero study: lift-curve sweep for a NACA 2412 section using Python + thin-airfoil theory, printed sections for a later tabletop test rig.</p>
+            <ul class="card__tags">
+              <li>Python</li><li>Aerodynamics</li><li>3D Print</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="divider">
+      <span class="divider__dim">SECTION</span>
+      <span class="divider__num">02</span>
+      <span class="divider__title">ENGINEER NOTES</span>
+      <span class="divider__dim divider__right">REV · 04</span>
+    </div>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+      <div class="about__text">
+        <h2>About the engineer</h2>
+        <p>
+          I'm a student at Stanford, intending Mechanical Engineering with a minor in
+          <em>Aeronautics &amp; Astronautics</em>. I care about problems where clean geometry
+          meets real physics — deployable structures, attitude control, and anything where a
+          small part has to do a specific job in a demanding environment.
+        </p>
+        <p>
+          Everything on this site is <em>personal work</em> — designs I model in Fusion 360,
+          sizing problems I sketch out in MATLAB or Python, and small studies I refine for fun
+          outside of class. It's a scratchpad I keep updating as I learn.
+        </p>
+        <a class="btn btn--ghost" href="mailto:cmejia74@stanford.edu">Get in touch →</a>
+      </div>
+      <aside class="about__facts">
+        <div class="fact"><span>SCHOOL</span><strong>Stanford · '29</strong></div>
+        <div class="fact"><span>FOCUS</span><strong>ME · Aero/Astro</strong></div>
+        <div class="fact"><span>TOOLS</span><strong>Fusion 360 · MATLAB</strong></div>
+        <div class="fact"><span>SCOPE</span><strong>Personal projects</strong></div>
+      </aside>
+    </section>
+
+    <!-- EDUCATION STRIP -->
+    <section class="edu">
+      <div class="edu__block">
+        <span class="edu__k">EDUCATION</span>
+        <h3>Stanford University <em>· Stanford, CA</em></h3>
+        <p>Intended B.S. Mechanical Engineering · Minor in Aeronautics &amp; Astronautics · Expected June 2029 · GPA 3.6</p>
+        <ul class="edu__courses">
+          <li>CME 100 · Vector Calculus for Engineers</li>
+          <li>CME 102 · ODEs for Engineers</li>
+          <li>CME 104 · Linear Algebra &amp; PDEs</li>
+          <li>PHYSICS 41 · Mechanics</li>
+          <li>ENGR 14 · Solid Mechanics</li>
+          <li>CS 106A · Programming Methodology</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="divider">
+      <span class="divider__dim">SECTION</span>
+      <span class="divider__num">03</span>
+      <span class="divider__title">TOOLCHAIN</span>
+      <span class="divider__dim divider__right">08 TOOLS</span>
+    </div>
+
+    <!-- SKILLS -->
+    <section class="skills" id="skills">
+      <ul class="skills__grid">
+        <li><span class="k">CAD</span><strong>Fusion 360</strong><em>Proficient</em></li>
+        <li><span class="k">NUM</span><strong>MATLAB</strong><em>Proficient</em></li>
+        <li><span class="k">CODE</span><strong>Python</strong><em>Proficient</em></li>
+        <li><span class="k">MFG</span><strong>3D Printing · FDM</strong><em>Hands-on</em></li>
+        <li><span class="k">AERO</span><strong>CubeSat Concepts</strong><em>Self-study</em></li>
+        <li><span class="k">SYS</span><strong>Avionics Fundamentals</strong><em>Self-study</em></li>
+        <li><span class="k">ANA</span><strong>Solid Mechanics</strong><em>Coursework</em></li>
+        <li><span class="k">MATH</span><strong>Vector Calc · ODEs · LA</strong><em>Coursework</em></li>
+      </ul>
+      <div class="skills__marquee" aria-hidden="true">
+        <div class="skills__track">
+          <span>CUBESAT</span><span>·</span>
+          <span>AVIONICS</span><span>·</span>
+          <span>DEPLOYABLES</span><span>·</span>
+          <span>ATTITUDE CONTROL</span><span>·</span>
+          <span>OPTICAL COMMS</span><span>·</span>
+          <span>S-BAND</span><span>·</span>
+          <span>SYSTEMS INTEGRATION</span><span>·</span>
+          <span>ADDITIVE MFG</span><span>·</span>
+          <span>CUBESAT</span><span>·</span>
+          <span>AVIONICS</span><span>·</span>
+          <span>DEPLOYABLES</span><span>·</span>
+          <span>ATTITUDE CONTROL</span><span>·</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="divider">
+      <span class="divider__dim">SECTION</span>
+      <span class="divider__num">04</span>
+      <span class="divider__title">CONTACT SHEET</span>
+      <span class="divider__dim divider__right">END OF DWG</span>
+    </div>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="contact__head">
+        <h2>Let's build<br/>something rigid.</h2>
+        <p>Open to internships, research positions, and interesting fabrication problems.</p>
+      </div>
+
+      <div class="contact__grid">
+        <a class="contact__card" href="mailto:cmejia74@stanford.edu">
+          <span>EMAIL</span>
+          <strong>cmejia74@stanford.edu</strong>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </a>
+        <a class="contact__card" href="#">
+          <span>LINKEDIN</span>
+          <strong>/in/cristian-mejia</strong>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </a>
+        <a class="contact__card" href="#" download>
+          <span>RESUME</span>
+          <strong>Download PDF</strong>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </a>
+        <a class="contact__card" href="#">
+          <span>GITHUB</span>
+          <strong>@cristian-mejia</strong>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Title block footer (like a real drawing) -->
+    <footer class="titleblock">
+      <div class="tb__row tb__row--top">
+        <div class="tb__cell"><span>DRAWN BY</span><strong>C. MEJIA</strong></div>
+        <div class="tb__cell"><span>SCHOOL</span><strong>STANFORD</strong></div>
+        <div class="tb__cell"><span>DATE</span><strong id="tbDate">——</strong></div>
+        <div class="tb__cell"><span>SCALE</span><strong>1 : 1</strong></div>
+        <div class="tb__cell"><span>UNITS</span><strong>mm</strong></div>
+        <div class="tb__cell"><span>SHEET</span><strong>1 / 1</strong></div>
+      </div>
+      <div class="tb__row tb__row--bottom">
+        <div class="tb__title">
+          <span>TITLE</span>
+          <strong>Cristian Mejia · Mechanical Engineering Portfolio</strong>
+        </div>
+        <div class="tb__dwg">
+          <span>DWG N°</span>
+          <strong>CM-PORT-001</strong>
+        </div>
+        <div class="tb__rev">
+          <span>REV</span>
+          <strong>04</strong>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Three.js module -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+    }
+  }
+  </script>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
