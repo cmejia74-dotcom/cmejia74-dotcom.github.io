@@ -310,17 +310,10 @@ main { position: relative; z-index: 1; }
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 400;
-  letter-spacing: -0.02em;
-  font-size: 1.18em;
-  line-height: 0.82;
+  letter-spacing: -0.01em;
+  font-size: 1em;
+  line-height: 0.92;
   display: inline-block;
-  padding-right: 0.04em;
-}
-.hero__title-dot {
-  color: var(--accent);
-  font-family: var(--font-display);
-  font-style: italic;
-  margin-left: 0.02em;
 }
 
 .hero__byline {
