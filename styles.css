@@ -19,6 +19,7 @@
   --radius: 2px;
   --font-sans: "Space Grotesk", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: "Instrument Serif", "Times New Roman", Georgia, serif;
 }
 
 * { box-sizing: border-box; }
@@ -275,12 +276,12 @@ main { position: relative; z-index: 1; }
 .tag__sep { color: var(--ink-faint); }
 
 .hero__title {
-  font-size: clamp(48px, 7.5vw, 112px);
-  line-height: 0.95;
-  font-weight: 500;
-  letter-spacing: -0.035em;
+  font-size: clamp(56px, 9vw, 136px);
+  line-height: 0.92;
+  font-weight: 600;
+  letter-spacing: -0.045em;
   color: var(--ink);
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 .hero__title .line {
   display: block;
@@ -288,22 +289,63 @@ main { position: relative; z-index: 1; }
   padding-left: 72px;
   overflow: hidden;
 }
+.hero__title .line + .line { margin-top: -0.04em; }
 .hero__title .num {
   position: absolute;
   left: 0;
   top: 18px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.24em;
   color: var(--ink-faint);
   border: 1px solid var(--line-2);
   padding: 2px 8px;
+  background: rgba(10, 14, 20, 0.6);
 }
 .hero__title .accent {
   color: var(--accent);
+}
+.hero__title .accent em {
+  font-family: var(--font-display);
   font-style: italic;
-  font-weight: 300;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  font-size: 1.18em;
+  line-height: 0.82;
+  display: inline-block;
+  padding-right: 0.04em;
+}
+.hero__title-dot {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-style: italic;
+  margin-left: 0.02em;
+}
+
+.hero__byline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  max-width: 560px;
+}
+.hero__byline-rule {
+  flex: 0 0 48px;
+  height: 1px;
+  background: var(--line);
+}
+.hero__byline span:last-child {
+  letter-spacing: 0.12em;
+  text-transform: none;
+  font-size: 12px;
+  color: var(--ink-faint);
+  line-height: 1.5;
 }
 
 .hero__lede {
