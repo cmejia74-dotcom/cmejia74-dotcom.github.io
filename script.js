@@ -184,15 +184,17 @@ function buildJet() {
     curveSegments: 6,
   });
 
+  // Wing span lives on the geometry's local +Y axis (0 → 1.55), so mirror the
+  // left wing with scale.y = -1 (NOT scale.z — z is just the extrude thickness).
   const rightWing = new THREE.Mesh(wingGeom, bodyMat);
   rightWing.rotation.x = -Math.PI / 2;
-  rightWing.position.set(-0.1, -0.02, 0.08);
+  rightWing.position.set(-0.1, -0.02, 0);
   jet.add(rightWing);
 
   const leftWing = new THREE.Mesh(wingGeom, bodyMat);
   leftWing.rotation.x = -Math.PI / 2;
-  leftWing.scale.z = -1;
-  leftWing.position.set(-0.1, -0.02, -0.08);
+  leftWing.scale.y = -1;
+  leftWing.position.set(-0.1, -0.02, 0);
   jet.add(leftWing);
 
   /* Horizontal stabilizers (smaller deltas) near the tail */
@@ -212,13 +214,13 @@ function buildJet() {
 
   const rightStab = new THREE.Mesh(stabGeom, bodyMat);
   rightStab.rotation.x = -Math.PI / 2;
-  rightStab.position.set(-1.25, -0.02, 0.1);
+  rightStab.position.set(-1.25, -0.02, 0);
   jet.add(rightStab);
 
   const leftStab = new THREE.Mesh(stabGeom, bodyMat);
   leftStab.rotation.x = -Math.PI / 2;
-  leftStab.scale.z = -1;
-  leftStab.position.set(-1.25, -0.02, -0.1);
+  leftStab.scale.y = -1;
+  leftStab.position.set(-1.25, -0.02, 0);
   jet.add(leftStab);
 
   /* Vertical tail fin */
@@ -261,7 +263,7 @@ function buildJet() {
   jet.add(overlayR);
   const overlayL = new THREE.LineSegments(overlayGeom, overlayMat.clone());
   overlayL.rotation.copy(leftWing.rotation);
-  overlayL.scale.z = -1;
+  overlayL.scale.y = -1;
   overlayL.position.copy(leftWing.position);
   jet.add(overlayL);
 
