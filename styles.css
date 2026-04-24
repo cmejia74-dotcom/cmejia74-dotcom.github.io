@@ -302,9 +302,6 @@ main { position: relative; z-index: 1; }
   padding: 2px 8px;
   background: rgba(10, 10, 10, 0.6);
 }
-.hero__title .accent {
-  color: var(--accent);
-}
 .hero__title .accent em {
   font-family: var(--font-display);
   font-style: italic;
@@ -314,6 +311,7 @@ main { position: relative; z-index: 1; }
   line-height: 1;
   display: inline-block;
   padding-right: 0.02em;
+  color: #e3d2a8;
 }
 
 .hero__byline {
