@@ -4,18 +4,19 @@
    ========================================================= */
 
 :root {
-  --bg: #0a0c10;
-  --bg-2: #0e1117;
-  --ink: #e6eef5;
-  --ink-dim: #8a97a6;
-  --ink-faint: #3a4552;
-  --line: #1c2430;
-  --line-2: #263242;
-  --accent: #ffb020;      /* amber — like a hot warning lamp */
-  --accent-2: #7fd4ff;    /* blueprint cyan */
-  --accent-3: #ff5a3c;    /* annotation red */
-  --grid: rgba(127, 212, 255, 0.06);
-  --grid-strong: rgba(127, 212, 255, 0.12);
+  /* Monochrome warm-cream palette (max-yinger inspired) */
+  --bg: #0a0a0a;
+  --bg-2: #141412;
+  --ink: #ece7da;           /* warm off-white */
+  --ink-dim: #8a857c;
+  --ink-faint: #3a372f;
+  --line: #1c1a16;
+  --line-2: #2a2620;
+  --accent: #ece7da;        /* same as ink — hierarchy via typography, not color */
+  --accent-2: #8a857c;      /* technical label gray */
+  --accent-3: #c47850;      /* sparingly used warm ember */
+  --grid: rgba(236, 231, 218, 0.035);
+  --grid-strong: rgba(236, 231, 218, 0.07);
   --radius: 2px;
   --font-sans: "Space Grotesk", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -276,24 +277,22 @@ main { position: relative; z-index: 1; }
 .tag__sep { color: var(--ink-faint); }
 
 .hero__title {
-  font-size: clamp(56px, 9vw, 136px);
-  line-height: 0.92;
+  font-size: clamp(44px, 6.2vw, 92px);
+  line-height: 1.02;
   font-weight: 600;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.04em;
   color: var(--ink);
   margin-bottom: 24px;
 }
 .hero__title .line {
   display: block;
   position: relative;
-  padding-left: 72px;
-  overflow: hidden;
+  padding-left: 68px;
 }
-.hero__title .line + .line { margin-top: -0.04em; }
 .hero__title .num {
   position: absolute;
   left: 0;
-  top: 18px;
+  top: 16px;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 400;
@@ -301,7 +300,7 @@ main { position: relative; z-index: 1; }
   color: var(--ink-faint);
   border: 1px solid var(--line-2);
   padding: 2px 8px;
-  background: rgba(10, 14, 20, 0.6);
+  background: rgba(10, 10, 10, 0.6);
 }
 .hero__title .accent {
   color: var(--accent);
@@ -310,10 +309,11 @@ main { position: relative; z-index: 1; }
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 400;
-  letter-spacing: -0.01em;
-  font-size: 1em;
-  line-height: 0.92;
+  letter-spacing: -0.005em;
+  font-size: 1.06em;
+  line-height: 1;
   display: inline-block;
+  padding-right: 0.02em;
 }
 
 .hero__byline {

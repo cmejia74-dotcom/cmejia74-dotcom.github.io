@@ -88,20 +88,20 @@ const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
 camera.position.set(0, 0.8, 5.6);
 camera.lookAt(0, 0, 0);
 
-/* Lighting — warm key + cool rim, a bit more intense than the gear version */
-const keyLight = new THREE.DirectionalLight(0xffd28a, 1.5);
+/* Lighting — warm cream key + cool cream rim (monochrome palette) */
+const keyLight = new THREE.DirectionalLight(0xf2ecdd, 1.5);
 keyLight.position.set(3, 4, 3);
 scene.add(keyLight);
 
-const rimLight = new THREE.DirectionalLight(0x7fd4ff, 1.3);
+const rimLight = new THREE.DirectionalLight(0xb8b2a6, 1.3);
 rimLight.position.set(-4, 2, -3);
 scene.add(rimLight);
 
-const fillLight = new THREE.DirectionalLight(0xffffff, 0.35);
+const fillLight = new THREE.DirectionalLight(0xece7da, 0.35);
 fillLight.position.set(0, -3, 2);
 scene.add(fillLight);
 
-const ambient = new THREE.AmbientLight(0xffffff, 0.22);
+const ambient = new THREE.AmbientLight(0xece7da, 0.22);
 scene.add(ambient);
 
 /* =========================================================
@@ -111,25 +111,25 @@ function buildJet() {
   const jet = new THREE.Group();
 
   const bodyMat = new THREE.MeshStandardMaterial({
-    color: 0xb4bdc7,
+    color: 0xc8c2b6,
     metalness: 0.82,
     roughness: 0.34,
   });
   const darkMat = new THREE.MeshStandardMaterial({
-    color: 0x2a2f38,
+    color: 0x2a2824,
     metalness: 0.5,
     roughness: 0.5,
   });
   const canopyMat = new THREE.MeshStandardMaterial({
-    color: 0x0a1220,
+    color: 0x0a0a0a,
     metalness: 0.2,
     roughness: 0.1,
     envMapIntensity: 1.0,
   });
   const glowMat = new THREE.MeshStandardMaterial({
-    color: 0xffb020,
-    emissive: 0xff5a20,
-    emissiveIntensity: 2.4,
+    color: 0xd8a878,
+    emissive: 0xc47850,
+    emissiveIntensity: 2.0,
     roughness: 0.9,
   });
 
@@ -253,9 +253,9 @@ function buildJet() {
   /* Wireframe overlay for a technical-drawing vibe */
   const overlayGeom = new THREE.EdgesGeometry(wingGeom, 15);
   const overlayMat = new THREE.LineBasicMaterial({
-    color: 0x7fd4ff,
+    color: 0xece7da,
     transparent: true,
-    opacity: 0.14,
+    opacity: 0.1,
   });
   const overlayR = new THREE.LineSegments(overlayGeom, overlayMat);
   overlayR.rotation.copy(rightWing.rotation);
@@ -323,9 +323,9 @@ function makeTrail(color = 0xffffff, baseOpacity = 0.75) {
   return new THREE.Line(geom, mat);
 }
 
-const trailL = makeTrail(0xffffff, 0.6);
-const trailR = makeTrail(0xffffff, 0.6);
-const trailE = makeTrail(0xffb020, 0.8);
+const trailL = makeTrail(0xece7da, 0.6);
+const trailR = makeTrail(0xece7da, 0.6);
+const trailE = makeTrail(0xc47850, 0.7);
 viewGroup.add(trailL, trailR, trailE);
 
 /* Update a trail: drift every existing point backward (simulating the jet's
