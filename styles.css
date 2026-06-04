@@ -654,7 +654,20 @@ main { position: relative; z-index: 1; }
 }
 .status--concept {
   color: var(--accent);
-  border-color: rgba(255, 176, 32, 0.4);
+  border-color: rgba(236, 231, 218, 0.25);
+}
+.status--built {
+  color: var(--ink);
+  border-color: rgba(236, 231, 218, 0.45);
+  background: rgba(236, 231, 218, 0.06);
+}
+.status--built::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--ink);
+  margin-right: 8px;
+  vertical-align: middle;
 }
 
 .card__sheet {
@@ -709,6 +722,12 @@ main { position: relative; z-index: 1; }
 .cad--gearbox .spin g {
   stroke: var(--ink);
   fill: none;
+}
+
+.cad--turbine .rotor {
+  animation: spin 6s linear infinite;
+  transform-origin: 100px 60px;
+  transform-box: view-box;
 }
 
 .walk { animation: walk 2.2s ease-in-out infinite; transform-origin: 100px 40px; }
