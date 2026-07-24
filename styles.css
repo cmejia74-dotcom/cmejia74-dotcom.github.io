@@ -622,6 +622,14 @@ main { position: relative; z-index: 1; }
 .card--feature .card__meta { gap: 14px; }
 .card--feature h3 { font-size: 28px; }
 .card--feature .card__meta p { max-width: 46ch; }
+/* Alternate which side the drawing sits on so stacked features have rhythm */
+.card--feature:nth-of-type(even) .card__sheet { order: 2; }
+
+.cad--deck .rec-dot {
+  animation: pulse 2.4s ease-in-out infinite;
+  transform-origin: 100px 68px;
+  transform-box: view-box;
+}
 .card:hover { background: #131822; }
 .card::after {
   content: '';

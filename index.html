@@ -158,19 +158,104 @@
       <span class="divider__dim">SECTION</span>
       <span class="divider__num">01</span>
       <span class="divider__title">SELECTED WORK</span>
-      <span class="divider__dim divider__right">01 DRAWING</span>
+      <span class="divider__dim divider__right">02 DRAWINGS</span>
     </div>
 
     <!-- WORK -->
     <section class="work" id="work">
       <div class="work__intro">
         <h2>Selected Work <span>/ 2025–2026</span></h2>
-        <p>Where I document what I build. Starting with a class project — more to come as I finish them.</p>
+        <p>Things I've designed and built — the hardware, the CAD, and the code that makes them run.</p>
       </div>
 
       <div class="work__grid">
-        <!-- Project 1 · Small-scale 3D-printed HAWT (Wind Power class) -->
-        <article class="card card--feature" data-title="Small-Scale HAWT" style="--i:1">
+        <!-- Project 1 · Voice-driven task deck (ESP32 + LLM, independent) -->
+        <article class="card card--feature" data-title="Automated Task Management System" style="--i:1">
+          <div class="card__sheet">
+            <span class="status status--built">BUILT · INDEPENDENT</span>
+            <svg viewBox="0 0 300 200" aria-hidden="true" class="cad cad--deck">
+              <!-- Hinged lid holding the display -->
+              <rect x="70" y="25" width="160" height="80" class="outline" />
+              <rect x="78" y="33" width="144" height="64" class="dim" />
+
+              <!-- Screen UI · status bar -->
+              <line x1="78" y1="44" x2="222" y2="44" class="dim" />
+              <text x="84" y="41" class="label">TASKS</text>
+              <path d="M202 40 Q208 34 214 40" class="dim" />
+              <path d="M204.5 43 Q208 40 211.5 43" class="dim" />
+              <circle cx="208" cy="45.5" r="1" class="fill accent" />
+
+              <!-- Screen UI · record button -->
+              <circle cx="100" cy="68" r="11" class="outline" />
+              <circle cx="100" cy="68" r="5" class="fill accent rec-dot" />
+              <text x="100" y="90" class="label" text-anchor="middle">REC</text>
+
+              <!-- Screen UI · generated task cards -->
+              <rect x="128" y="50" width="86" height="12" class="outline" />
+              <line x1="133" y1="56" x2="196" y2="56" class="dim" />
+              <rect x="128" y="66" width="86" height="12" class="outline" />
+              <line x1="133" y1="72" x2="186" y2="72" class="dim" />
+              <rect x="128" y="82" width="86" height="12" class="outline" />
+              <line x1="133" y1="88" x2="203" y2="88" class="dim" />
+
+              <!-- Hinge barrels -->
+              <circle cx="82" cy="105" r="4" class="outline" />
+              <circle cx="218" cy="105" r="4" class="outline" />
+
+              <!-- Enclosure base · open top + front face -->
+              <path d="M70 105 L230 105 L245 140 L55 140 Z" class="outline" />
+              <path d="M55 140 L245 140 L245 155 L55 155 Z" class="outline" />
+
+              <!-- Breadboard -->
+              <path d="M95 112 L195 112 L205 130 L85 130 Z" class="dim" />
+              <line x1="97" y1="117" x2="196" y2="117" class="dim dash" />
+              <line x1="93" y1="122" x2="199" y2="122" class="dim dash" />
+              <line x1="89" y1="127" x2="202" y2="127" class="dim dash" />
+
+              <!-- ESP32 dev board -->
+              <path d="M110 114 L152 114 L158 127 L103 127 Z" class="outline" />
+
+              <!-- I2S microphone -->
+              <path d="M63 130 L78 130 L81 138 L65 138 Z" class="outline" />
+              <path d="M54 127 Q47 134 54 141" class="dim" />
+              <path d="M48 123 Q38 134 48 145" class="dim" />
+
+              <!-- 18650 cell on charge shield -->
+              <rect x="208" y="114" width="30" height="13" rx="6" class="outline" />
+
+              <!-- Jumper wiring -->
+              <path d="M124 114 Q128 108 92 106" class="dim" />
+              <path d="M108 127 Q94 130 82 133" class="dim" />
+
+              <!-- Callouts -->
+              <text x="6" y="16" class="label">ILI9341 TFT + TOUCH</text>
+              <line x1="88" y1="19" x2="102" y2="34" class="dim dash" />
+
+              <text x="2" y="112" class="label">ESP32</text>
+              <line x1="33" y1="113" x2="104" y2="120" class="dim dash" />
+
+              <text x="298" y="100" class="label" text-anchor="end">HINGED LID</text>
+              <line x1="240" y1="99" x2="223" y2="104" class="dim dash" />
+
+              <text x="298" y="170" class="label" text-anchor="end">18650 + CHARGE SHIELD</text>
+              <line x1="270" y1="167" x2="238" y2="128" class="dim dash" />
+
+              <text x="150" y="188" class="label" text-anchor="middle">INMP441 I2S MIC · BREADBOARD</text>
+              <text x="150" y="197" class="label" text-anchor="middle">Wi-Fi → FastAPI → WHISPER → LLM</text>
+            </svg>
+          </div>
+          <div class="card__meta">
+            <span class="card__num">01</span>
+            <h3>Automated Task Management System</h3>
+            <p>A desk device that turns something you say out loud into a task on its screen. An ESP32 streams 16 kHz audio from an I2S microphone over Wi-Fi to a FastAPI server, which transcribes it and hands the text to an LLM that pulls out what the task actually is and sends it back to the display. I modeled the hinged enclosure in Fusion 360 so the screen mounts cleanly and the breadboard and wiring stay hidden.</p>
+            <ul class="card__tags">
+              <li>ESP32</li><li>Fusion 360</li><li>Python</li><li>LLM API</li>
+            </ul>
+          </div>
+        </article>
+
+        <!-- Project 2 · Small-scale 3D-printed HAWT (Wind Power class) -->
+        <article class="card card--feature" data-title="Small-Scale HAWT" style="--i:2">
           <div class="card__sheet">
             <span class="status status--built">BUILT · 2026</span>
             <svg viewBox="0 0 200 200" aria-hidden="true" class="cad cad--turbine">
@@ -216,7 +301,7 @@
             </svg>
           </div>
           <div class="card__meta">
-            <span class="card__num">01</span>
+            <span class="card__num">02</span>
             <h3>Small-Scale HAWT</h3>
             <p>Built for a Wind Power class: a small horizontal-axis wind turbine with three 3D-printed blade tips on a printed hub and shaft. A hand-wound copper coil and neodymium magnet rotor make a tiny generator that lights an LED and lifts a small weight on a spool.</p>
             <ul class="card__tags">
@@ -248,8 +333,8 @@
         </p>
         <p>
           I like taking a design all the way from <em>CAD to a part that actually runs</em> —
-          modeling in Fusion 360, printing it, and testing whether it does what the math said
-          it would. This page grows as I finish projects.
+          modeling it in Fusion 360, printing it, wiring up whatever electronics it needs, and
+          writing the code to make the whole thing work. This page grows as I finish projects.
         </p>
         <a class="btn btn--ghost" href="mailto:cmejia74@stanford.edu">Get in touch →</a>
       </div>
@@ -293,25 +378,25 @@
         <li><span class="k">NUM</span><strong>MATLAB</strong><em>Proficient</em></li>
         <li><span class="k">CODE</span><strong>Python</strong><em>Proficient</em></li>
         <li><span class="k">MFG</span><strong>3D Printing · FDM</strong><em>Hands-on</em></li>
-        <li><span class="k">AERO</span><strong>CubeSat Concepts</strong><em>Self-study</em></li>
-        <li><span class="k">SYS</span><strong>Avionics Fundamentals</strong><em>Self-study</em></li>
+        <li><span class="k">EMB</span><strong>ESP32 · Embedded C++</strong><em>Hands-on</em></li>
+        <li><span class="k">ELEC</span><strong>Circuits · I2S · SPI</strong><em>Hands-on</em></li>
         <li><span class="k">ANA</span><strong>Solid Mechanics</strong><em>Coursework</em></li>
         <li><span class="k">MATH</span><strong>Vector Calc · ODEs · LA</strong><em>Coursework</em></li>
       </ul>
       <div class="skills__marquee" aria-hidden="true">
         <div class="skills__track">
-          <span>CUBESAT</span><span>·</span>
-          <span>AVIONICS</span><span>·</span>
-          <span>DEPLOYABLES</span><span>·</span>
-          <span>ATTITUDE CONTROL</span><span>·</span>
-          <span>OPTICAL COMMS</span><span>·</span>
-          <span>S-BAND</span><span>·</span>
-          <span>SYSTEMS INTEGRATION</span><span>·</span>
+          <span>CAD</span><span>·</span>
           <span>ADDITIVE MFG</span><span>·</span>
-          <span>CUBESAT</span><span>·</span>
-          <span>AVIONICS</span><span>·</span>
-          <span>DEPLOYABLES</span><span>·</span>
-          <span>ATTITUDE CONTROL</span><span>·</span>
+          <span>EMBEDDED SYSTEMS</span><span>·</span>
+          <span>ESP32</span><span>·</span>
+          <span>SENSOR INTEGRATION</span><span>·</span>
+          <span>GENERATOR DESIGN</span><span>·</span>
+          <span>WIND POWER</span><span>·</span>
+          <span>SYSTEMS INTEGRATION</span><span>·</span>
+          <span>CAD</span><span>·</span>
+          <span>ADDITIVE MFG</span><span>·</span>
+          <span>EMBEDDED SYSTEMS</span><span>·</span>
+          <span>ESP32</span><span>·</span>
         </div>
       </div>
     </section>

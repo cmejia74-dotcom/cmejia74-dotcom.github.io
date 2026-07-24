@@ -31,7 +31,8 @@ npx --yes serve .
 
 1. **Hero** — 3D fighter-jet flight sim, intro, quick stats.
 2. **Selected Work** — completed builds only:
-   - `01` Small-Scale HAWT _(built · Wind Power class)_
+   - `01` Automated Task Management System _(built · independent)_
+   - `02` Small-Scale HAWT _(built · Wind Power class)_
 3. **About** — personal background + interests.
 4. **Education** — Stanford details and relevant coursework.
 5. **Toolchain** — CAD, MATLAB, Python, 3D printing, etc.
@@ -47,10 +48,11 @@ Each project is an `<article class="card">` inside `.work__grid` in
 Status badges: `status--built` (finished, shows a filled square) or
 `status--concept` (in progress / not built yet).
 
-The lone project currently uses `card card--feature`, which spans the full
-grid and puts the drawing beside its details. **Once there are two or more
-projects, drop `card--feature`** so they flow into the normal 3-column grid.
-Also bump the `NN DRAWING(S)` count in the section divider.
+Projects currently use `card card--feature`, which spans the full grid width
+and puts the drawing beside its details, alternating sides as they stack. This
+suits a short, detailed list. **Once there are roughly four or more projects,
+drop `card--feature`** so they flow into the normal 3-column grid instead.
+Also bump the `NN DRAWINGS` count in the section divider.
 
 The palette is at the top of `styles.css` as CSS variables — `--bg`,
 `--ink` (warm cream), and `--ink-dim`.
