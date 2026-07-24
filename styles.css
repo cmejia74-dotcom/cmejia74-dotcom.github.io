@@ -607,6 +607,21 @@ main { position: relative; z-index: 1; }
   animation-delay: calc(var(--i, 1) * 80ms);
 }
 .card--wide { grid-column: span 2; }
+
+/* Feature card — spans the grid and sets the drawing beside its details.
+   Used while the set is small so a lone project still reads as deliberate. */
+.card--feature {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
+}
+.card--feature .card__sheet { aspect-ratio: 3 / 2; }
+.card--feature .card__meta { gap: 14px; }
+.card--feature h3 { font-size: 28px; }
+.card--feature .card__meta p { max-width: 46ch; }
 .card:hover { background: #131822; }
 .card::after {
   content: '';
@@ -1125,6 +1140,12 @@ main { position: relative; z-index: 1; }
   .edu__courses { grid-template-columns: 1fr; }
   .work__grid, .skills__grid, .contact__grid { grid-template-columns: 1fr; }
   .card--wide { grid-column: auto; }
+  .card--feature {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 28px;
+  }
+  .card--feature h3 { font-size: 22px; }
   .work__intro, .about, .contact { grid-template-columns: 1fr; gap: 32px; }
   .titleblock { margin: 0 20px 24px; }
   .tb__row--top { grid-template-columns: repeat(3, 1fr); }
