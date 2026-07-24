@@ -57,7 +57,7 @@ p { margin: 0; color: var(--ink-dim); line-height: 1.6; }
     linear-gradient(90deg, var(--grid) 1px, transparent 1px),
     linear-gradient(var(--grid-strong) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-strong) 1px, transparent 1px),
-    radial-gradient(ellipse at 50% 0%, rgba(127,212,255,0.06), transparent 60%);
+    radial-gradient(ellipse at 50% 0%, rgba(236,231,218,0.05), transparent 60%);
   background-size: 32px 32px, 32px 32px, 160px 160px, 160px 160px, 100% 100%;
   background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
   mask-image: radial-gradient(ellipse at 50% 40%, black 55%, transparent 95%);
@@ -194,7 +194,7 @@ p { margin: 0; color: var(--ink-dim); line-height: 1.6; }
   padding: 20px 48px;
   z-index: 100;
   backdrop-filter: blur(10px);
-  background: linear-gradient(to bottom, rgba(10,12,16,0.9), rgba(10,12,16,0.5) 60%, transparent);
+  background: linear-gradient(to bottom, rgba(10,10,10,0.9), rgba(10,10,10,0.5) 60%, transparent);
   border-bottom: 1px solid var(--line);
 }
 .nav__brand {
@@ -371,7 +371,7 @@ main { position: relative; z-index: 1; }
 .btn:hover svg { transform: translateX(4px); }
 .btn--primary {
   background: var(--accent);
-  color: #0a0c10;
+  color: #0a0a0a;
   border-color: var(--accent);
 }
 .btn--primary:hover { background: #ffc24a; border-color: #ffc24a; box-shadow: 0 0 32px rgba(255,176,32,0.25); }
@@ -415,8 +415,8 @@ main { position: relative; z-index: 1; }
   margin-left: auto;
   border: 1px solid var(--line-2);
   background:
-    radial-gradient(circle at 50% 50%, rgba(127,212,255,0.05), transparent 70%),
-    linear-gradient(#0b0e13, #0b0e13);
+    radial-gradient(circle at 50% 50%, rgba(236,231,218,0.05), transparent 70%),
+    linear-gradient(#0b0b0a, #0b0b0a);
 }
 .stage::before,
 .stage::after {
@@ -478,7 +478,7 @@ main { position: relative; z-index: 1; }
   font-size: 10px;
   letter-spacing: 0.2em;
   color: var(--ink-dim);
-  background: rgba(10,12,16,0.8);
+  background: rgba(10,10,10,0.8);
   padding: 6px 10px;
   border: 1px solid var(--line-2);
 }
@@ -497,7 +497,7 @@ main { position: relative; z-index: 1; }
   letter-spacing: 0.18em;
   text-align: right;
   padding: 6px 10px;
-  background: rgba(10,12,16,0.6);
+  background: rgba(10,10,10,0.6);
   border: 1px solid var(--line-2);
 }
 .stage__label span { display: block; color: var(--ink-faint); }
@@ -631,6 +631,64 @@ main { position: relative; z-index: 1; }
   transform-box: view-box;
 }
 .card:hover { background: #131822; }
+
+/* Cards that have a detail sheet behind them */
+.card--linked .card__link {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+.card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 260ms ease, transform 260ms ease, color 260ms ease;
+  pointer-events: none;
+}
+.card__cta svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 260ms ease;
+}
+.card--linked:hover .card__cta,
+.card--linked:focus-within .card__cta {
+  opacity: 1;
+  transform: translateY(0);
+  color: var(--ink);
+}
+.card--linked:hover .card__cta svg { transform: translateX(4px); }
+.card--linked:hover .card__sheet { border-color: rgba(236, 231, 218, 0.32); }
+.card--linked .card__link:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: -3px;
+}
+/* Corner tag on the drawing, revealed on hover */
+.card__peek {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  padding: 4px 8px;
+  border: 1px solid var(--line-2);
+  background: rgba(10, 10, 10, 0.8);
+  color: var(--ink-dim);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+.card--linked:hover .card__peek { opacity: 1; transform: translateY(0); }
+
 .card::after {
   content: '';
   position: absolute;
@@ -657,7 +715,7 @@ main { position: relative; z-index: 1; }
   letter-spacing: 0.22em;
   padding: 4px 8px;
   border: 1px solid var(--line-2);
-  background: rgba(10, 12, 16, 0.75);
+  background: rgba(10, 10, 10, 0.8);
   color: var(--ink-dim);
 }
 .status--active {
@@ -699,7 +757,7 @@ main { position: relative; z-index: 1; }
   background:
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px),
-    #0b0e13;
+    #0b0b0a;
   background-size: 16px 16px;
   border: 1px solid var(--line-2);
   padding: 16px;

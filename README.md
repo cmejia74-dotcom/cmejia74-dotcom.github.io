@@ -10,6 +10,23 @@ Astronautics, Class of 2029). Built as a lightweight static site:
   boot-up sequence, registration marks, dimension callouts, and a drawing
   title-block footer.
 
+## File map
+
+```
+index.html                  home page
+projects/task-manager.html  project detail sheet (DWG CM-002)
+styles.css                  shared theme + tokens (palette lives at the top)
+project.css                 detail-sheet-only styles, loaded after styles.css
+script.js                   shared chrome: cursor, clock, boot, scroll reveals
+hero-jet.js                 the Three.js flight sim
+assets/task-manager/        build photos
+```
+
+`script.js` runs on every page and guards every element it touches, so a page
+can omit the boot overlay or the clock without breaking. It pulls in
+`hero-jet.js` with a dynamic `import()` only when the hero canvas is on the
+page — so detail pages never download Three.js.
+
 ## Run locally
 
 Because the page uses ES modules + an import map, open it through a
@@ -31,8 +48,9 @@ npx --yes serve .
 
 1. **Hero** — 3D fighter-jet flight sim, intro, quick stats.
 2. **Selected Work** — completed builds only:
-   - `01` Automated Task Management System _(built · independent)_
-   - `02` Small-Scale HAWT _(built · Wind Power class)_
+   - `01` Automated Task Management System _(built · independent)_ —
+     has a detail sheet at `projects/task-manager.html`
+   - `02` Small-Scale HAWT _(built · Wind Power class)_ — no detail sheet yet
 3. **About** — personal background + interests.
 4. **Education** — Stanford details and relevant coursework.
 5. **Toolchain** — CAD, MATLAB, Python, 3D printing, etc.
@@ -56,6 +74,40 @@ Also bump the `NN DRAWINGS` count in the section divider.
 
 The palette is at the top of `styles.css` as CSS variables — `--bg`,
 `--ink` (warm cream), and `--ink-dim`.
+
+## Adding a detail sheet
+
+Only cards that actually have a page get the clickable treatment, so a card
+never promises a page that doesn't exist. To wire one up, add to the
+`<article>`:
+
+1. `card--linked` on the article's class list.
+2. `<a class="card__link" href="projects/your-project.html" aria-label="…">`
+   as the first child — it stretches over the whole card.
+3. `<span class="card__peek">DWG CM-00N</span>` inside `.card__sheet`
+   (appears on the drawing on hover).
+4. `<span class="card__cta">Click for more info …</span>` at the end of
+   `.card__meta` (the arrow that slides in on hover).
+
+Then copy `projects/task-manager.html` as a starting point. Its structure is
+`.proj` header → `.proj__intro` → `.log` (numbered `.phase` build stages) →
+`.arch` (signal diagram) → `.stack` (bill of materials) → `.cadblock`.
+
+Photos go in `assets/<project>/`. Bake EXIF rotation into the pixels rather
+than relying on the orientation flag, since the `.shot` frames use a fixed
+`aspect-ratio`:
+
+```bash
+sips -s format jpeg -Z 1800 IMG_XXXX.HEIC --out out.jpg   # HEIC → JPEG
+python3 -c "from PIL import Image,ImageOps; \
+im=ImageOps.exif_transpose(Image.open('out.jpg')).convert('RGB'); \
+im.thumbnail((1600,1600)); im.save('out.jpg',quality=84,optimize=True)"
+```
+
+Build stages alternate sides automatically via `:nth-of-type(even)`. The
+timeline rail is drawn with `.phase__rail::before`, whose negative `bottom`
+value is tuned to `.phase`'s vertical padding — if you change that padding,
+update the offset in `project.css` or the line will break between stages.
 
 ## Deploy
 

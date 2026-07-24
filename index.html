@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Cristian Mejia — Stanford Mechanical Engineering portfolio. CAD design, CubeSat subsystems, and fabrication." />
+  <meta name="description" content="Cristian Mejia — Stanford Mechanical Engineering portfolio. CAD design, embedded hardware, and fabrication." />
   <title>Cristian Mejia — Mechanical Engineering Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -170,9 +170,11 @@
 
       <div class="work__grid">
         <!-- Project 1 · Voice-driven task deck (ESP32 + LLM, independent) -->
-        <article class="card card--feature" data-title="Automated Task Management System" style="--i:1">
+        <article class="card card--feature card--linked" data-title="Automated Task Management System" style="--i:1">
+          <a class="card__link" href="projects/task-manager.html" aria-label="Automated Task Management System — open the full project sheet"></a>
           <div class="card__sheet">
             <span class="status status--built">BUILT · INDEPENDENT</span>
+            <span class="card__peek">DWG CM-002</span>
             <svg viewBox="0 0 300 200" aria-hidden="true" class="cad cad--deck">
               <!-- Hinged lid holding the display -->
               <rect x="70" y="25" width="160" height="80" class="outline" />
@@ -251,6 +253,10 @@
             <ul class="card__tags">
               <li>ESP32</li><li>Fusion 360</li><li>Python</li><li>LLM API</li>
             </ul>
+            <span class="card__cta">
+              Click for more info
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+            </span>
           </div>
         </article>
 

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Automated Task Management System — a voice-driven, battery-powered ESP32 task device with a custom Fusion 360 enclosure. Build log, architecture, and hardware stack." />
+  <title>Automated Task Management System — Cristian Mejia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../project.css" />
+</head>
+<body>
+
+  <!-- Crosshair cursor -->
+  <div class="cursor" id="cursor" aria-hidden="true">
+    <div class="cursor__h"></div>
+    <div class="cursor__v"></div>
+    <div class="cursor__dot"></div>
+    <div class="cursor__label" id="cursorLabel">X: 000  Y: 000</div>
+  </div>
+
+  <!-- Blueprint background -->
+  <div class="blueprint" aria-hidden="true"></div>
+
+  <!-- Corner ticks / registration marks -->
+  <svg class="ticks ticks--tl" viewBox="0 0 60 60" aria-hidden="true"><path d="M0 0 H30 M0 0 V30" /></svg>
+  <svg class="ticks ticks--tr" viewBox="0 0 60 60" aria-hidden="true"><path d="M60 0 H30 M60 0 V30" /></svg>
+  <svg class="ticks ticks--bl" viewBox="0 0 60 60" aria-hidden="true"><path d="M0 60 H30 M0 60 V30" /></svg>
+  <svg class="ticks ticks--br" viewBox="0 0 60 60" aria-hidden="true"><path d="M60 60 H30 M60 60 V30" /></svg>
+
+  <!-- Nav -->
+  <header class="nav">
+    <a class="nav__brand" href="../index.html">
+      <svg class="nav__logo" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="1.2" />
+        <circle cx="20" cy="20" r="3" fill="currentColor" />
+        <path d="M20 4 V10 M20 30 V36 M4 20 H10 M30 20 H36" stroke="currentColor" stroke-width="1.2" />
+      </svg>
+      <span>C.MEJIA<span class="nav__brand-dim">/ME</span></span>
+    </a>
+    <a class="nav__back" href="../index.html#work">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+      Back to index
+    </a>
+    <div class="nav__meta">
+      <span class="dot"></span>
+      <span id="clock">00:00:00 UTC</span>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ Sheet header ============ -->
+    <section class="proj">
+      <div class="proj__tag">
+        <strong>DWG CM-002</strong>
+        <span class="sep">·</span>
+        INDEPENDENT PROJECT
+        <span class="sep">·</span>
+        BUILT
+      </div>
+
+      <h1 class="proj__title">Automated <em>Task</em> Management System</h1>
+
+      <p class="proj__sub">
+        A desk device you hold and talk to. It captures speech on-board, ships the audio to a
+        server that transcribes it and runs it through a language model, then draws the extracted
+        task back on its own screen — all running off a single lithium cell.
+      </p>
+
+      <dl class="proj__meta">
+        <div><dt>ROLE</dt><dd>Sole designer &amp; builder</dd></div>
+        <div><dt>SCOPE</dt><dd>Electronics · Firmware · Enclosure · Backend</dd></div>
+        <div><dt>STATUS</dt><dd>Working prototype</dd></div>
+        <div><dt>PLATFORM</dt><dd>ESP32 · 2.8" SPI TFT</dd></div>
+      </dl>
+    </section>
+
+    <!-- ============ Overview ============ -->
+    <div class="divider">
+      <span class="divider__dim">SHEET</span>
+      <span class="divider__num">A</span>
+      <span class="divider__title">DESIGN INTENT</span>
+      <span class="divider__dim divider__right">CM-002</span>
+    </div>
+
+    <section class="proj__intro">
+      <div>
+        <h2>Capture a task in the two seconds before you forget it.</h2>
+        <div class="note">
+          <span>DESIGN CONSTRAINT</span>
+          <p>“Speak, and the task is on the screen — no phone, no app, no typing.”</p>
+        </div>
+      </div>
+      <div>
+        <p>
+          Every task app I used had the same failure mode: the friction of unlocking a phone and
+          finding the right screen was longer than my memory of the task. So I built a single-purpose
+          object that does one thing — <strong>hold it, speak, and the task appears.</strong>
+        </p>
+        <p>
+          The engineering problem is a hand-off across four domains. An <strong>I2S microphone</strong>
+          produces a continuous 16 kHz audio stream. An ESP32 has to buffer that stream and push it
+          over Wi-Fi without stalling the display it is also driving over SPI. A server has to catch
+          the raw audio, transcribe it, and get a language model to decide what the task actually
+          <em>is</em>. Then the result has to land back on a 2.8" screen fast enough to feel instant.
+        </p>
+        <p>
+          Because the microcontroller is doing real-time audio capture and display rendering at the
+          same time, the interesting work was <strong>timing and buffering</strong>, not features —
+          keeping the audio pipeline fed while the touch controller and screen stayed responsive.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ Build log ============ -->
+    <div class="divider">
+      <span class="divider__dim">SHEET</span>
+      <span class="divider__num">B</span>
+      <span class="divider__title">BUILD LOG</span>
+      <span class="divider__dim divider__right">03 STAGES</span>
+    </div>
+
+    <section class="log">
+
+      <!-- Phase 01 -->
+      <article class="phase">
+        <div class="phase__rail"><span class="phase__no">01</span></div>
+        <div class="phase__body">
+          <span class="phase__k">STAGE 01 · DISPLAY BRING-UP</span>
+          <h3>Prove the screen before anything else</h3>
+          <p>
+            Nothing else can be debugged until you can see something. The first milestone was getting
+            the <strong>ILI9341 driven over SPI</strong> — wiring the four control lines, sorting out
+            the chip-select and reset pins, and drawing a single filled rectangle.
+          </p>
+          <p>
+            A blue square is a deliberately boring target, and that is the point: it confirms the SPI
+            bus, the pin mapping, the supply rail, and the display initialisation sequence are all
+            correct in one shot. Once the rectangle rendered, every later bug had a known-good
+            foundation underneath it.
+          </p>
+          <ul class="chips">
+            <li>SPI VERIFIED</li>
+            <li>PIN MAP LOCKED</li>
+            <li>3.3 V RAIL OK</li>
+          </ul>
+        </div>
+        <div class="phase__plate">
+          <figure class="plate">
+            <div class="plate__frame">
+              <div class="shot">
+                <img src="../assets/task-manager/01-first-light.jpg" width="1200" height="1600"
+                     alt="A 2.8-inch TFT display lying flat showing a solid blue square, wired with jumper cables to a breadboard holding an ESP32." loading="lazy" decoding="async" />
+              </div>
+            </div>
+            <figcaption class="plate__cap">
+              <span class="k">PLATE 01</span>
+              <strong>First light</strong>
+              <em>ILI9341 rendering a filled rect over SPI — the bus, pin map and rail confirmed in one test.</em>
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <!-- Phase 02 -->
+      <article class="phase">
+        <div class="phase__rail"><span class="phase__no">02</span></div>
+        <div class="phase__body">
+          <span class="phase__k">STAGE 02 · INTERFACE &amp; AUDIO</span>
+          <h3>A real interface, and a microphone behind it</h3>
+          <p>
+            With pixels under control, the square became an actual UI: a header that reports the live
+            task count, an empty state, and a full-width <strong>hold-to-speak</strong> control. Touch
+            comes from an <strong>XPT2046</strong> resistive controller sharing the SPI bus with the
+            display, so the two had to be arbitrated rather than left to collide.
+          </p>
+          <p>
+            Behind the screen, the <strong>INMP441</strong> streams 32-bit samples at 16 kHz over I2S.
+            Holding the button opens a capture window and starts filling a buffer; releasing it closes
+            the window and hands the buffer off to the network. This is where the latency budget was
+            won or lost — the buffer has to drain to Wi-Fi at least as fast as the microphone fills it,
+            or the audio breaks up.
+          </p>
+          <ul class="chips">
+            <li>TOUCH UI</li>
+            <li>I2S CAPTURE</li>
+            <li>16 kHz · 32-BIT</li>
+            <li>SHARED SPI BUS</li>
+          </ul>
+        </div>
+        <div class="phase__plate">
+          <figure class="plate">
+            <div class="plate__frame">
+              <div class="shot">
+                <img src="../assets/task-manager/02-task-ui.jpg" width="1200" height="1600"
+                     alt="The display standing upright showing a task interface: a Tasks (0) header, the text No tasks. Tap to speak, and a Hold to Speak button, with a breadboard of jumper wires behind it." loading="lazy" decoding="async" />
+              </div>
+            </div>
+            <figcaption class="plate__cap">
+              <span class="k">PLATE 02</span>
+              <strong>Task UI running</strong>
+              <em>Live task count, empty state and hold-to-speak control, with touch and display sharing one SPI bus.</em>
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <!-- Phase 03 -->
+      <article class="phase">
+        <div class="phase__rail"><span class="phase__no">03</span></div>
+        <div class="phase__body">
+          <span class="phase__k">STAGE 03 · POWER &amp; UNTETHERING</span>
+          <h3>Off the bench supply, onto a cell</h3>
+          <p>
+            A device you pick up cannot be bolted to a laptop. Power moved to a
+            <strong>Samsung 35E 18650</strong> cell — 3500 mAh, flat-top — carried on an
+            <strong>18650 charge shield</strong> that regulates the 5 V and 3.3 V rails and provides
+            pass-through charging.
+          </p>
+          <p>
+            The requirement that drove the part choice was <strong>no auto-shutoff</strong>. Most
+            cheap power banks cut output when current draw drops below a threshold, which would kill
+            an idle device sitting on a desk waiting to be spoken to. A shield with UPS-style
+            pass-through keeps the ESP32 alive while charging and holds it up through the current
+            spike when the Wi-Fi radio transmits.
+          </p>
+          <ul class="chips">
+            <li>3500 mAh</li>
+            <li>5 V / 3.3 V REGULATED</li>
+            <li>PASS-THROUGH CHARGE</li>
+            <li>NO AUTO-SHUTOFF</li>
+          </ul>
+        </div>
+        <div class="phase__plate">
+          <figure class="plate">
+            <div class="plate__frame">
+              <div class="shot">
+                <img src="../assets/task-manager/03-battery.jpg" width="1200" height="1600"
+                     alt="Top-down view of the assembly: an 18650 lithium cell in a black charge shield connected by a blue USB cable to the breadboard and display, which is running the task interface." loading="lazy" decoding="async" />
+              </div>
+            </div>
+            <figcaption class="plate__cap">
+              <span class="k">PLATE 03</span>
+              <strong>Running untethered</strong>
+              <em>18650 cell and charge shield feeding the device over USB — the full stack live with no bench supply.</em>
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ============ Architecture ============ -->
+    <div class="divider">
+      <span class="divider__dim">SHEET</span>
+      <span class="divider__num">C</span>
+      <span class="divider__title">SIGNAL PATH</span>
+      <span class="divider__dim divider__right">VOICE → TASK</span>
+    </div>
+
+    <section class="arch">
+      <div class="arch__head">
+        <h2>One round trip, four hand-offs</h2>
+        <p>
+          The device is deliberately thin. It captures and displays; the interpretation happens
+          off-board. That split keeps the ESP32's job bounded to what it is good at — real-time I/O —
+          and puts the expensive work where there is memory to do it.
+        </p>
+      </div>
+
+      <div class="arch__sheet">
+        <svg class="chain" viewBox="0 0 720 200" role="img"
+             aria-label="Diagram: on the device, an INMP441 microphone feeds the ESP32, which drives an ILI9341 touch display. The ESP32 sends 16 kHz PCM audio over Wi-Fi to a laptop server running FastAPI, which passes it to Whisper speech-to-text and then a language model; the extracted task text returns over Wi-Fi to the device display.">
+
+          <!-- ---- Device group ---- -->
+          <text class="t t--key" x="20" y="34">DEVICE</text>
+          <rect class="group" x="20" y="44" width="230" height="142" />
+
+          <rect class="box" x="34" y="56" width="202" height="30" />
+          <text class="t" x="135" y="75" text-anchor="middle">INMP441 · I2S</text>
+
+          <line class="flow" x1="135" y1="86" x2="135" y2="96" />
+          <path class="head" d="M132 96 L138 96 L135 100 Z" />
+
+          <rect class="box" x="34" y="100" width="202" height="30" />
+          <text class="t" x="135" y="119" text-anchor="middle">ESP32</text>
+
+          <line class="flow" x1="135" y1="130" x2="135" y2="140" />
+          <path class="head" d="M132 140 L138 140 L135 144 Z" />
+
+          <rect class="box" x="34" y="144" width="202" height="30" />
+          <text class="t" x="135" y="163" text-anchor="middle">ILI9341 + TOUCH</text>
+
+          <!-- ---- Server group ---- -->
+          <text class="t t--key" x="470" y="34">LAPTOP SERVER</text>
+          <rect class="group" x="470" y="44" width="230" height="142" />
+
+          <rect class="box" x="484" y="56" width="202" height="30" />
+          <text class="t" x="585" y="75" text-anchor="middle">FastAPI · INGEST</text>
+
+          <line class="flow" x1="585" y1="86" x2="585" y2="96" />
+          <path class="head" d="M582 96 L588 96 L585 100 Z" />
+
+          <rect class="box" x="484" y="100" width="202" height="30" />
+          <text class="t" x="585" y="119" text-anchor="middle">WHISPER · STT</text>
+
+          <line class="flow" x1="585" y1="130" x2="585" y2="140" />
+          <path class="head" d="M582 140 L588 140 L585 144 Z" />
+
+          <rect class="box" x="484" y="144" width="202" height="30" />
+          <text class="t" x="585" y="163" text-anchor="middle">LLM · EXTRACT</text>
+
+          <!-- ---- Outbound: audio ---- -->
+          <text class="t t--dim" x="360" y="107" text-anchor="middle">AUDIO 16 kHz PCM</text>
+          <line class="flow" x1="252" y1="115" x2="462" y2="115" />
+          <path class="head" d="M462 112 L462 118 L468 115 Z" />
+
+          <!-- ---- Wireless boundary ---- -->
+          <path class="bound" d="M348 140 Q360 126 372 140" />
+          <path class="bound" d="M353 144 Q360 136 367 144" />
+          <circle class="head" cx="360" cy="148" r="1.8" />
+          <text class="t t--key" x="380" y="142">Wi-Fi</text>
+
+          <!-- ---- Inbound: task text ---- -->
+          <line class="flow" x1="468" y1="155" x2="258" y2="155" />
+          <path class="head" d="M258 152 L258 158 L252 155 Z" />
+          <text class="t t--dim" x="360" y="174" text-anchor="middle">TASK TEXT</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ============ Hardware stack ============ -->
+    <div class="divider">
+      <span class="divider__dim">SHEET</span>
+      <span class="divider__num">D</span>
+      <span class="divider__title">BILL OF MATERIALS</span>
+      <span class="divider__dim divider__right">06 SUBSYSTEMS</span>
+    </div>
+
+    <section class="stack">
+      <div class="stack__head">
+        <h2>Hardware stack</h2>
+        <p>Every part selected for a specific constraint, grouped by the subsystem it serves.</p>
+      </div>
+
+      <div class="stack__grid">
+
+        <div class="sub">
+          <span>01 · CORE</span>
+          <ul>
+            <li>
+              <strong>ESP32 development board</strong>
+              <em>The physical client. Holds the Wi-Fi link, routes power to the rails, and arbitrates every input and output.</em>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sub">
+          <span>02 · INTERFACE</span>
+          <ul>
+            <li>
+              <strong>ILI9341 2.8" TFT LCD</strong>
+              <em>SPI-driven colour display carrying the UI — task list, empty state, and the record control.</em>
+            </li>
+            <li>
+              <strong>XPT2046 touch controller</strong>
+              <em>Resistive touch layer over the panel, sharing the SPI bus with the display.</em>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sub">
+          <span>03 · AUDIO</span>
+          <ul>
+            <li>
+              <strong>INMP441 digital microphone</strong>
+              <em>Omnidirectional I2S mic streaming 16 kHz, 32-bit samples. Digital output keeps the signal clean with no analogue front end to design.</em>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sub">
+          <span>04 · POWER</span>
+          <ul>
+            <li>
+              <strong>18650 charge shield V3</strong>
+              <em>Regulates 5 V and 3.3 V with UPS-style pass-through charging and no auto-shutoff, so an idle device stays awake.</em>
+            </li>
+            <li>
+              <strong>Samsung 35E 18650 cell</strong>
+              <em>3500 mAh flat-top lithium-ion — enough headroom for the Wi-Fi transmit spikes.</em>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sub">
+          <span>05 · PROTOTYPING</span>
+          <ul>
+            <li>
+              <strong>Solderless breadboard</strong>
+              <em>Base for the build while the pin map was still moving.</em>
+            </li>
+            <li>
+              <strong>Jumper wires</strong>
+              <em>Data and power runs between the boards — visible in every plate above.</em>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sub">
+          <span>06 · OFF-BOARD</span>
+          <ul>
+            <li>
+              <strong>Python / FastAPI server</strong>
+              <em>Local endpoint that catches the raw audio payload from the device.</em>
+            </li>
+            <li>
+              <strong>Transcription + LLM APIs</strong>
+              <em>Speech-to-text, then a language model that reads the transcript and extracts the actual task.</em>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ Enclosure / CAD ============ -->
+    <div class="divider">
+      <span class="divider__dim">SHEET</span>
+      <span class="divider__num">E</span>
+      <span class="divider__title">ENCLOSURE</span>
+      <span class="divider__dim divider__right">FUSION 360</span>
+    </div>
+
+    <section class="cadblock">
+      <div class="cadblock__inner">
+        <div class="cadblock__text">
+          <h2>Turning a breadboard into an object</h2>
+          <p>
+            The electronics work, but a loose breadboard is not a product. The enclosure is modelled in
+            <strong>Fusion 360</strong> as a two-part clamshell: the display and touch panel mount to
+            the lid, and every microcontroller, jumper and battery lives underneath, out of sight.
+          </p>
+          <p>
+            The lid is on a <strong>hinge</strong> rather than screws, so the internals stay reachable —
+            the wiring is still changing, and a case you have to destroy to open is a case you stop
+            opening. Design drivers were panel cut-outs sized to the bare PCB rather than the module,
+            a cable path that does not fight the hinge sweep, and clearance for the 18650 to be
+            swapped without pulling the loom.
+          </p>
+          <div class="filerow">
+            <span class="dot"></span>
+            <strong>CM-002-ENCL</strong> · STEP / F3D · to be published
+          </div>
+        </div>
+
+        <div class="cadblock__art">
+          <svg class="cad" viewBox="0 0 300 262" role="img"
+               aria-label="Section drawing of the hinged enclosure: a base cavity holding the breadboard and 18650 cell, with the lid shown closed as a dashed ghost and open at forty degrees about a hinge pivot at the rear.">
+            <!-- ground -->
+            <line class="dim" x1="24" y1="230" x2="276" y2="230" />
+
+            <!-- base shell, sectioned -->
+            <rect class="outline" x="40" y="170" width="210" height="56" />
+            <rect class="dim" x="50" y="180" width="190" height="46" />
+
+            <!-- internals -->
+            <rect class="dim" x="62" y="200" width="110" height="16" />
+            <rect class="dim" x="186" y="198" width="46" height="20" rx="4" />
+
+            <!-- lid, closed (ghost) -->
+            <rect class="dim dash" x="44" y="150" width="204" height="13" />
+
+            <!-- lid, open at 40 degrees -->
+            <path class="outline" d="M250 164 L97 35 L106 25 L259 153 Z" />
+            <line class="dim" x1="254" y1="159" x2="101" y2="30" />
+
+            <!-- hinge pivot -->
+            <circle class="outline" cx="250" cy="164" r="5" />
+            <circle class="fill accent" cx="250" cy="164" r="1.6" />
+
+            <!-- sweep -->
+            <path class="dim dash" d="M130 164 Q133 122 158 87" />
+            <text class="label" x="172" y="145" text-anchor="middle">0° → 40°</text>
+
+            <!-- callouts -->
+            <line class="dim" x1="268" y1="176" x2="254" y2="168" />
+            <text class="label" x="296" y="180" text-anchor="end">HINGE</text>
+            <text class="label" x="150" y="252" text-anchor="middle">HINGED ENCLOSURE · SECTION</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Next ============ -->
+    <section class="nextnav">
+      <a href="../index.html#work">
+        <div>
+          <span>NEXT</span>
+          <strong>Back to selected work</strong>
+        </div>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+      </a>
+    </section>
+
+    <!-- Title block footer -->
+    <footer class="titleblock">
+      <div class="tb__row tb__row--top">
+        <div class="tb__cell"><span>DRAWN BY</span><strong>C. MEJIA</strong></div>
+        <div class="tb__cell"><span>SCHOOL</span><strong>STANFORD</strong></div>
+        <div class="tb__cell"><span>DATE</span><strong id="tbDate">——</strong></div>
+        <div class="tb__cell"><span>SCALE</span><strong>NTS</strong></div>
+        <div class="tb__cell"><span>UNITS</span><strong>mm</strong></div>
+        <div class="tb__cell"><span>SHEET</span><strong>1 / 1</strong></div>
+      </div>
+      <div class="tb__row tb__row--bottom">
+        <div class="tb__title">
+          <span>TITLE</span>
+          <strong>Automated Task Management System · Detail Sheet</strong>
+        </div>
+        <div class="tb__dwg">
+          <span>DWG N°</span>
+          <strong>CM-002</strong>
+        </div>
+        <div class="tb__rev">
+          <span>REV</span>
+          <strong>01</strong>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script type="module" src="../script.js"></script>
+</body>
+</html>
