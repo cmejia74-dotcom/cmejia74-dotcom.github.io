@@ -102,5 +102,8 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
    Hero flight sim — only pages with the stage pay for three.js
    ========================================================= */
 if (document.getElementById('gear') && document.getElementById('stage')) {
-  import('./hero-jet.js');
+  // Carry this file's ?v= through so the sim can't be served from a stale cache
+  // while the rest of the page is fresh.
+  const version = new URL(import.meta.url).search;
+  import(`./hero-jet.js${version}`);
 }

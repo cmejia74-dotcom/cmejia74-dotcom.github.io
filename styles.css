@@ -630,7 +630,7 @@ main { position: relative; z-index: 1; }
   transform-origin: 100px 68px;
   transform-box: view-box;
 }
-.card:hover { background: #131822; }
+.card:hover { background: #171613; }
 
 /* Cards that have a detail sheet behind them */
 .card--linked .card__link {
@@ -1043,7 +1043,7 @@ main { position: relative; z-index: 1; }
   position: relative;
   transition: background 200ms;
 }
-.skills__grid li:hover { background: #131822; }
+.skills__grid li:hover { background: #171613; }
 .skills__grid li:hover strong { color: var(--accent); }
 .skills__grid .k {
   font-family: var(--font-mono);
@@ -1123,7 +1123,7 @@ main { position: relative; z-index: 1; }
   position: relative;
   transition: background 200ms;
 }
-.contact__card:hover { background: #131822; }
+.contact__card:hover { background: #171613; }
 .contact__card:hover strong { color: var(--accent); }
 .contact__card:hover svg { transform: translate(6px, -6px); color: var(--accent); }
 .contact__card span {

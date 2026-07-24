@@ -75,6 +75,28 @@ Also bump the `NN DRAWINGS` count in the section divider.
 The palette is at the top of `styles.css` as CSS variables — `--bg`,
 `--ink` (warm cream), and `--ink-dim`.
 
+## Cache busting — bump this when you edit CSS or JS
+
+GitHub Pages serves assets with `max-age=600`, so a visitor can end up with
+new HTML and a ten-minute-old stylesheet. That combination looks badly broken
+rather than merely stale: hover-only elements show permanently, and inline
+SVGs with no CSS balloon to their 300×150 default.
+
+So `styles.css`, `project.css`, and `script.js` are linked with a `?v=N`
+query. **After editing any of them, bump `N` in every page** (currently `v=5`):
+
+```bash
+rg -n '\?v=' *.html projects/*.html
+```
+
+`script.js` passes its own `?v=` through to `hero-jet.js` via `import.meta.url`,
+so that one updates itself.
+
+As a second line of defence, icon `<svg>`s carry `width`/`height` attributes so
+they stay small even with no CSS at all. CSS still overrides them, so the
+attributes only matter when something has gone wrong. Diagram SVGs (`.cad`,
+`.chain`, `.ticks`, `.annot`) deliberately omit them — they scale to fit.
+
 ## Adding a detail sheet
 
 Only cards that actually have a page get the clickable treatment, so a card
