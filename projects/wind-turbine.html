@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Small-scale wind turbine for CEE 34N — a 3D-printed airfoil rotor that would not self-start, the diagnosis, and the rebuild as a high-solidity drag rotor driving a hand-wound generator." />
+  <title>Wind Turbine — From Airfoil to Drag — Cristian Mejia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css?v=6" />
+  <link rel="stylesheet" href="../project.css?v=6" />
+</head>
+<body>
+
+  <!-- Crosshair cursor -->
+  <div class="cursor" id="cursor" aria-hidden="true">
+    <div class="cursor__h"></div>
+    <div class="cursor__v"></div>
+    <div class="cursor__dot"></div>
+    <div class="cursor__label" id="cursorLabel">X: 000  Y: 000</div>
+  </div>
+
+  <!-- Blueprint background -->
+  <div class="blueprint" aria-hidden="true"></div>
+
+  <!-- Corner ticks / registration marks -->
+  <svg class="ticks ticks--tl" viewBox="0 0 60 60" aria-hidden="true"><path d="M0 0 H30 M0 0 V30" /></svg>
+  <svg class="ticks ticks--tr" viewBox="0 0 60 60" aria-hidden="true"><path d="M60 0 H30 M60 0 V30" /></svg>
+  <svg class="ticks ticks--bl" viewBox="0 0 60 60" aria-hidden="true"><path d="M0 60 H30 M0 60 V30" /></svg>
+  <svg class="ticks ticks--br" viewBox="0 0 60 60" aria-hidden="true"><path d="M60 60 H30 M60 60 V30" /></svg>
+
+  <!-- Nav -->
+  <header class="nav">
+    <a class="nav__brand" href="../index.html">
+      <svg class="nav__logo" viewBox="0 0 40 40" width="22" height="22" aria-hidden="true">
+        <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="1.2" />
+        <circle cx="20" cy="20" r="3" fill="currentColor" />
+        <path d="M20 4 V10 M20 30 V36 M4 20 H10 M30 20 H36" stroke="currentColor" stroke-width="1.2" />
+      </svg>
+      <span>C.MEJIA<span class="nav__brand-dim">/ME</span></span>
+    </a>
+    <a class="nav__back" href="../index.html#work">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
+      Back to index
+    </a>
+    <div class="nav__meta">
+      <span class="dot"></span>
+      <span id="clock">00:00:00 UTC</span>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ Sheet header ============ -->
+    <section class="proj">
+      <div class="proj__tag">
+        <strong>DWG CM-003</strong>
+        <span class="sep">·</span>
+        CEE 34N · WIND ENERGY EXPLAINED
+        <span class="sep">·</span>
+        BUILT
+      </div>
+
+      <h1 class="proj__title">Wind Turbine: From <em>Airfoil</em> to Drag</h1>
+
+      <p class="proj__sub">
+        A turbine built from scratch to do two things at once: raise a weight on a string and
+        light an LED. We started by copying a full-size three-blade turbine, it refused to spin,
+        and figuring out why sent us to a completely different rotor.
+      </p>
+
+      <dl class="proj__meta">
+        <div><dt>MY ROLE</dt><dd>Airfoil blade design · 3D printing · assembly</dd></div>
+        <div><dt>TEAM</dt><dd>3 — Josh, Cristian, Eshan</dd></div>
+        <div><dt>OUTPUT</dt><dd>Lifts a weight · lights an LED</dd></div>
+        <div><dt>STATUS</dt><dd>Built &amp; demonstrated</dd></div>
+      </dl>
+    </section>
+
+    <!-- ============ Design intent ============ -->
+    <div class="divider">
+      <span class="divider__dim">SHEET</span>
+      <span class="divider__num">A</span>
+      <span class="divider__title">DESIGN INTENT</span>
+      <span class="divider__dim divider__right">CM-003</span>
+    </div>
+
+    <section class="proj__intro">
+      <div>
+        <h2>Two jobs that pull in opposite directions.</h2>
+        <div class="note">
+          <span>THE CENTRAL TENSION</span>
+          <p>“Lifting a weight wants torque. Spinning a generator wants RPM. One rotor had to do both.”</p>
+        </div>
+      </div>
+      <div>
+        <p>
+          The brief was to build a working turbine from scratch with two deliverables:
+          <strong>raise a cup of coins on a string</strong>, and <strong>light an LED</strong>.
+          Those sound like one problem but they are two, and they disagree with each other.
+        </p>
+        <p>
+          Lifting a mass is a <strong>torque</strong> problem — you need force at the shaft, and you
+          can afford to turn slowly. Driving a generator bright enough to light an LED is an
+          <strong>RPM</strong> problem — induced voltage scales with how fast the magnetic field
+          changes, so you need speed. A rotor optimised for one tends to be poor at the other.
+        </p>
+        <p>
+          We began where most people would: imitating the modern three-blade turbines you see on a
+          ridgeline. That instinct turned out to be the most useful mistake of the project, because
+          the reason it failed is the thing that actually governs a rotor at this scale.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ Build log ============ -->
+    <div class="divider">
+      <span class="divider__dim">SHEET</span>
+      <span class="divider__num">B</span>
+      <span class="divider__title">BUILD LOG</span>
+      <span class="divider__dim divider__right">04 STAGES</span>
+    </div>
+
+    <section class="log">
+
+      <!-- Stage 01 -->
+      <article class="phase">
+        <div class="phase__rail"><span class="phase__no">01</span></div>
+        <div class="phase__body">
+          <span class="phase__k">STAGE 01 · AIRFOIL ROTOR</span>
+          <h3>Copy a real turbine</h3>
+          <p>
+            I modelled and printed a three-blade <strong>airfoil rotor</strong> — thin, twisted,
+            tapered blades on a printed spherical hub, scaled down from the geometry of a full-size
+            machine. On paper it is the right answer: real turbines use lift-driven airfoils because
+            they are far more efficient.
+          </p>
+          <p>
+            Mounted up and put in front of the wind, it <strong>would not start turning.</strong>
+            Not slowly — at all. A rotor that produces no motion produces no torque and no voltage,
+            so both deliverables were dead at the same time.
+          </p>
+          <ul class="chips">
+            <li>3 BLADES</li>
+            <li>3D-PRINTED PLA</li>
+            <li>LIFT-DRIVEN</li>
+            <li>DID NOT SELF-START</li>
+          </ul>
+        </div>
+        <div class="phase__plate">
+          <figure class="plate">
+            <div class="plate__frame">
+              <div class="shot">
+                <img src="../assets/wind-turbine/01-airfoil-rotor.jpg" width="1200" height="1600"
+                     alt="A 3D-printed three-blade airfoil rotor lying on a workbench: two black blades and one white blade, thin and twisted, joined at a white spherical hub." loading="lazy" decoding="async" />
+              </div>
+            </div>
+            <figcaption class="plate__cap">
+              <span class="k">PLATE 01</span>
+              <strong>The rotor that wouldn't spin</strong>
+              <em>Scaled-down airfoil geometry, printed in PLA. Correct in principle, unable to start itself in practice.</em>
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <!-- Stage 02 -->
+      <article class="phase">
+        <div class="phase__rail"><span class="phase__no">02</span></div>
+        <div class="phase__body">
+          <span class="phase__k">STAGE 02 · DIAGNOSIS</span>
+          <h3>It was solidity, not blade shape</h3>
+          <p>
+            The failure was not bad airfoil geometry — it was that there was barely any blade there.
+            Three slender blades cover very little of the disc the rotor sweeps. That ratio of blade
+            area to swept area is <strong>solidity</strong>, and ours was far too low to catch enough
+            air to overcome its own starting friction.
+          </p>
+          <p>
+            Full-size turbines get away with low solidity because they are enormous, they operate in
+            strong steady wind, and they can be brought up to speed rather than having to start
+            themselves. At desk scale, in gentle indoor air, <strong>none of those apply.</strong>
+          </p>
+          <p>
+            Seeing a high-solidity drag rotor working made the fix obvious: stop chasing efficiency
+            and buy starting torque with sheer surface area.
+          </p>
+          <ul class="chips">
+            <li>LOW SOLIDITY</li>
+            <li>NO STARTING TORQUE</li>
+            <li>SCALE MISMATCH</li>
+          </ul>
+        </div>
+        <div class="phase__plate">
+          <figure class="plate plate--ref">
+            <div class="plate__frame">
+              <div class="shot">
+                <img src="../assets/wind-turbine/02-reference-drag-rotor.jpg" width="1200" height="1600"
+                     alt="A reference drag-type rotor built by another team: six wide paper-bag sails taped to dowel spokes on a central hub, mounted on a stand in a lab." loading="lazy" decoding="async" />
+              </div>
+            </div>
+            <figcaption class="plate__cap">
+              <span class="k">PLATE 02 · REFERENCE</span>
+              <strong>Not our build</strong>
+              <em>Another team's drag rotor. Wide sails, high solidity, self-starting — the example that redirected our design.</em>
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <!-- Stage 03 -->
+      <article class="phase">
+        <div class="phase__rail"><span class="phase__no">03</span></div>
+        <div class="phase__body">
+          <span class="phase__k">STAGE 03 · DRAG ROTOR &amp; ASSEMBLY</span>
+          <h3>Rebuild around surface area</h3>
+          <p>
+            The second rotor abandoned the airfoil entirely. Wide <strong>paper-bag sails</strong> on
+            dowel spokes present a large, cheap, blunt area for the wind to push against — drag-driven
+            rather than lift-driven. It is the less elegant machine and the far more effective one:
+            it <strong>self-starts in gentle air.</strong>
+          </p>
+          <p>
+            Everything else hangs off that shaft. The rotor turns about a printed hub, a driveshaft
+            carries the rotation down the tower into the generator, and the two deliverables split
+            off it — a string and cup on the mechanical side, the coils and LED on the electrical
+            side.
+          </p>
+          <ul class="chips">
+            <li>DRAG-DRIVEN</li>
+            <li>HIGH SOLIDITY</li>
+            <li>SELF-STARTING</li>
+            <li>LIFTS THE CUP</li>
+          </ul>
+        </div>
+        <div class="phase__plate">
+          <figure class="plate">
+            <div class="plate__frame">
+              <div class="shot">
+                <img src="../assets/wind-turbine/03-assembly.jpg" width="1200" height="1600"
+                     alt="The completed turbine on its tower: paper-bag sails on a printed hub, the coil-wound generator box mounted on a platform, and a white cup hanging on a string beside the LED." loading="lazy" decoding="async" />
+              </div>
+            </div>
+            <figcaption class="plate__cap">
+              <span class="k">PLATE 03</span>
+              <strong>Complete assembly</strong>
+              <em>Sails, hub, driveshaft, generator and the lifting cup on one tower — both outputs running off a single rotor.</em>
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <!-- Stage 04 -->
+      <article class="phase">
+        <div class="phase__rail"><span class="phase__no">04</span></div>
+        <div class="phase__body">
+          <span class="phase__k">STAGE 04 · GENERATOR</span>
+          <h3>Six magnets on a printed shaft</h3>
+          <p>
+            The generator is hand-built. A <strong>3D-printed PLA shaft</strong> carries the magnets
+            and spins inside a box wound with <strong>copper coils fixed at the ends</strong>. As the
+            magnets sweep past, their moving field drives electrons through the windings and the LED
+            lights.
+          </p>
+          <p>
+            Rather than the usual four magnets, we ran <strong>six</strong>. More poles means more
+            flux reversals for every single revolution of the shaft, so the current is delivered
+            more frequently and more smoothly — which matters a great deal when your rotor is a
+            slow-turning drag design and RPM is the resource you are short of.
+          </p>
+          <ul class="chips">
+            <li>6 MAGNETS</li>
+            <li>PRINTED PLA SHAFT</li>
+            <li>HAND-WOUND COILS</li>
+            <li>LIGHTS THE LED</li>
+          </ul>
+        </div>
+        <div class="phase__plate">
+          <figure class="plate">
+            <div class="plate__frame">
+              <div class="shot">
+                <img src="../assets/wind-turbine/04-generator.jpg" width="1200" height="1600"
+                     alt="The generator close up: a box wound with red enamelled copper wire, the magnet rotor and its shaft visible inside, with a red LED wired to the coil leads." loading="lazy" decoding="async" />
+              </div>
+            </div>
+            <figcaption class="plate__cap">
+              <span class="k">PLATE 04</span>
+              <strong>Hand-wound generator</strong>
+              <em>Red enamelled copper windings on the box, six-magnet rotor on a printed shaft inside, LED on the coil leads.</em>
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+    </section>
+
+    <!-- ============ Power path ============ -->
+    <div class="divider">
+      <span class="divider__dim">SHEET</span>
+      <span class="divider__num">C</span>
+      <span class="divider__title">POWER PATH</span>
+      <span class="divider__dim divider__right">WIND → WORK</span>
+    </div>
+
+    <section class="arch">
+      <div class="arch__head">
+        <h2>One rotor, then the path forks</h2>
+        <p>
+          Wind reaches a single shaft, and from there the two deliverables are served by completely
+          different physics — one purely mechanical, one electromagnetic. Both are limited by the
+          same thing: how fast that shaft turns.
+        </p>
+      </div>
+
+      <div class="arch__sheet">
+        <svg class="chain" viewBox="0 0 720 278" role="img"
+             aria-label="Diagram: wind pushes the paper sails, which turn the hub and rotor, which turns the driveshaft. The path then forks — mechanically to a spool, string and lifting cup, and electrically to the six-magnet rotor, the copper coils and the LED.">
+
+          <!-- ---- Input chain ---- -->
+          <text class="t t--key" x="20" y="34">INPUT</text>
+          <rect class="group" x="20" y="44" width="196" height="152" />
+
+          <rect class="box" x="34" y="56" width="168" height="30" />
+          <text class="t" x="118" y="75" text-anchor="middle">WIND</text>
+
+          <line class="flow" x1="118" y1="86" x2="118" y2="96" />
+          <path class="head" d="M115 96 L121 96 L118 100 Z" />
+
+          <rect class="box" x="34" y="100" width="168" height="30" />
+          <text class="t" x="118" y="119" text-anchor="middle">PAPER SAILS</text>
+
+          <line class="flow" x1="118" y1="130" x2="118" y2="140" />
+          <path class="head" d="M115 140 L121 140 L118 144 Z" />
+
+          <rect class="box" x="34" y="144" width="168" height="30" />
+          <text class="t" x="118" y="163" text-anchor="middle">HUB · ROTOR</text>
+
+          <!-- ---- Shaft ---- -->
+          <line class="flow" x1="216" y1="159" x2="252" y2="159" />
+          <path class="head" d="M252 156 L252 162 L258 159 Z" />
+
+          <rect class="box" x="260" y="144" width="150" height="30" />
+          <text class="t" x="335" y="163" text-anchor="middle">DRIVESHAFT</text>
+          <text class="t t--key" x="260" y="192">SINGLE SHAFT</text>
+
+          <!-- fork -->
+          <line class="flow" x1="410" y1="159" x2="440" y2="159" />
+          <line class="flow" x1="440" y1="159" x2="440" y2="75" />
+          <line class="flow" x1="440" y1="159" x2="440" y2="215" />
+          <line class="flow" x1="440" y1="75" x2="486" y2="75" />
+          <path class="head" d="M486 72 L486 78 L492 75 Z" />
+          <line class="flow" x1="440" y1="215" x2="486" y2="215" />
+          <path class="head" d="M486 212 L486 218 L492 215 Z" />
+
+          <!-- ---- Electrical branch ---- -->
+          <text class="t t--key" x="494" y="34">ELECTRICAL · NEEDS RPM</text>
+          <rect class="group" x="494" y="44" width="206" height="76" />
+          <rect class="box" x="506" y="60" width="182" height="30" />
+          <text class="t" x="597" y="79" text-anchor="middle">6 MAGNETS → COILS</text>
+          <line class="flow" x1="597" y1="90" x2="597" y2="100" />
+          <path class="head" d="M594 100 L600 100 L597 104 Z" />
+          <text class="t t--dim" x="597" y="115" text-anchor="middle">LED LIGHTS</text>
+
+          <!-- ---- Mechanical branch ---- -->
+          <text class="t t--key" x="494" y="180">MECHANICAL · NEEDS TORQUE</text>
+          <rect class="group" x="494" y="190" width="206" height="76" />
+          <rect class="box" x="506" y="200" width="182" height="30" />
+          <text class="t" x="597" y="219" text-anchor="middle">SPOOL → STRING</text>
+          <line class="flow" x1="597" y1="230" x2="597" y2="240" />
+          <path class="head" d="M594 240 L600 240 L597 244 Z" />
+          <text class="t t--dim" x="597" y="256" text-anchor="middle">CUP RISES</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ============ Findings ============ -->
+    <div class="divider">
+      <span class="divider__dim">SHEET</span>
+      <span class="divider__num">D</span>
+      <span class="divider__title">WHAT THE BUILD TAUGHT US</span>
+      <span class="divider__dim divider__right">03 FINDINGS</span>
+    </div>
+
+    <section class="stack">
+      <div class="stack__head">
+        <h2>Findings</h2>
+        <p>The useful conclusions all came from the version that didn't work.</p>
+      </div>
+
+      <div class="stack__grid">
+
+        <div class="sub">
+          <span>01 · SOLIDITY BEAT SHAPE</span>
+          <ul>
+            <li>
+              <strong>Area decided everything</strong>
+              <em>Whether the rotor turned at all came down to how much of the swept disc was covered — not how refined the blade profile was. Our careful airfoil lost to taped paper bags.</em>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sub">
+          <span>02 · SCALE CHANGES THE ANSWER</span>
+          <ul>
+            <li>
+              <strong>Copying doesn't transfer</strong>
+              <em>Borrowing geometry from a machine a hundred times larger imported assumptions that didn't hold — strong steady wind, and never having to self-start.</em>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sub">
+          <span>03 · TORQUE vs RPM</span>
+          <ul>
+            <li>
+              <strong>We were short on speed</strong>
+              <em>The drag rotor lifts the weight comfortably but turns too slowly to drive the LED hard. A gearbox between shaft and generator is the obvious next build — trade the torque we had spare for the RPM we lacked.</em>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ Team ============ -->
+    <section class="cadblock">
+      <div class="cadblock__inner">
+        <div class="cadblock__text">
+          <h2>Built by three of us</h2>
+          <p>
+            A CEE 34N team project. Work was split across the rotor, the generator and the structure,
+            and all three of us were on final assembly.
+          </p>
+          <p>
+            <strong>My part</strong> was the airfoil blade design and all the 3D printing — which
+            means the rotor that failed was mine, and so was the modelling and printing that produced
+            it. Documenting that honestly is more useful than pretending the first attempt worked.
+          </p>
+          <div class="filerow">
+            <span class="dot"></span>
+            <strong>CM-003</strong> · CEE 34N · Wind Energy Explained
+          </div>
+        </div>
+
+        <div class="cadblock__art">
+          <div class="stack__grid" style="grid-template-columns: 1fr; border: 1px solid var(--line);">
+            <div class="sub">
+              <span>JOSH</span>
+              <ul><li><em>Foundation and shaft, coiling the generator, assembly.</em></li></ul>
+            </div>
+            <div class="sub">
+              <span>CRISTIAN</span>
+              <ul><li><em>Airfoil blade design, 3D printing, assembly.</em></li></ul>
+            </div>
+            <div class="sub">
+              <span>ESHAN</span>
+              <ul><li><em>Generator design, blade design, assembly.</em></li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Next ============ -->
+    <section class="nextnav">
+      <a href="task-manager.html">
+        <div>
+          <span>NEXT PROJECT</span>
+          <strong>Automated Task Management System</strong>
+        </div>
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+      </a>
+    </section>
+
+    <!-- Title block footer -->
+    <footer class="titleblock">
+      <div class="tb__row tb__row--top">
+        <div class="tb__cell"><span>DRAWN BY</span><strong>C. MEJIA</strong></div>
+        <div class="tb__cell"><span>SCHOOL</span><strong>STANFORD</strong></div>
+        <div class="tb__cell"><span>DATE</span><strong id="tbDate">——</strong></div>
+        <div class="tb__cell"><span>SCALE</span><strong>NTS</strong></div>
+        <div class="tb__cell"><span>UNITS</span><strong>mm</strong></div>
+        <div class="tb__cell"><span>SHEET</span><strong>1 / 1</strong></div>
+      </div>
+      <div class="tb__row tb__row--bottom">
+        <div class="tb__title">
+          <span>TITLE</span>
+          <strong>Wind Turbine · From Airfoil to Drag · Detail Sheet</strong>
+        </div>
+        <div class="tb__dwg">
+          <span>DWG N°</span>
+          <strong>CM-003</strong>
+        </div>
+        <div class="tb__rev">
+          <span>REV</span>
+          <strong>01</strong>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script type="module" src="../script.js?v=6"></script>
+</body>
+</html>

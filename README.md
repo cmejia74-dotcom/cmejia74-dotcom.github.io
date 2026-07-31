@@ -15,11 +15,13 @@ Astronautics, Class of 2029). Built as a lightweight static site:
 ```
 index.html                  home page
 projects/task-manager.html  project detail sheet (DWG CM-002)
+projects/wind-turbine.html  project detail sheet (DWG CM-003)
 styles.css                  shared theme + tokens (palette lives at the top)
 project.css                 detail-sheet-only styles, loaded after styles.css
 script.js                   shared chrome: cursor, clock, boot, scroll reveals
 hero-jet.js                 the Three.js flight sim
 assets/task-manager/        build photos
+assets/wind-turbine/        build photos
 ```
 
 `script.js` runs on every page and guards every element it touches, so a page
@@ -47,10 +49,12 @@ npx --yes serve .
 ## Sections
 
 1. **Hero** — 3D fighter-jet flight sim, intro, quick stats.
-2. **Selected Work** — completed builds only:
-   - `01` Automated Task Management System _(built · independent)_ —
-     has a detail sheet at `projects/task-manager.html`
-   - `02` Small-Scale HAWT _(built · Wind Power class)_ — no detail sheet yet
+2. **Selected Work** — completed builds only. Both cards are clickable and
+   open a detail sheet:
+   - `01` Automated Task Management System _(built · independent)_ →
+     `projects/task-manager.html`
+   - `02` Small-Scale Wind Turbine _(built · CEE 34N)_ →
+     `projects/wind-turbine.html`
 3. **About** — personal background + interests.
 4. **Education** — Stanford details and relevant coursework.
 5. **Toolchain** — CAD, MATLAB, Python, 3D printing, etc.
@@ -111,9 +115,17 @@ never promises a page that doesn't exist. To wire one up, add to the
 4. `<span class="card__cta">Click for more info …</span>` at the end of
    `.card__meta` (the arrow that slides in on hover).
 
-Then copy `projects/task-manager.html` as a starting point. Its structure is
+Then copy either existing sheet as a starting point. Both share the structure
 `.proj` header → `.proj__intro` → `.log` (numbered `.phase` build stages) →
-`.arch` (signal diagram) → `.stack` (bill of materials) → `.cadblock`.
+`.arch` (diagram) → `.stack` (three-column grid) → `.cadblock` → `.nextnav`.
+The `.stack__grid`/`.sub` pair is generic enough to hold a bill of materials
+(task manager) or findings and team credits (wind turbine).
+
+If a plate shows something that **isn't my own work** — a reference design or
+a photo taken from elsewhere — add `plate--ref` alongside `plate`. It switches
+the frame to a dashed rule, desaturates the image until hover, and tints the
+caption key, so it can't be skimmed as part of the build. Say so in the
+caption too; the wind turbine sheet uses this for its reference rotor.
 
 Photos go in `assets/<project>/`. Bake EXIF rotation into the pixels rather
 than relying on the orientation flag, since the `.shot` frames use a fixed
@@ -124,6 +136,16 @@ sips -s format jpeg -Z 1800 IMG_XXXX.HEIC --out out.jpg   # HEIC → JPEG
 python3 -c "from PIL import Image,ImageOps; \
 im=ImageOps.exif_transpose(Image.open('out.jpg')).convert('RGB'); \
 im.thumbnail((1600,1600)); im.save('out.jpg',quality=84,optimize=True)"
+```
+
+When the source is a class presentation, pull the originals out of the exported
+PDF instead of screenshotting slides — they come out at full resolution and
+already correctly oriented:
+
+```bash
+python3 -c "import pymupdf; d=pymupdf.open('deck.pdf'); \
+[pymupdf.Pixmap(d,x[0]).save(f'p{p+1}_{i}.png') \
+for p in range(len(d)) for i,x in enumerate(d[p].get_images(full=True))]"
 ```
 
 Build stages alternate sides automatically via `:nth-of-type(even)`. The

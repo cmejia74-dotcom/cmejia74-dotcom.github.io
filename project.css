@@ -267,6 +267,16 @@
   border-bottom: 1px solid; border-right: 1px solid;
 }
 
+/* A plate that is NOT my own work — reference/inspiration only. Dashed frame
+   and a marked label so it can't be misread as part of the build. */
+.plate--ref .plate__frame {
+  border-style: dashed;
+  border-color: var(--ink-faint);
+}
+.plate--ref .plate__cap .k { color: var(--accent-3); }
+.plate--ref .shot img { filter: saturate(0.2) contrast(1.05) brightness(0.8); }
+.plate--ref:hover .shot img { filter: saturate(0.75) contrast(1) brightness(0.95); }
+
 .shot {
   position: relative;
   overflow: hidden;
