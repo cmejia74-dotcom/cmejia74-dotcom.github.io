@@ -66,8 +66,8 @@
 
       <p class="proj__sub">
         A turbine built from scratch to do two things at once: raise a weight on a string and
-        light an LED. We started by copying a full-size three-blade turbine, it refused to spin,
-        and figuring out why sent us to a completely different rotor.
+        light an LED. We started by copying a full-size three-blade turbine — it wouldn't spin at
+        all, and working out why pushed us toward a completely different kind of rotor.
       </p>
 
       <dl class="proj__meta">
@@ -102,14 +102,14 @@
         </p>
         <p>
           Lifting a mass is a <strong>torque</strong> problem — you need force at the shaft, and you
-          can afford to turn slowly. Driving a generator bright enough to light an LED is an
-          <strong>RPM</strong> problem — induced voltage scales with how fast the magnetic field
-          changes, so you need speed. A rotor optimised for one tends to be poor at the other.
+          can afford to turn slowly. Lighting an LED from a generator is an <strong>RPM</strong>
+          problem — induced voltage depends on how fast the magnetic field changes, so you need
+          speed. A rotor set up for one of those is usually bad at the other.
         </p>
         <p>
-          We began where most people would: imitating the modern three-blade turbines you see on a
-          ridgeline. That instinct turned out to be the most useful mistake of the project, because
-          the reason it failed is the thing that actually governs a rotor at this scale.
+          We started the way most people would: copying the three-blade turbines you see on a
+          ridgeline. That turned out to be the most useful mistake of the project, because the
+          reason it failed is what actually matters for a rotor this small.
         </p>
       </div>
     </section>
@@ -131,15 +131,15 @@
           <span class="phase__k">STAGE 01 · AIRFOIL ROTOR</span>
           <h3>Copy a real turbine</h3>
           <p>
-            I modelled and printed a three-blade <strong>airfoil rotor</strong> — thin, twisted,
-            tapered blades on a printed spherical hub, scaled down from the geometry of a full-size
-            machine. On paper it is the right answer: real turbines use lift-driven airfoils because
-            they are far more efficient.
+            I modeled and printed a three-blade <strong>airfoil rotor</strong> — thin, twisted,
+            tapered blades on a printed spherical hub, scaled down from a full-size machine. On
+            paper that is the right answer: real turbines use lift-driven airfoils because they are
+            far more efficient.
           </p>
           <p>
-            Mounted up and put in front of the wind, it <strong>would not start turning.</strong>
-            Not slowly — at all. A rotor that produces no motion produces no torque and no voltage,
-            so both deliverables were dead at the same time.
+            Put in front of the wind, it <strong>would not start turning.</strong> Not slowly —
+            at all. A rotor that does not move produces no torque and no voltage, so both
+            deliverables were dead at the same time.
           </p>
           <ul class="chips">
             <li>3 BLADES</li>
@@ -172,19 +172,19 @@
           <span class="phase__k">STAGE 02 · DIAGNOSIS</span>
           <h3>It was solidity, not blade shape</h3>
           <p>
-            The failure was not bad airfoil geometry — it was that there was barely any blade there.
-            Three slender blades cover very little of the disc the rotor sweeps. That ratio of blade
-            area to swept area is <strong>solidity</strong>, and ours was far too low to catch enough
-            air to overcome its own starting friction.
+            The problem was not a bad airfoil — there was barely any blade there. Three thin blades
+            cover very little of the disc the rotor sweeps. That ratio of blade area to swept area
+            is <strong>solidity</strong>, and ours was too low to catch enough air to get itself
+            turning.
           </p>
           <p>
-            Full-size turbines get away with low solidity because they are enormous, they operate in
-            strong steady wind, and they can be brought up to speed rather than having to start
-            themselves. At desk scale, in gentle indoor air, <strong>none of those apply.</strong>
+            Full-size turbines can run with low solidity because they are huge, they sit in strong
+            steady wind, and they do not have to start themselves. At desk scale, in gentle indoor
+            air, <strong>none of that applies.</strong>
           </p>
           <p>
-            Seeing a high-solidity drag rotor working made the fix obvious: stop chasing efficiency
-            and buy starting torque with sheer surface area.
+            Watching a high-solidity drag rotor actually work made the fix obvious: stop chasing
+            efficiency and get starting torque from surface area instead.
           </p>
           <ul class="chips">
             <li>LOW SOLIDITY</li>
@@ -216,15 +216,15 @@
           <span class="phase__k">STAGE 03 · DRAG ROTOR &amp; ASSEMBLY</span>
           <h3>Rebuild around surface area</h3>
           <p>
-            The second rotor abandoned the airfoil entirely. Wide <strong>paper-bag sails</strong> on
-            dowel spokes present a large, cheap, blunt area for the wind to push against — drag-driven
-            rather than lift-driven. It is the less elegant machine and the far more effective one:
-            it <strong>self-starts in gentle air.</strong>
+            The second rotor dropped the airfoil entirely. Wide <strong>paper-bag sails</strong>
+            on dowel spokes give the wind a large, blunt area to push against — drag-driven instead
+            of lift-driven. It is the less elegant machine and the far more effective one: it
+            <strong>self-starts in gentle air.</strong>
           </p>
           <p>
-            Everything else hangs off that shaft. The rotor turns about a printed hub, a driveshaft
-            carries the rotation down the tower into the generator, and the two deliverables split
-            off it — a string and cup on the mechanical side, the coils and LED on the electrical
+            Everything else hangs off that shaft. The rotor turns about a printed hub at the top of
+            the tower, the generator sits right behind it, and the two deliverables split off the
+            same spin — a string and cup on the mechanical side, the coils and LED on the electrical
             side.
           </p>
           <ul class="chips">
@@ -245,7 +245,7 @@
             <figcaption class="plate__cap">
               <span class="k">PLATE 03</span>
               <strong>Complete assembly</strong>
-              <em>Sails, hub, driveshaft, generator and the lifting cup on one tower — both outputs running off a single rotor.</em>
+              <em>Sails, hub, generator and the lifting cup on one tower — both outputs running off a single rotor.</em>
             </figcaption>
           </figure>
         </div>
@@ -259,15 +259,14 @@
           <h3>Six magnets on a printed shaft</h3>
           <p>
             The generator is hand-built. A <strong>3D-printed PLA shaft</strong> carries the magnets
-            and spins inside a box wound with <strong>copper coils fixed at the ends</strong>. As the
-            magnets sweep past, their moving field drives electrons through the windings and the LED
-            lights.
+            and spins inside a box wound with <strong>copper wire</strong>. As the magnets sweep
+            past, their moving field pushes electrons through the windings and the LED lights.
           </p>
           <p>
-            Rather than the usual four magnets, we ran <strong>six</strong>. More poles means more
-            flux reversals for every single revolution of the shaft, so the current is delivered
-            more frequently and more smoothly — which matters a great deal when your rotor is a
-            slow-turning drag design and RPM is the resource you are short of.
+            Instead of the usual four magnets, we used <strong>six</strong>. More poles means more
+            flux reversals per turn of the shaft, so the current comes more often and more smoothly —
+            which matters when your rotor is a slow-turning drag design and RPM is what you are
+            short on.
           </p>
           <ul class="chips">
             <li>6 MAGNETS</li>
@@ -281,13 +280,13 @@
             <div class="plate__frame">
               <div class="shot">
                 <img src="../assets/wind-turbine/04-generator.jpg" width="1200" height="1600"
-                     alt="The generator close up: a box wound with red enamelled copper wire, the magnet rotor and its shaft visible inside, with a red LED wired to the coil leads." loading="lazy" decoding="async" />
+                     alt="The generator close up: a box wound with red enameled copper wire, the magnet rotor and its shaft visible inside, with a red LED wired to the coil leads." loading="lazy" decoding="async" />
               </div>
             </div>
             <figcaption class="plate__cap">
               <span class="k">PLATE 04</span>
               <strong>Hand-wound generator</strong>
-              <em>Red enamelled copper windings on the box, six-magnet rotor on a printed shaft inside, LED on the coil leads.</em>
+              <em>Red enameled copper windings on the box, six-magnet rotor on a printed shaft inside, LED on the coil leads.</em>
             </figcaption>
           </figure>
         </div>
@@ -315,7 +314,7 @@
 
       <div class="arch__sheet">
         <svg class="chain" viewBox="0 0 720 278" role="img"
-             aria-label="Diagram: wind pushes the paper sails, which turn the hub and rotor, which turns the driveshaft. The path then forks — mechanically to a spool, string and lifting cup, and electrically to the six-magnet rotor, the copper coils and the LED.">
+             aria-label="Diagram: wind pushes the paper sails, which turn the hub and rotor, which turns the shaft. The path then forks — mechanically to a spool, string and lifting cup, and electrically to the six-magnet rotor, the copper coils and the LED.">
 
           <!-- ---- Input chain ---- -->
           <text class="t t--key" x="20" y="34">INPUT</text>
@@ -341,8 +340,8 @@
           <path class="head" d="M252 156 L252 162 L258 159 Z" />
 
           <rect class="box" x="260" y="144" width="150" height="30" />
-          <text class="t" x="335" y="163" text-anchor="middle">DRIVESHAFT</text>
-          <text class="t t--key" x="260" y="192">SINGLE SHAFT</text>
+          <text class="t" x="335" y="163" text-anchor="middle">SHAFT</text>
+          <text class="t t--key" x="260" y="192">ONE SHAFT</text>
 
           <!-- fork -->
           <line class="flow" x1="410" y1="159" x2="440" y2="159" />
@@ -405,7 +404,7 @@
           <ul>
             <li>
               <strong>Copying doesn't transfer</strong>
-              <em>Borrowing geometry from a machine a hundred times larger imported assumptions that didn't hold — strong steady wind, and never having to self-start.</em>
+              <em>Taking geometry from a machine a hundred times larger brought assumptions that did not hold here — strong steady wind, and never having to self-start.</em>
             </li>
           </ul>
         </div>
@@ -415,7 +414,7 @@
           <ul>
             <li>
               <strong>We were short on speed</strong>
-              <em>The drag rotor lifts the weight comfortably but turns too slowly to drive the LED hard. A gearbox between shaft and generator is the obvious next build — trade the torque we had spare for the RPM we lacked.</em>
+              <em>The drag rotor lifts the weight fine but turns too slowly to drive the LED hard. A gearbox between the shaft and the generator is the obvious next step — trade spare torque for the RPM we lacked.</em>
             </li>
           </ul>
         </div>

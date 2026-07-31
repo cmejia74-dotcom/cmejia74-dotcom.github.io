@@ -101,16 +101,17 @@
           object that does one thing — <strong>hold it, speak, and the task appears.</strong>
         </p>
         <p>
-          The engineering problem is a hand-off across four domains. An <strong>I2S microphone</strong>
-          produces a continuous 16 kHz audio stream. An ESP32 has to buffer that stream and push it
-          over Wi-Fi without stalling the display it is also driving over SPI. A server has to catch
-          the raw audio, transcribe it, and get a language model to decide what the task actually
-          <em>is</em>. Then the result has to land back on a 2.8" screen fast enough to feel instant.
+          The hard part is that four systems have to talk to each other. An
+          <strong>I2S microphone</strong> puts out a continuous 16 kHz audio stream. An ESP32 has to
+          buffer that stream and push it over Wi-Fi without freezing the display it is also driving
+          over SPI. A server has to catch the raw audio, transcribe it, and get a language model to
+          figure out what the task actually <em>is</em>. Then the result has to land back on a 2.8"
+          screen fast enough to feel instant.
         </p>
         <p>
-          Because the microcontroller is doing real-time audio capture and display rendering at the
-          same time, the interesting work was <strong>timing and buffering</strong>, not features —
-          keeping the audio pipeline fed while the touch controller and screen stayed responsive.
+          Because the microcontroller is capturing audio and driving the display at the same time,
+          the real work was <strong>timing and buffering</strong> — keeping the audio pipeline fed
+          while the touch controller and screen stayed responsive.
         </p>
       </div>
     </section>
@@ -138,7 +139,7 @@
           </p>
           <p>
             A blue square is a deliberately boring target, and that is the point: it confirms the SPI
-            bus, the pin mapping, the supply rail, and the display initialisation sequence are all
+            bus, the pin mapping, the supply rail, and the display initialization sequence are all
             correct in one shot. Once the rectangle rendered, every later bug had a known-good
             foundation underneath it.
           </p>
@@ -180,8 +181,8 @@
           <p>
             Behind the screen, the <strong>INMP441</strong> streams 32-bit samples at 16 kHz over I2S.
             Holding the button opens a capture window and starts filling a buffer; releasing it closes
-            the window and hands the buffer off to the network. This is where the latency budget was
-            won or lost — the buffer has to drain to Wi-Fi at least as fast as the microphone fills it,
+            the window and sends the buffer over the network. This is where latency either works or
+            does not — the buffer has to drain to Wi-Fi at least as fast as the microphone fills it,
             or the audio breaks up.
           </p>
           <ul class="chips">
@@ -265,9 +266,9 @@
       <div class="arch__head">
         <h2>One round trip, four hand-offs</h2>
         <p>
-          The device is deliberately thin. It captures and displays; the interpretation happens
-          off-board. That split keeps the ESP32's job bounded to what it is good at — real-time I/O —
-          and puts the expensive work where there is memory to do it.
+          The device itself stays simple. It captures and displays; the interpretation happens
+          off-board. That split keeps the ESP32 doing what it is good at — real-time I/O — and puts
+          the heavier work where there is enough memory to do it.
         </p>
       </div>
 
@@ -343,7 +344,7 @@
     <section class="stack">
       <div class="stack__head">
         <h2>Hardware stack</h2>
-        <p>Every part selected for a specific constraint, grouped by the subsystem it serves.</p>
+        <p>Each part picked for a reason, grouped by the subsystem it belongs to.</p>
       </div>
 
       <div class="stack__grid">
@@ -353,7 +354,7 @@
           <ul>
             <li>
               <strong>ESP32 development board</strong>
-              <em>The physical client. Holds the Wi-Fi link, routes power to the rails, and arbitrates every input and output.</em>
+              <em>The physical client. Holds the Wi-Fi link, routes power, and manages the inputs and outputs.</em>
             </li>
           </ul>
         </div>
@@ -363,7 +364,7 @@
           <ul>
             <li>
               <strong>ILI9341 2.8" TFT LCD</strong>
-              <em>SPI-driven colour display carrying the UI — task list, empty state, and the record control.</em>
+              <em>SPI-driven color display carrying the UI — task list, empty state, and the record control.</em>
             </li>
             <li>
               <strong>XPT2046 touch controller</strong>
@@ -377,7 +378,7 @@
           <ul>
             <li>
               <strong>INMP441 digital microphone</strong>
-              <em>Omnidirectional I2S mic streaming 16 kHz, 32-bit samples. Digital output keeps the signal clean with no analogue front end to design.</em>
+              <em>Omnidirectional I2S mic streaming 16 kHz, 32-bit samples. Digital output keeps the signal clean with no analog front end to design.</em>
             </li>
           </ul>
         </div>
@@ -440,16 +441,16 @@
         <div class="cadblock__text">
           <h2>Turning a breadboard into an object</h2>
           <p>
-            The electronics work, but a loose breadboard is not a product. The enclosure is modelled in
+            The electronics work, but a loose breadboard is not a product. The enclosure is modeled in
             <strong>Fusion 360</strong> as a two-part clamshell: the display and touch panel mount to
             the lid, and every microcontroller, jumper and battery lives underneath, out of sight.
           </p>
           <p>
             The lid is on a <strong>hinge</strong> rather than screws, so the internals stay reachable —
             the wiring is still changing, and a case you have to destroy to open is a case you stop
-            opening. Design drivers were panel cut-outs sized to the bare PCB rather than the module,
-            a cable path that does not fight the hinge sweep, and clearance for the 18650 to be
-            swapped without pulling the loom.
+            opening. The cutouts are sized to the bare board rather than the module, the cable path
+            clears the hinge swing, and there is room to swap the 18650 without tearing the wiring
+            apart.
           </p>
           <div class="filerow">
             <span class="dot"></span>
