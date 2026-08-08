@@ -1,7 +1,7 @@
 # Cristian Mejia — Mechanical Engineering Portfolio
 
 A single-page, technical-drawing-inspired portfolio for my ME work at
-Stanford (intended B.S. Mechanical Engineering, minor in Aeronautics &
+Stanford (B.S. Mechanical Engineering, minor in Aeronautics &
 Astronautics, Class of 2029). Built as a lightweight static site:
 
 - **HTML + CSS + vanilla JS** (no build step)
