@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Motor controller enclosure — Cristian Mejia</title>
+  <meta name="description" content="A water-resistant, 3D-printed ASA enclosure for the motor controller on the Stanford Solar Car Project's Sunstruck, designed in Fusion 360: design log and connector layout." />
+  <meta name="theme-color" content="#1B2F0A" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css?v=8" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+
+  <header class="masthead wrap">
+    <a class="masthead__name" href="../index.html">Cristian Mejia <span>Mechanical engineering, Stanford</span></a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="../index.html#work">All work</a></li>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article aria-labelledby="title">
+
+      <header class="article-head wrap">
+        <div class="grid">
+          <h1 id="title">A sealed box for a solar car’s motor controller</h1>
+          <p class="standfirst">
+            A water-resistant enclosure for the motor controller on Sunstruck, the Stanford Solar
+            Car Project’s car for the 2027 World Solar Challenge. I designed it in Fusion 360 to be
+            3D printed in ASA, sealed with closed-cell EPDM foam, and bolted to the carbon fiber
+            chassis with M6 bolts into threaded inserts.
+          </p>
+          <p class="byline">
+            <span>Stanford Solar Car Project</span><span>Dynamics team</span><span>Fusion 360, ASA</span><span>Designed, ready to print</span>
+          </p>
+        </div>
+      </header>
+
+      <!-- Brief -->
+      <section class="sec wrap" aria-labelledby="brief">
+        <div class="grid">
+          <div class="sec__head"><h2 id="brief">The brief</h2></div>
+          <div class="sec__body prose">
+            <p>
+              The motor controller is what turns battery power into motion, so it can’t get wet
+              and it can’t shake loose. It needed a box that keeps water out, mounts solidly to
+              the carbon fiber chassis, and still lets every cable plug into the controller where
+              it sits.
+            </p>
+            <p>
+              It mounts by the wide flange at its back, bolted to the chassis with an M6 bolt in
+              each corner. A loop of foam on the flange, inside the bolts, seals it against the
+              carbon fiber. The top is slanted so water runs off instead of sitting on it, and the
+              controller sits inside with its connectors facing down.
+            </p>
+            <p>
+              It will be printed in ASA, an outdoor-grade printing plastic, and the openings for the
+              connectors come straight from the controller’s own CAD model instead of from a ruler.
+            </p>
+          </div>
+          <figure class="sec__aside fig">
+            <div class="photo">
+              <img src="../assets/motor-controller-enclosure/10-mounted.jpg" width="758" height="633" loading="lazy" decoding="async"
+                   alt="Fusion 360 model of the enclosure in its mounted orientation: a box standing out from a larger flat flange behind it, an M6 bolt at each flange corner, a top that slopes down away from the flange, and a row of connector openings in the bottom wall." />
+            </div>
+            <figcaption><span class="fig__no">Fig. 1.</span> The current model, oriented as mounted: the flange at the back bolts to the chassis at its corners, the top slopes so water runs off, and the connectors face down.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Design log -->
+      <section class="sec band" aria-labelledby="log">
+        <div class="wrap">
+          <div class="step">
+            <div class="grid">
+              <div class="sec__head"><h2 id="log">Design log</h2></div>
+              <div class="sec__body prose">
+                <h3>1. A box, then a step back</h3>
+                <p>
+                  I started with a solid box sized around the controller, with four square tabs on
+                  the outside for bolting it to the chassis. Then I took the tabs off again. The
+                  Shell tool hollows everything it touches, and I wanted to hollow the box without
+                  hollowing the tabs too.
+                </p>
+                <p>
+                  With the tabs gone, Shell gave me even walls on five sides and left the sixth
+                  open. The order of operations mattered more than any single feature.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+                <div class="photo">
+                  <img src="../assets/motor-controller-enclosure/01-shell.jpg" width="1000" height="484" loading="lazy" decoding="async"
+                       alt="Fusion 360 model of a plain rectangular box hollowed out with thin, even walls and one long side left open." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 2.</span> Hollowed with Shell: even walls, one side open.</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="grid">
+              <div class="sec__body prose">
+                <h3>2. A flange to seal against</h3>
+                <p>
+                  A thin wall edge is a bad place for a seal, so I added a flange around the open
+                  side to give it a flat face to press against the chassis. My first flange was too
+                  narrow. Once I thought about what actually has to fit on it, a strip of foam
+                  and a bolt hole at each corner, I made it wider.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+                <div class="photo">
+                  <img src="../assets/motor-controller-enclosure/02-flange.jpg" width="1600" height="949" loading="lazy" decoding="async"
+                       alt="The hollow box from its open side, now surrounded by a wide, flat flange." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 3.</span> The widened flange, with room for a gasket and bolts.</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="grid">
+              <div class="sec__body prose">
+                <h3>3. Putting the controller inside</h3>
+                <p>
+                  Before cutting anything, I looked at the controller’s connector face to see which
+                  openings the enclosure needed: five round connectors, one wide rectangular one,
+                  two small rectangular ones, and two small holes.
+                </p>
+                <p>
+                  Then I moved the controller’s model into the box. Dragging it around wasn’t
+                  precise enough, so I switched to Align and typed in distances. It ended up with
+                  its connector side against the wall that will point down once the box is
+                  installed.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+                <div class="photo">
+                  <img src="../assets/motor-controller-enclosure/04-controller-in-place.jpg" width="1445" height="768" loading="lazy" decoding="async"
+                       alt="The enclosure from its open side with the motor controller model sitting inside, its row of connectors against the lower long wall." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 4.</span> The controller in place, connectors toward the wall that faces down.</figcaption>
+              </figure>
+              <figure class="sec__wide fig">
+                <div class="photo">
+                  <img src="../assets/motor-controller-enclosure/03-connector-face.jpg" width="1600" height="501" loading="lazy" decoding="async"
+                       alt="Straight-on view of the motor controller’s long connector face: five large round connectors, a wide rectangular connector above two small keyed rectangular ones, and two small round holes." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 5.</span> The controller’s connector face, the starting point for every opening in the wall.</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="grid">
+              <div class="sec__body prose">
+                <h3>4. Cutting the connector openings</h3>
+                <p>
+                  Instead of measuring each connector, I projected the controller’s connector
+                  outlines straight onto the enclosure wall, so every opening lines up with its
+                  connector exactly. Then I offset each outline 0.5 mm outward, so the connectors
+                  fit through with clearance instead of rubbing on the edges.
+                </p>
+                <p>
+                  My first extrude added material instead of removing it. I flipped the direction
+                  and switched the operation to Cut, which gave clean holes through the wall.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+                <div class="photo">
+                  <img src="../assets/motor-controller-enclosure/06-cut-fixed.jpg" width="848" height="1202" loading="lazy" decoding="async"
+                       alt="The enclosure tilted on end, showing the connector wall with its round and rectangular openings now cut cleanly through." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 6.</span> The openings after switching the extrude to Cut.</figcaption>
+              </figure>
+              <figure class="sec__wide fig">
+                <div class="photo">
+                  <img src="../assets/motor-controller-enclosure/05-clearance-offsets.jpg" width="1600" height="478" loading="lazy" decoding="async"
+                       alt="Fusion 360 sketch on the connector wall: each projected connector outline has a slightly larger offset outline around it, with 0.50 mm offset dimensions." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 7.</span> Projected outlines with their 0.5 mm offsets, in the Fusion 360 sketch.</figcaption>
+              </figure>
+              <figure class="sec__wide fig">
+<!-- FIG:connector_wall -->
+<svg class="fig-art" viewBox="0 0 960 330" role="img" aria-labelledby="cwall-t cwall-d" fill="none" stroke="currentColor" stroke-width="1.1"><title id="cwall-t">Connector wall of the enclosure, seen from outside</title><desc id="cwall-d">Front view drawn in white hairlines of the long wall that faces down when the enclosure is installed. Phantom outlines show the motor controller’s connectors projected onto the wall: five round connectors, one wide rectangular connector and two small rectangular ones. Each is surrounded by a solid outline, the cutout, offset outward for clearance. Two small round holes sit between them. Centerlines cross each round connector, an arrow beside the wall points down, and leader lines label a connector outline and a cutout.</desc><rect x="40" y="70" width="860" height="116.7"/><circle class="ph" cx="196.2" cy="118.9" r="25.4"/><circle cx="196.2" cy="118.9" r="29.4"/><line class="cl" x1="158.8" y1="118.9" x2="233.6" y2="118.9"/><line class="cl" x1="196.2" y1="81.5" x2="196.2" y2="156.3"/><circle class="ph" cx="504.8" cy="118.9" r="25.4"/><circle cx="504.8" cy="118.9" r="29.4"/><line class="cl" x1="467.4" y1="118.9" x2="542.2" y2="118.9"/><line class="cl" x1="504.8" y1="81.5" x2="504.8" y2="156.3"/><circle class="ph" cx="643.1" cy="118.9" r="25.4"/><circle cx="643.1" cy="118.9" r="29.4"/><line class="cl" x1="605.7" y1="118.9" x2="680.5" y2="118.9"/><line class="cl" x1="643.1" y1="81.5" x2="643.1" y2="156.3"/><circle class="ph" cx="745.7" cy="118.9" r="25.4"/><circle cx="745.7" cy="118.9" r="29.4"/><line class="cl" x1="708.3" y1="118.9" x2="783.1" y2="118.9"/><line class="cl" x1="745.7" y1="81.5" x2="745.7" y2="156.3"/><circle class="ph" cx="814.4" cy="118.9" r="25.4"/><circle cx="814.4" cy="118.9" r="29.4"/><line class="cl" x1="777" y1="118.9" x2="851.8" y2="118.9"/><line class="cl" x1="814.4" y1="81.5" x2="814.4" y2="156.3"/><circle cx="253.6" cy="123.6" r="9.4"/><circle cx="391" cy="123.6" r="9.4"/><rect class="ph" x="279.9" y="97.3" width="86.6" height="29.2"/><rect x="275.9" y="93.3" width="94.6" height="37.2"/><rect class="ph" x="263.9" y="145.3" width="48" height="28.2"/><rect x="259.9" y="141.3" width="56" height="36.2"/><rect class="ph" x="334.5" y="145.3" width="46.1" height="28.2"/><rect x="330.5" y="141.3" width="54.1" height="36.2"/><line x1="934" y1="92" x2="934" y2="160"/><path d="M930.8 151.6 L934 160 L937.2 151.6"/><text class="word" x="934" y="190" text-anchor="middle" font-size="17">down</text><path d="M504.8 144.3 L528.8 254 L548.8 254"/><circle cx="504.8" cy="144.3" r="2.2"/><text class="word" x="555.8" y="259.9" font-size="17">connector outline, projected from the controller</text><text class="key" x="555.8" y="269.7" font-size="43.6">a</text><path d="M196.2 148.3 L216.2 296 L236.2 296"/><circle cx="196.2" cy="148.3" r="2.2"/><text class="word" x="243.2" y="301.9" font-size="17">cutout, offset 0.5 mm all round</text><text class="key" x="243.2" y="311.7" font-size="43.6">b</text></svg>
+<!-- /FIG:connector_wall -->
+                <figcaption>
+                  <span class="fig__no">Fig. 8.</span>
+                  The connector wall from outside. Phantom lines are the connectors projected from the
+                  controller; solid lines are the cutouts. The offset is drawn larger than true scale so it shows.
+                  <span class="fig__key">a, connector outline, projected from the controller; b, cutout, offset 0.5 mm all round.</span>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="grid">
+              <div class="sec__body prose">
+                <h3>5. Bolting it down</h3>
+                <p>
+                  Each flange corner got a 6.7 mm clearance hole for an M6 bolt. I pulled the bolts
+                  in from the McMaster-Carr library rather than modeling them. The first one came in
+                  facing the wrong way, so I flipped it. With all four placed, the threads run
+                  through the flange toward the threaded inserts in the chassis.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+                <div class="photo">
+                  <img src="../assets/motor-controller-enclosure/07-bolts.jpg" width="514" height="1148" loading="lazy" decoding="async"
+                       alt="Side view of the enclosure standing on end, with M6 bolts through the flange at top and bottom and their threads sticking out toward where the chassis would be." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 9.</span> All four M6 bolts in place, threads toward the chassis.</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="grid">
+              <div class="sec__body prose">
+                <h3>6. The gasket</h3>
+                <p>
+                  Last, I sketched on the flange face to mark where the foam would go, then
+                  modeled the closed-cell EPDM foam tape as a loop around the opening. It sits
+                  inside the bolts, which keeps the bolt holes outside the sealed area instead of
+                  giving water a way in.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+                <div class="photo">
+                  <img src="../assets/motor-controller-enclosure/08-gasket.jpg" width="471" height="755" loading="lazy" decoding="async"
+                       alt="Close-up of one flange corner: the foam gasket outline runs around the opening just inside a corner bolt." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 10.</span> One corner: the gasket runs inside the bolt.</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="grid">
+              <div class="sec__body prose">
+                <h3>7. A top that sheds water</h3>
+                <p>
+                  The last change was the top. A flat top would give water somewhere to sit, so I
+                  slanted it down and away from the flange, and water now runs straight off. With the
+                  connectors on the bottom wall facing down, they stay out of the way of whatever
+                  runs off the top.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Learned -->
+      <section class="sec wrap" aria-labelledby="learned">
+          <div class="grid">
+            <div class="sec__head"><h2 id="learned">What I’d tell myself next time</h2></div>
+            <div class="sec__body prose">
+              <h3>Order matters</h3>
+              <p>
+                Shelling before adding the tabs and flange saved me from undoing work. In CAD, the
+                order you build features in is part of the design.
+              </p>
+              <h3>Reference the real part</h3>
+              <p>
+                Projecting the connectors from the controller’s model beat measuring them. If the
+                controller changes, the openings can follow it.
+              </p>
+              <h3>Check what a feature actually did</h3>
+              <p>
+                The extrude that added material and the bolt that came in backwards were both easy
+                fixes, but only because I looked before moving on.
+              </p>
+              <p class="byline">Next step: print it in ASA and fit it to the chassis.</p>
+            </div>
+          </div>
+      </section>
+    </article>
+
+    <hr class="rule wrap-rule" />
+
+    <nav class="nextnav wrap" aria-label="Next project">
+      <div class="grid">
+        <p><span class="byline">Next project</span><br /><a href="task-manager.html">Automated task management system</a></p>
+      </div>
+    </nav>
+  </main>
+
+  <footer class="footer band">
+    <div class="wrap">
+      <p class="small">© 2026 Cristian Mejia</p>
+      <p class="small">Text, drawings and photographs are my own unless a caption says otherwise.</p>
+    </div>
+  </footer>
+</body>
+</html>

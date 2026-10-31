@@ -3,498 +3,309 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Small-scale wind turbine for CEE 34N — a 3D-printed airfoil rotor that would not self-start, the diagnosis, and the rebuild as a high-solidity drag rotor driving a hand-wound generator." />
-  <title>Wind Turbine — From Airfoil to Drag — Cristian Mejia</title>
+  <title>A wind turbine that had to lift and light — Cristian Mejia</title>
+  <meta name="description" content="A small wind turbine for CEE 34N: a 3D-printed airfoil rotor that would not self-start, why, and the rebuild as a high-solidity drag rotor driving a hand-wound six-magnet generator." />
+  <meta name="theme-color" content="#1B2F0A" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css?v=6" />
-  <link rel="stylesheet" href="../project.css?v=6" />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css?v=8" />
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
 
-  <!-- Crosshair cursor -->
-  <div class="cursor" id="cursor" aria-hidden="true">
-    <div class="cursor__h"></div>
-    <div class="cursor__v"></div>
-    <div class="cursor__dot"></div>
-    <div class="cursor__label" id="cursorLabel">X: 000  Y: 000</div>
-  </div>
 
-  <!-- Blueprint background -->
-  <div class="blueprint" aria-hidden="true"></div>
-
-  <!-- Corner ticks / registration marks -->
-  <svg class="ticks ticks--tl" viewBox="0 0 60 60" aria-hidden="true"><path d="M0 0 H30 M0 0 V30" /></svg>
-  <svg class="ticks ticks--tr" viewBox="0 0 60 60" aria-hidden="true"><path d="M60 0 H30 M60 0 V30" /></svg>
-  <svg class="ticks ticks--bl" viewBox="0 0 60 60" aria-hidden="true"><path d="M0 60 H30 M0 60 V30" /></svg>
-  <svg class="ticks ticks--br" viewBox="0 0 60 60" aria-hidden="true"><path d="M60 60 H30 M60 60 V30" /></svg>
-
-  <!-- Nav -->
-  <header class="nav">
-    <a class="nav__brand" href="../index.html">
-      <svg class="nav__logo" viewBox="0 0 40 40" width="22" height="22" aria-hidden="true">
-        <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="1.2" />
-        <circle cx="20" cy="20" r="3" fill="currentColor" />
-        <path d="M20 4 V10 M20 30 V36 M4 20 H10 M30 20 H36" stroke="currentColor" stroke-width="1.2" />
-      </svg>
-      <span>C.MEJIA<span class="nav__brand-dim">/ME</span></span>
-    </a>
-    <a class="nav__back" href="../index.html#work">
-      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
-      Back to index
-    </a>
-    <div class="nav__meta">
-      <span class="dot"></span>
-      <span id="clock">00:00:00 UTC</span>
-    </div>
+  <header class="masthead wrap">
+    <a class="masthead__name" href="../index.html">Cristian Mejia <span>Mechanical engineering, Stanford</span></a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="../index.html#work">All work</a></li>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <main id="top">
+  <main id="main">
+    <article aria-labelledby="title">
 
-    <!-- ============ Sheet header ============ -->
-    <section class="proj">
-      <div class="proj__tag">
-        <strong>DWG CM-003</strong>
-        <span class="sep">·</span>
-        CEE 34N · WIND ENERGY EXPLAINED
-        <span class="sep">·</span>
-        BUILT
-      </div>
-
-      <h1 class="proj__title">Wind Turbine: From <em>Airfoil</em> to Drag</h1>
-
-      <p class="proj__sub">
-        A turbine built from scratch to do two things at once: raise a weight on a string and
-        light an LED. We started by copying a full-size three-blade turbine — it wouldn't spin at
-        all, and working out why pushed us toward a completely different kind of rotor.
-      </p>
-
-      <dl class="proj__meta">
-        <div><dt>MY ROLE</dt><dd>Airfoil blade design · 3D printing · assembly</dd></div>
-        <div><dt>TEAM</dt><dd>3 — Josh, Cristian, Eshan</dd></div>
-        <div><dt>OUTPUT</dt><dd>Lifts a weight · lights an LED</dd></div>
-        <div><dt>STATUS</dt><dd>Built &amp; demonstrated</dd></div>
-      </dl>
-    </section>
-
-    <!-- ============ Design intent ============ -->
-    <div class="divider">
-      <span class="divider__dim">SHEET</span>
-      <span class="divider__num">A</span>
-      <span class="divider__title">DESIGN INTENT</span>
-      <span class="divider__dim divider__right">CM-003</span>
-    </div>
-
-    <section class="proj__intro">
-      <div>
-        <h2>Two jobs that pull in opposite directions.</h2>
-        <div class="note">
-          <span>THE CENTRAL TENSION</span>
-          <p>“Lifting a weight wants torque. Spinning a generator wants RPM. One rotor had to do both.”</p>
-        </div>
-      </div>
-      <div>
-        <p>
-          The brief was to build a working turbine from scratch with two deliverables:
-          <strong>raise a cup of coins on a string</strong>, and <strong>light an LED</strong>.
-          Those sound like one problem but they are two, and they disagree with each other.
-        </p>
-        <p>
-          Lifting a mass is a <strong>torque</strong> problem — you need force at the shaft, and you
-          can afford to turn slowly. Lighting an LED from a generator is an <strong>RPM</strong>
-          problem — induced voltage depends on how fast the magnetic field changes, so you need
-          speed. A rotor set up for one of those is usually bad at the other.
-        </p>
-        <p>
-          We started the way most people would: copying the three-blade turbines you see on a
-          ridgeline. That turned out to be the most useful mistake of the project, because the
-          reason it failed is what actually matters for a rotor this small.
-        </p>
-      </div>
-    </section>
-
-    <!-- ============ Build log ============ -->
-    <div class="divider">
-      <span class="divider__dim">SHEET</span>
-      <span class="divider__num">B</span>
-      <span class="divider__title">BUILD LOG</span>
-      <span class="divider__dim divider__right">04 STAGES</span>
-    </div>
-
-    <section class="log">
-
-      <!-- Stage 01 -->
-      <article class="phase">
-        <div class="phase__rail"><span class="phase__no">01</span></div>
-        <div class="phase__body">
-          <span class="phase__k">STAGE 01 · AIRFOIL ROTOR</span>
-          <h3>Copy a real turbine</h3>
-          <p>
-            I modeled and printed a three-blade <strong>airfoil rotor</strong> — thin, twisted,
-            tapered blades on a printed spherical hub, scaled down from a full-size machine. On
-            paper that is the right answer: real turbines use lift-driven airfoils because they are
-            far more efficient.
+      <header class="article-head wrap">
+        <div class="grid">
+          <h1 id="title">A wind turbine that had to lift and light</h1>
+          <p class="standfirst">
+            A turbine built from scratch to do two things at once: raise a weight on a string and
+            light an LED. We started by copying a full-size three-blade turbine. It wouldn’t spin
+            at all, and working out why pushed us toward a completely different kind of rotor.
           </p>
-          <p>
-            Put in front of the wind, it <strong>would not start turning.</strong> Not slowly —
-            at all. A rotor that does not move produces no torque and no voltage, so both
-            deliverables were dead at the same time.
+          <p class="byline">
+            <span>CEE 34N, Wind Energy Explained</span><span>Team of three: Josh, Cristian and Eshan</span><span>My part: airfoil blade design, 3D printing, assembly</span><span>Built and demonstrated</span>
           </p>
-          <ul class="chips">
-            <li>3 BLADES</li>
-            <li>3D-PRINTED PLA</li>
-            <li>LIFT-DRIVEN</li>
-            <li>DID NOT SELF-START</li>
-          </ul>
         </div>
-        <div class="phase__plate">
-          <figure class="plate">
-            <div class="plate__frame">
-              <div class="shot">
-                <img src="../assets/wind-turbine/01-airfoil-rotor.jpg" width="1200" height="1600"
-                     alt="A 3D-printed three-blade airfoil rotor lying on a workbench: two black blades and one white blade, thin and twisted, joined at a white spherical hub." loading="lazy" decoding="async" />
-              </div>
-            </div>
-            <figcaption class="plate__cap">
-              <span class="k">PLATE 01</span>
-              <strong>The rotor that wouldn't spin</strong>
-              <em>Scaled-down airfoil geometry, printed in PLA. Correct in principle, unable to start itself in practice.</em>
-            </figcaption>
-          </figure>
-        </div>
-      </article>
+      </header>
 
-      <!-- Stage 02 -->
-      <article class="phase">
-        <div class="phase__rail"><span class="phase__no">02</span></div>
-        <div class="phase__body">
-          <span class="phase__k">STAGE 02 · DIAGNOSIS</span>
-          <h3>It was solidity, not blade shape</h3>
-          <p>
-            The problem was not a bad airfoil — there was barely any blade there. Three thin blades
-            cover very little of the disc the rotor sweeps. That ratio of blade area to swept area
-            is <strong>solidity</strong>, and ours was too low to catch enough air to get itself
-            turning.
-          </p>
-          <p>
-            Full-size turbines can run with low solidity because they are huge, they sit in strong
-            steady wind, and they do not have to start themselves. At desk scale, in gentle indoor
-            air, <strong>none of that applies.</strong>
-          </p>
-          <p>
-            Watching a high-solidity drag rotor actually work made the fix obvious: stop chasing
-            efficiency and get starting torque from surface area instead.
-          </p>
-          <ul class="chips">
-            <li>LOW SOLIDITY</li>
-            <li>NO STARTING TORQUE</li>
-            <li>SCALE MISMATCH</li>
-          </ul>
-        </div>
-        <div class="phase__plate">
-          <figure class="plate plate--ref">
-            <div class="plate__frame">
-              <div class="shot">
-                <img src="../assets/wind-turbine/02-reference-drag-rotor.jpg" width="1200" height="1600"
-                     alt="A reference drag-type rotor built by another team: six wide paper-bag sails taped to dowel spokes on a central hub, mounted on a stand in a lab." loading="lazy" decoding="async" />
-              </div>
-            </div>
-            <figcaption class="plate__cap">
-              <span class="k">PLATE 02 · REFERENCE</span>
-              <strong>Not our build</strong>
-              <em>Another team's drag rotor. Wide sails, high solidity, self-starting — the example that redirected our design.</em>
-            </figcaption>
-          </figure>
-        </div>
-      </article>
-
-      <!-- Stage 03 -->
-      <article class="phase">
-        <div class="phase__rail"><span class="phase__no">03</span></div>
-        <div class="phase__body">
-          <span class="phase__k">STAGE 03 · DRAG ROTOR &amp; ASSEMBLY</span>
-          <h3>Rebuild around surface area</h3>
-          <p>
-            The second rotor dropped the airfoil entirely. Wide <strong>paper-bag sails</strong>
-            on dowel spokes give the wind a large, blunt area to push against — drag-driven instead
-            of lift-driven. It is the less elegant machine and the far more effective one: it
-            <strong>self-starts in gentle air.</strong>
-          </p>
-          <p>
-            Everything else hangs off that shaft. The rotor turns about a printed hub at the top of
-            the tower, the generator sits right behind it, and the two deliverables split off the
-            same spin — a string and cup on the mechanical side, the coils and LED on the electrical
-            side.
-          </p>
-          <ul class="chips">
-            <li>DRAG-DRIVEN</li>
-            <li>HIGH SOLIDITY</li>
-            <li>SELF-STARTING</li>
-            <li>LIFTS THE CUP</li>
-          </ul>
-        </div>
-        <div class="phase__plate">
-          <figure class="plate">
-            <div class="plate__frame">
-              <div class="shot">
-                <img src="../assets/wind-turbine/03-assembly.jpg" width="1200" height="1600"
-                     alt="The completed turbine on its tower: paper-bag sails on a printed hub, the coil-wound generator box mounted on a platform, and a white cup hanging on a string beside the LED." loading="lazy" decoding="async" />
-              </div>
-            </div>
-            <figcaption class="plate__cap">
-              <span class="k">PLATE 03</span>
-              <strong>Complete assembly</strong>
-              <em>Sails, hub, generator and the lifting cup on one tower — both outputs running off a single rotor.</em>
-            </figcaption>
-          </figure>
-        </div>
-      </article>
-
-      <!-- Stage 04 -->
-      <article class="phase">
-        <div class="phase__rail"><span class="phase__no">04</span></div>
-        <div class="phase__body">
-          <span class="phase__k">STAGE 04 · GENERATOR</span>
-          <h3>Six magnets on a printed shaft</h3>
-          <p>
-            The generator is hand-built. A <strong>3D-printed PLA shaft</strong> carries the magnets
-            and spins inside a box wound with <strong>copper wire</strong>. As the magnets sweep
-            past, their moving field pushes electrons through the windings and the LED lights.
-          </p>
-          <p>
-            Instead of the usual four magnets, we used <strong>six</strong>. More poles means more
-            flux reversals per turn of the shaft, so the current comes more often and more smoothly —
-            which matters when your rotor is a slow-turning drag design and RPM is what you are
-            short on.
-          </p>
-          <ul class="chips">
-            <li>6 MAGNETS</li>
-            <li>PRINTED PLA SHAFT</li>
-            <li>HAND-WOUND COILS</li>
-            <li>LIGHTS THE LED</li>
-          </ul>
-        </div>
-        <div class="phase__plate">
-          <figure class="plate">
-            <div class="plate__frame">
-              <div class="shot">
-                <img src="../assets/wind-turbine/04-generator.jpg" width="1200" height="1600"
-                     alt="The generator close up: a box wound with red enameled copper wire, the magnet rotor and its shaft visible inside, with a red LED wired to the coil leads." loading="lazy" decoding="async" />
-              </div>
-            </div>
-            <figcaption class="plate__cap">
-              <span class="k">PLATE 04</span>
-              <strong>Hand-wound generator</strong>
-              <em>Red enameled copper windings on the box, six-magnet rotor on a printed shaft inside, LED on the coil leads.</em>
-            </figcaption>
-          </figure>
-        </div>
-      </article>
-
-    </section>
-
-    <!-- ============ Power path ============ -->
-    <div class="divider">
-      <span class="divider__dim">SHEET</span>
-      <span class="divider__num">C</span>
-      <span class="divider__title">POWER PATH</span>
-      <span class="divider__dim divider__right">WIND → WORK</span>
-    </div>
-
-    <section class="arch">
-      <div class="arch__head">
-        <h2>One rotor, then the path forks</h2>
-        <p>
-          Wind reaches a single shaft, and from there the two deliverables are served by completely
-          different physics — one purely mechanical, one electromagnetic. Both are limited by the
-          same thing: how fast that shaft turns.
-        </p>
-      </div>
-
-      <div class="arch__sheet">
-        <svg class="chain" viewBox="0 0 720 278" role="img"
-             aria-label="Diagram: wind pushes the paper sails, which turn the hub and rotor, which turns the shaft. The path then forks — mechanically to a spool, string and lifting cup, and electrically to the six-magnet rotor, the copper coils and the LED.">
-
-          <!-- ---- Input chain ---- -->
-          <text class="t t--key" x="20" y="34">INPUT</text>
-          <rect class="group" x="20" y="44" width="196" height="152" />
-
-          <rect class="box" x="34" y="56" width="168" height="30" />
-          <text class="t" x="118" y="75" text-anchor="middle">WIND</text>
-
-          <line class="flow" x1="118" y1="86" x2="118" y2="96" />
-          <path class="head" d="M115 96 L121 96 L118 100 Z" />
-
-          <rect class="box" x="34" y="100" width="168" height="30" />
-          <text class="t" x="118" y="119" text-anchor="middle">PAPER SAILS</text>
-
-          <line class="flow" x1="118" y1="130" x2="118" y2="140" />
-          <path class="head" d="M115 140 L121 140 L118 144 Z" />
-
-          <rect class="box" x="34" y="144" width="168" height="30" />
-          <text class="t" x="118" y="163" text-anchor="middle">HUB · ROTOR</text>
-
-          <!-- ---- Shaft ---- -->
-          <line class="flow" x1="216" y1="159" x2="252" y2="159" />
-          <path class="head" d="M252 156 L252 162 L258 159 Z" />
-
-          <rect class="box" x="260" y="144" width="150" height="30" />
-          <text class="t" x="335" y="163" text-anchor="middle">SHAFT</text>
-          <text class="t t--key" x="260" y="192">ONE SHAFT</text>
-
-          <!-- fork -->
-          <line class="flow" x1="410" y1="159" x2="440" y2="159" />
-          <line class="flow" x1="440" y1="159" x2="440" y2="75" />
-          <line class="flow" x1="440" y1="159" x2="440" y2="215" />
-          <line class="flow" x1="440" y1="75" x2="486" y2="75" />
-          <path class="head" d="M486 72 L486 78 L492 75 Z" />
-          <line class="flow" x1="440" y1="215" x2="486" y2="215" />
-          <path class="head" d="M486 212 L486 218 L492 215 Z" />
-
-          <!-- ---- Electrical branch ---- -->
-          <text class="t t--key" x="494" y="34">ELECTRICAL · NEEDS RPM</text>
-          <rect class="group" x="494" y="44" width="206" height="76" />
-          <rect class="box" x="506" y="60" width="182" height="30" />
-          <text class="t" x="597" y="79" text-anchor="middle">6 MAGNETS → COILS</text>
-          <line class="flow" x1="597" y1="90" x2="597" y2="100" />
-          <path class="head" d="M594 100 L600 100 L597 104 Z" />
-          <text class="t t--dim" x="597" y="115" text-anchor="middle">LED LIGHTS</text>
-
-          <!-- ---- Mechanical branch ---- -->
-          <text class="t t--key" x="494" y="180">MECHANICAL · NEEDS TORQUE</text>
-          <rect class="group" x="494" y="190" width="206" height="76" />
-          <rect class="box" x="506" y="200" width="182" height="30" />
-          <text class="t" x="597" y="219" text-anchor="middle">SPOOL → STRING</text>
-          <line class="flow" x1="597" y1="230" x2="597" y2="240" />
-          <path class="head" d="M594 240 L600 240 L597 244 Z" />
-          <text class="t t--dim" x="597" y="256" text-anchor="middle">CUP RISES</text>
-        </svg>
-      </div>
-    </section>
-
-    <!-- ============ Findings ============ -->
-    <div class="divider">
-      <span class="divider__dim">SHEET</span>
-      <span class="divider__num">D</span>
-      <span class="divider__title">WHAT THE BUILD TAUGHT US</span>
-      <span class="divider__dim divider__right">03 FINDINGS</span>
-    </div>
-
-    <section class="stack">
-      <div class="stack__head">
-        <h2>Findings</h2>
-        <p>The useful conclusions all came from the version that didn't work.</p>
-      </div>
-
-      <div class="stack__grid">
-
-        <div class="sub">
-          <span>01 · SOLIDITY BEAT SHAPE</span>
-          <ul>
-            <li>
-              <strong>Area decided everything</strong>
-              <em>Whether the rotor turned at all came down to how much of the swept disc was covered — not how refined the blade profile was. Our careful airfoil lost to taped paper bags.</em>
-            </li>
-          </ul>
-        </div>
-
-        <div class="sub">
-          <span>02 · SCALE CHANGES THE ANSWER</span>
-          <ul>
-            <li>
-              <strong>Copying doesn't transfer</strong>
-              <em>Taking geometry from a machine a hundred times larger brought assumptions that did not hold here — strong steady wind, and never having to self-start.</em>
-            </li>
-          </ul>
-        </div>
-
-        <div class="sub">
-          <span>03 · TORQUE vs RPM</span>
-          <ul>
-            <li>
-              <strong>We were short on speed</strong>
-              <em>The drag rotor lifts the weight fine but turns too slowly to drive the LED hard. A gearbox between the shaft and the generator is the obvious next step — trade spare torque for the RPM we lacked.</em>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ============ Team ============ -->
-    <section class="cadblock">
-      <div class="cadblock__inner">
-        <div class="cadblock__text">
-          <h2>Built by three of us</h2>
-          <p>
-            A CEE 34N team project. Work was split across the rotor, the generator and the structure,
-            and all three of us were on final assembly.
-          </p>
-          <div class="filerow">
-            <span class="dot"></span>
-            <strong>CM-003</strong> · CEE 34N · Wind Energy Explained
+      <!-- Intent -->
+      <section class="sec wrap" aria-labelledby="intent">
+        <div class="grid">
+          <div class="sec__head"><h2 id="intent">Two jobs that pull in opposite directions</h2></div>
+          <div class="sec__body prose">
+            <p>
+              The brief was to build a working turbine from scratch with two deliverables: raise a
+              cup of coins on a string, and light an LED. Those sound like one problem, but they’re
+              two, and they disagree with each other.
+            </p>
+            <p>
+              Lifting a mass is a torque problem — you need force at the shaft, and you can afford
+              to turn slowly. Lighting an LED from a generator is an RPM problem — induced voltage
+              depends on how fast the magnetic field changes, so you need speed. A rotor set up for
+              one of those is usually bad at the other.
+            </p>
+            <p>
+              We started the way most people would: copying the three-blade turbines you see on a
+              ridgeline. That turned out to be the most useful mistake of the project, because the
+              reason it failed is what actually matters for a rotor this small.
+            </p>
           </div>
+          <figure class="sec__aside fig">
+            <div class="photo">
+              <img src="../assets/wind-turbine/03-assembly.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+                   alt="The finished turbine on its tower: paper-bag sails on a printed hub, the coil-wound generator box on a platform, and a white cup hanging on a string beside the LED." />
+            </div>
+            <figcaption><span class="fig__no">Fig. 1.</span> The finished turbine, with both outputs running off one rotor.</figcaption>
+          </figure>
         </div>
+      </section>
 
-        <div class="cadblock__art">
-          <div class="stack__grid" style="grid-template-columns: 1fr; border: 1px solid var(--line);">
-            <div class="sub">
-              <span>JOSH</span>
-              <ul><li><em>Foundation and shaft, coiling the generator, assembly.</em></li></ul>
+      <!-- Build log -->
+      <section class="sec band" aria-labelledby="log">
+        <div class="wrap">
+          <div class="step">
+            <div class="grid">
+              <div class="sec__head"><h2 id="log">Build log</h2></div>
+              <div class="sec__body prose">
+                <h3>1. Copy a real turbine</h3>
+                <p>
+                  I modeled and printed a three-blade airfoil rotor: thin, twisted, tapered blades
+                  on a printed spherical hub, scaled down from a full-size machine. On paper that
+                  is the right answer, since real turbines use lift-driven airfoils because they
+                  are far more efficient.
+                </p>
+                <p>
+                  Put in front of the wind, it would not start turning. Not slowly — at all. A rotor
+                  that doesn’t move produces no torque and no voltage, so both deliverables were dead
+                  at the same time.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+                <div class="photo">
+                  <img src="../assets/wind-turbine/01-airfoil-rotor.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+                       alt="The 3D-printed three-blade airfoil rotor lying on a workbench: two black blades and one white blade, thin and twisted, joined at a white spherical hub." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 2.</span> The airfoil rotor I printed. Correct in principle, unable to start itself in practice.</figcaption>
+              </figure>
             </div>
-            <div class="sub">
-              <span>CRISTIAN</span>
-              <ul><li><em>Airfoil blade design, 3D printing, assembly.</em></li></ul>
+          </div>
+
+          <div class="step">
+            <div class="grid">
+              <div class="sec__body prose">
+                <h3>2. It was solidity, not blade shape</h3>
+                <p>
+                  The problem wasn’t a bad airfoil — there was barely any blade there. Three thin
+                  blades cover very little of the disc the rotor sweeps. That ratio of blade area to
+                  swept area is called solidity, and ours was too low to catch enough air to get
+                  itself turning.
+                </p>
+                <p>
+                  Full-size turbines can run with low solidity because they’re huge and they sit in
+                  strong, steady wind. At desk scale, in gentle indoor air, none of that applies.
+                  Watching another team’s high-solidity drag rotor actually work made the fix
+                  obvious: stop chasing efficiency and get starting torque from surface area instead.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+                <div class="photo">
+                  <img src="../assets/wind-turbine/02-reference-drag-rotor.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+                       alt="A drag-type rotor built by another team: wide paper-bag sails taped to dowel spokes on a central hub, mounted on a stand in a lab." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 3.</span> Not our build: another team’s drag rotor, the example that changed our design.</figcaption>
+              </figure>
+              <figure class="sec__wide fig">
+<!-- FIG:solidity -->
+<svg class="fig-art" viewBox="0 0 960 470" role="img" aria-labelledby="sol-t sol-d" fill="none" stroke="currentColor" stroke-width="1.1"><title id="sol-t">Two rotors over the same swept disc</title><desc id="sol-d">Two schematic front views side by side, each inside a dash-dot circle marking the swept disc, with centerlines crossing at the hub. Left, labelled a: three thin tapered airfoil blades leave most of the disc open. Right, labelled b: wide paper sails on dowel spokes cover much more of it.</desc><circle class="cl" cx="250" cy="236" r="180"/><line class="cl" x1="48" y1="236" x2="452" y2="236"/><line class="cl" x1="250" y1="34" x2="250" y2="438"/><text class="up" x="60" y="54" font-size="24">(a)</text><circle class="cl" cx="710" cy="236" r="180"/><line class="cl" x1="508" y1="236" x2="912" y2="236"/><line class="cl" x1="710" y1="34" x2="710" y2="438"/><text class="up" x="520" y="54" font-size="24">(b)</text><path d="M -9 -17 C -13 -80, -8 -140, -3 -176 L 3 -176 C 7 -140, 11 -80, 9 -17 Z" transform="translate(250 236) rotate(0)"/><path d="M -9 -17 C -13 -80, -8 -140, -3 -176 L 3 -176 C 7 -140, 11 -80, 9 -17 Z" transform="translate(250 236) rotate(120)"/><path d="M -9 -17 C -13 -80, -8 -140, -3 -176 L 3 -176 C 7 -140, 11 -80, 9 -17 Z" transform="translate(250 236) rotate(240)"/><circle cx="250" cy="236" r="17"/><path d="M -6 -21 L -50 -168 Q 0 -183 50 -168 L 6 -21 Z" transform="translate(710 236) rotate(0)"/><path d="M 0 -21 L 0 -176" transform="translate(710 236) rotate(0)"/><path d="M -6 -21 L -50 -168 Q 0 -183 50 -168 L 6 -21 Z" transform="translate(710 236) rotate(60)"/><path d="M 0 -21 L 0 -176" transform="translate(710 236) rotate(60)"/><path d="M -6 -21 L -50 -168 Q 0 -183 50 -168 L 6 -21 Z" transform="translate(710 236) rotate(120)"/><path d="M 0 -21 L 0 -176" transform="translate(710 236) rotate(120)"/><path d="M -6 -21 L -50 -168 Q 0 -183 50 -168 L 6 -21 Z" transform="translate(710 236) rotate(180)"/><path d="M 0 -21 L 0 -176" transform="translate(710 236) rotate(180)"/><path d="M -6 -21 L -50 -168 Q 0 -183 50 -168 L 6 -21 Z" transform="translate(710 236) rotate(240)"/><path d="M 0 -21 L 0 -176" transform="translate(710 236) rotate(240)"/><path d="M -6 -21 L -50 -168 Q 0 -183 50 -168 L 6 -21 Z" transform="translate(710 236) rotate(300)"/><path d="M 0 -21 L 0 -176" transform="translate(710 236) rotate(300)"/><circle cx="710" cy="236" r="21"/><path d="M391.8 125.2 L468 70"/><circle cx="391.8" cy="125.2" r="2.2"/><text class="word" x="475" y="75.6" font-size="16">swept disc</text><text class="key" x="475" y="85.7" font-size="43.6"></text><path d="M142.1 183.4 L40 420"/><circle cx="142.1" cy="183.4" r="2.2"/><text class="word" x="47" y="425.6" font-size="16">thin airfoil blade</text><text class="key" x="47" y="435.7" font-size="43.6"></text><path d="M822 193 L930 60"/><circle cx="822" cy="193" r="2.2"/><text class="word" x="923" y="65.6" text-anchor="end" font-size="16">paper sail</text><text class="key" x="923" y="75.7" text-anchor="end" font-size="43.6"></text></svg>
+<!-- /FIG:solidity -->
+                <figcaption>
+                  <span class="fig__no">Fig. 4.</span>
+                  The same swept disc, covered two ways: (a) three thin airfoil blades leave most of
+                  it open; (b) wide sails cover much more of it. Schematic; the sail count is illustrative.
+                </figcaption>
+              </figure>
             </div>
-            <div class="sub">
-              <span>ESHAN</span>
-              <ul><li><em>Generator design, blade design, assembly.</em></li></ul>
+          </div>
+
+          <div class="step">
+            <div class="grid">
+              <div class="sec__body prose">
+                <h3>3. Rebuild around surface area</h3>
+                <p>
+                  The second rotor dropped the airfoil entirely. Wide paper-bag sails on dowel spokes
+                  give the wind a large, blunt area to push against — drag-driven instead of
+                  lift-driven. It is the less elegant machine and the far more effective one: it
+                  starts on its own in gentle air.
+                </p>
+                <p>
+                  Everything else hangs off that shaft. The rotor turns about a printed hub at the top
+                  of the tower, the generator sits right behind it, and the two deliverables split off
+                  the same spin — a string and cup on the mechanical side, the coils and LED on the
+                  electrical side.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+<!-- FIG:elevation -->
+<svg class="fig-art" viewBox="0 0 720 900" role="img" aria-labelledby="elev-t elev-d" fill="none" stroke="currentColor" stroke-width="1.1"><title id="elev-t">Side elevation of the wind turbine</title><desc id="elev-d">Schematic side view drawn in white hairlines. Wind arrows come from the left toward a printed nose-cone hub; two paper sails are seen edge-on above and below it with a vertical dimension for the rotor diameter. A horizontal dash-dot centerline marks the shaft, which runs back into the generator box, drawn with vertical lines for the copper winding, sitting on a platform at the top of a PVC tower. The shaft continues out the back as a spool with cord wound on it; a string hangs down to a cup, with a small arrow showing that the cup rises. An LED hangs off the front of the platform. The tower stands in a weighted base on a hatched ground line, and a second dimension gives the hub height.</desc><line x1="220" y1="840" x2="600" y2="840"/><line x1="226" y1="840" x2="217" y2="849"/><line x1="240" y1="840" x2="231" y2="849"/><line x1="254" y1="840" x2="245" y2="849"/><line x1="268" y1="840" x2="259" y2="849"/><line x1="282" y1="840" x2="273" y2="849"/><line x1="296" y1="840" x2="287" y2="849"/><line x1="310" y1="840" x2="301" y2="849"/><line x1="324" y1="840" x2="315" y2="849"/><line x1="338" y1="840" x2="329" y2="849"/><line x1="352" y1="840" x2="343" y2="849"/><line x1="366" y1="840" x2="357" y2="849"/><line x1="380" y1="840" x2="371" y2="849"/><line x1="394" y1="840" x2="385" y2="849"/><line x1="408" y1="840" x2="399" y2="849"/><line x1="422" y1="840" x2="413" y2="849"/><line x1="436" y1="840" x2="427" y2="849"/><line x1="450" y1="840" x2="441" y2="849"/><line x1="464" y1="840" x2="455" y2="849"/><line x1="478" y1="840" x2="469" y2="849"/><line x1="492" y1="840" x2="483" y2="849"/><line x1="506" y1="840" x2="497" y2="849"/><line x1="520" y1="840" x2="511" y2="849"/><line x1="534" y1="840" x2="525" y2="849"/><line x1="548" y1="840" x2="539" y2="849"/><line x1="562" y1="840" x2="553" y2="849"/><line x1="576" y1="840" x2="567" y2="849"/><line x1="590" y1="840" x2="581" y2="849"/><path d="M306 740 L454 740 L446 840 L314 840 Z"/><line x1="306" y1="756" x2="454" y2="756"/><line x1="370" y1="262" x2="370" y2="740"/><line x1="390" y1="262" x2="390" y2="740"/><line class="cl" x1="380" y1="236" x2="380" y2="856"/><line x1="370" y1="430" x2="390" y2="430"/><line x1="370" y1="438" x2="390" y2="438"/><rect x="330" y="250" width="196" height="12"/><rect x="392" y="176" width="112" height="74"/><line x1="404" y1="176" x2="404" y2="250"/><line x1="409" y1="176" x2="409" y2="250"/><line x1="414" y1="176" x2="414" y2="250"/><line x1="419" y1="176" x2="419" y2="250"/><line x1="424" y1="176" x2="424" y2="250"/><line x1="429" y1="176" x2="429" y2="250"/><line x1="434" y1="176" x2="434" y2="250"/><line x1="439" y1="176" x2="439" y2="250"/><line x1="444" y1="176" x2="444" y2="250"/><line x1="449" y1="176" x2="449" y2="250"/><line x1="454" y1="176" x2="454" y2="250"/><line x1="459" y1="176" x2="459" y2="250"/><line x1="464" y1="176" x2="464" y2="250"/><line x1="469" y1="176" x2="469" y2="250"/><line x1="474" y1="176" x2="474" y2="250"/><line x1="479" y1="176" x2="479" y2="250"/><line x1="484" y1="176" x2="484" y2="250"/><line x1="489" y1="176" x2="489" y2="250"/><line class="cl" x1="56" y1="212" x2="662" y2="212"/><line x1="232" y1="207" x2="392" y2="207"/><line x1="232" y1="217" x2="392" y2="217"/><line x1="504" y1="208" x2="620" y2="208"/><line x1="504" y1="216" x2="620" y2="216"/><line x1="620" y1="208" x2="620" y2="216"/><path d="M548 203 C 551 209, 551 215, 548 221"/><path d="M552 203 C 555 209, 555 215, 552 221"/><path d="M556 203 C 559 209, 559 215, 556 221"/><path d="M560 203 C 563 209, 563 215, 560 221"/><path d="M564 203 C 567 209, 567 215, 564 221"/><path d="M568 203 C 571 209, 571 215, 568 221"/><path d="M572 203 C 575 209, 575 215, 572 221"/><path d="M576 203 C 579 209, 579 215, 576 221"/><path d="M580 203 C 583 209, 583 215, 580 221"/><path d="M584 203 C 587 209, 587 215, 584 221"/><path d="M588 203 C 591 209, 591 215, 588 221"/><line x1="588" y1="221" x2="588" y2="586"/><path d="M562 586 L614 586 L606 642 L570 642 Z"/><line x1="566" y1="600" x2="610" y2="600"/><line x1="622" y1="520" x2="622" y2="470"/><path d="M625.2 478.4 L622 470 L618.8 478.4"/><text class="word" x="632" y="500" font-size="17">rises</text><path d="M236 178 C 196 178, 166 196, 166 212 C 166 228, 196 246, 236 246"/><line x1="236" y1="178" x2="236" y2="246"/><path d="M240 186 L254 186 L270 28 L234 22 Z"/><line x1="247" y1="186" x2="252" y2="26"/><path d="M240 238 L254 238 L270 396 L234 402 Z"/><line x1="247" y1="238" x2="252" y2="398"/><line x1="392" y1="240" x2="352" y2="266"/><line x1="392" y1="244" x2="358" y2="270"/><circle cx="348" cy="282" r="9"/><path d="M341 290 L341 300 M355 290 L355 300"/><line x1="30" y1="120" x2="118" y2="120"/><path d="M109.6 123.2 L118 120 L109.6 116.8"/><line x1="30" y1="212" x2="118" y2="212"/><path d="M109.6 215.2 L118 212 L109.6 208.8"/><line x1="30" y1="304" x2="118" y2="304"/><path d="M109.6 307.2 L118 304 L109.6 300.8"/><text class="word" x="30" y="100" font-size="17">wind</text><line x1="228" y1="22" x2="158" y2="22"/><line x1="228" y1="402" x2="158" y2="402"/><line x1="164" y1="22" x2="164" y2="402"/><path d="M160.8 393.6 L164 402 L167.2 393.6"/><path d="M167.2 30.4 L164 22 L160.8 30.4"/><text x="156" y="212" text-anchor="middle" font-size="17" transform="rotate(-90 156 212)">rotor diameter</text><line x1="600" y1="840" x2="680" y2="840"/><line x1="664" y1="212" x2="680" y2="212"/><line x1="674" y1="218" x2="674" y2="834"/><path d="M677.2 226.4 L674 218 L670.8 226.4"/><path d="M670.8 825.6 L674 834 L677.2 825.6"/><text class="word" x="690" y="526" text-anchor="middle" font-size="17" transform="rotate(90 690 526)">hub height</text><path d="M198 192 L150 58 L110 58"/><circle cx="198" cy="192" r="2.2"/><text class="word" x="103" y="64" text-anchor="end" font-size="17">printed hub</text><text class="key" x="103" y="69.8" text-anchor="end" font-size="32.7">a</text><path d="M262 96 L300 72 L330 72"/><circle cx="262" cy="96" r="2.2"/><text class="word" x="337" y="78" font-size="17">paper sail, edge-on</text><text class="key" x="337" y="83.8" font-size="32.7">b</text><path d="M470 182 L520 128 L560 128"/><circle cx="470" cy="182" r="2.2"/><text class="word" x="567" y="133.9" font-size="17">generator and winding</text><text class="key" x="567" y="139.8" font-size="32.7">c</text><path d="M572 204 L600 168 L628 168"/><circle cx="572" cy="204" r="2.2"/><text class="word" x="635" y="173.9" font-size="17">spool</text><text class="key" x="635" y="179.8" font-size="32.7">d</text><path d="M572 630 L540 690 L520 690"/><circle cx="572" cy="630" r="2.2"/><text class="word" x="513" y="696" text-anchor="end" font-size="17">string and cup</text><text class="key" x="513" y="701.8" text-anchor="end" font-size="32.7">e</text><path d="M356 290 L420 330 L440 330"/><circle cx="356" cy="290" r="2.2"/><text class="word" x="447" y="335.9" font-size="17">LED</text><text class="key" x="447" y="341.8" font-size="32.7">f</text><path d="M370 600 L320 620 L290 620"/><circle cx="370" cy="600" r="2.2"/><text class="word" x="283" y="626" text-anchor="end" font-size="17">PVC tower</text><text class="key" x="283" y="631.8" text-anchor="end" font-size="32.7">g</text><path d="M310 790 L260 790 L240 790"/><circle cx="310" cy="790" r="2.2"/><text class="word" x="233" y="796" text-anchor="end" font-size="17">weighted base</text><text class="key" x="233" y="801.8" text-anchor="end" font-size="32.7">h</text></svg>
+<!-- /FIG:elevation -->
+                <figcaption>
+                  <span class="fig__no">Fig. 5.</span> Side elevation of the rebuilt turbine. Schematic.
+                  <span class="fig__key">a, printed hub; b, paper sail, edge-on; c, generator; d, spool; e, string and cup; f, LED; g, PVC tower; h, weighted base.</span>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="grid">
+              <div class="sec__body prose">
+                <h3>4. Six magnets on a printed shaft</h3>
+                <p>
+                  The generator is hand-built. A 3D-printed PLA shaft carries the magnets and spins
+                  inside a box wound with copper wire. As the magnets sweep past, their moving field
+                  pushes electrons through the windings and the LED lights.
+                </p>
+                <p>
+                  Instead of the usual four magnets, we used six. More poles means more flux
+                  reversals per turn of the shaft, so the current comes more often and more smoothly —
+                  which matters when your rotor is a slow-turning drag design and RPM is what you are
+                  short on.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+                <div class="photo">
+                  <img src="../assets/wind-turbine/04-generator.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+                       alt="The generator close up: a box wound with red enameled copper wire, the magnet rotor and its shaft visible inside, with a red LED wired to the coil leads." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 6.</span> The hand-wound generator, with the LED on the coil leads.</figcaption>
+              </figure>
+              <figure class="sec__wide fig">
+<!-- FIG:generator -->
+<svg class="fig-art" viewBox="0 0 900 800" role="img" aria-labelledby="gen-t gen-d" fill="none" stroke="currentColor" stroke-width="1.1"><title id="gen-t">Cross-section of the six-magnet generator</title><desc id="gen-d">Schematic cross-section drawn in white hairlines. A hatched circular PLA shaft sits at the center with six rectangular magnets arranged radially around it at 60 degree intervals, each hatched as a cut section. A dash-dot circle marks the path the magnet tips sweep. Dotted curves between neighboring magnets suggest the magnetic field. A square box wall, hatched, surrounds the rotor with an air gap; bundles of copper wire, drawn as rows of small circles, sit against the top and bottom walls. Centerlines cross at the shaft, an angular dimension marks 60 degrees between two magnets, and leader lines point to labels for the shaft, a magnet, the winding, the box wall, the rotation path and the air gap.</desc><defs><clipPath id="gen-cut1"><path d="M222 172 L678 172 L678 628 L222 628 Z M237 187 L237 613 L663 613 L663 187 Z" clip-rule="evenodd"/></clipPath><clipPath id="gen-cut2"><path d="M433 366 L433 280 L467 280 L467 366 Z" clip-rule="nonzero"/></clipPath><clipPath id="gen-cut3"><path d="M470.9 368.3 L545.4 325.3 L562.4 354.7 L487.9 397.7 Z" clip-rule="nonzero"/></clipPath><clipPath id="gen-cut4"><path d="M487.9 402.3 L562.4 445.3 L545.4 474.7 L470.9 431.7 Z" clip-rule="nonzero"/></clipPath><clipPath id="gen-cut5"><path d="M467 434 L467 520 L433 520 L433 434 Z" clip-rule="nonzero"/></clipPath><clipPath id="gen-cut6"><path d="M429.1 431.7 L354.6 474.7 L337.6 445.3 L412.1 402.3 Z" clip-rule="nonzero"/></clipPath><clipPath id="gen-cut7"><path d="M412.1 397.7 L337.6 354.7 L354.6 325.3 L429.1 368.3 Z" clip-rule="nonzero"/></clipPath><clipPath id="gen-cut8"><path d="M424 400 A26 26 0 1 0 476 400 A26 26 0 1 0 424 400 Z" clip-rule="nonzero"/></clipPath></defs><g class="grid"><line x1="30" y1="20" x2="30" y2="780"/><line x1="70" y1="20" x2="70" y2="780"/><line x1="110" y1="20" x2="110" y2="780"/><line x1="150" y1="20" x2="150" y2="780"/><line x1="190" y1="20" x2="190" y2="780"/><line x1="230" y1="20" x2="230" y2="780"/><line x1="270" y1="20" x2="270" y2="780"/><line x1="310" y1="20" x2="310" y2="780"/><line x1="350" y1="20" x2="350" y2="780"/><line x1="390" y1="20" x2="390" y2="780"/><line x1="430" y1="20" x2="430" y2="780"/><line x1="470" y1="20" x2="470" y2="780"/><line x1="510" y1="20" x2="510" y2="780"/><line x1="550" y1="20" x2="550" y2="780"/><line x1="590" y1="20" x2="590" y2="780"/><line x1="630" y1="20" x2="630" y2="780"/><line x1="670" y1="20" x2="670" y2="780"/><line x1="710" y1="20" x2="710" y2="780"/><line x1="750" y1="20" x2="750" y2="780"/><line x1="790" y1="20" x2="790" y2="780"/><line x1="830" y1="20" x2="830" y2="780"/><line x1="870" y1="20" x2="870" y2="780"/><line x1="30" y1="20" x2="870" y2="20"/><line x1="30" y1="60" x2="870" y2="60"/><line x1="30" y1="100" x2="870" y2="100"/><line x1="30" y1="140" x2="870" y2="140"/><line x1="30" y1="180" x2="870" y2="180"/><line x1="30" y1="220" x2="870" y2="220"/><line x1="30" y1="260" x2="870" y2="260"/><line x1="30" y1="300" x2="870" y2="300"/><line x1="30" y1="340" x2="870" y2="340"/><line x1="30" y1="380" x2="870" y2="380"/><line x1="30" y1="420" x2="870" y2="420"/><line x1="30" y1="460" x2="870" y2="460"/><line x1="30" y1="500" x2="870" y2="500"/><line x1="30" y1="540" x2="870" y2="540"/><line x1="30" y1="580" x2="870" y2="580"/><line x1="30" y1="620" x2="870" y2="620"/><line x1="30" y1="660" x2="870" y2="660"/><line x1="30" y1="700" x2="870" y2="700"/><line x1="30" y1="740" x2="870" y2="740"/><line x1="30" y1="780" x2="870" y2="780"/></g><g class="h" clip-path="url(#gen-cut1)"><line x1="450" y1="-65.9" x2="915.9" y2="400"/><line x1="445.1" y1="-60.9" x2="910.9" y2="404.9"/><line x1="440.1" y1="-56" x2="906" y2="409.9"/><line x1="435.2" y1="-51.1" x2="901.1" y2="414.8"/><line x1="430.2" y1="-46.1" x2="896.1" y2="419.8"/><line x1="425.3" y1="-41.2" x2="891.2" y2="424.7"/><line x1="420.3" y1="-36.2" x2="886.2" y2="429.7"/><line x1="415.4" y1="-31.3" x2="881.3" y2="434.6"/><line x1="410.4" y1="-26.3" x2="876.3" y2="439.6"/><line x1="405.5" y1="-21.4" x2="871.4" y2="444.5"/><line x1="400.5" y1="-16.4" x2="866.4" y2="449.5"/><line x1="395.6" y1="-11.5" x2="861.5" y2="454.4"/><line x1="390.6" y1="-6.5" x2="856.5" y2="459.4"/><line x1="385.7" y1="-1.6" x2="851.6" y2="464.3"/><line x1="380.7" y1="3.4" x2="846.6" y2="469.3"/><line x1="375.8" y1="8.3" x2="841.7" y2="474.2"/><line x1="370.8" y1="13.3" x2="836.7" y2="479.2"/><line x1="365.9" y1="18.2" x2="831.8" y2="484.1"/><line x1="360.9" y1="23.2" x2="826.8" y2="489.1"/><line x1="356" y1="28.1" x2="821.9" y2="494"/><line x1="351" y1="33.1" x2="816.9" y2="499"/><line x1="346.1" y1="38" x2="812" y2="503.9"/><line x1="341.1" y1="43" x2="807" y2="508.9"/><line x1="336.2" y1="47.9" x2="802.1" y2="513.8"/><line x1="331.2" y1="52.9" x2="797.1" y2="518.8"/><line x1="326.3" y1="57.8" x2="792.2" y2="523.7"/><line x1="321.3" y1="62.8" x2="787.2" y2="528.7"/><line x1="316.4" y1="67.7" x2="782.3" y2="533.6"/><line x1="311.4" y1="72.7" x2="777.3" y2="538.6"/><line x1="306.5" y1="77.6" x2="772.4" y2="543.5"/><line x1="301.5" y1="82.6" x2="767.4" y2="548.5"/><line x1="296.6" y1="87.5" x2="762.5" y2="553.4"/><line x1="291.6" y1="92.5" x2="757.5" y2="558.4"/><line x1="286.7" y1="97.4" x2="752.6" y2="563.3"/><line x1="281.7" y1="102.4" x2="747.6" y2="568.3"/><line x1="276.8" y1="107.3" x2="742.7" y2="573.2"/><line x1="271.8" y1="112.3" x2="737.7" y2="578.2"/><line x1="266.9" y1="117.2" x2="732.8" y2="583.1"/><line x1="261.9" y1="122.2" x2="727.8" y2="588.1"/><line x1="257" y1="127.1" x2="722.9" y2="593"/><line x1="252" y1="132.1" x2="717.9" y2="598"/><line x1="247.1" y1="137" x2="713" y2="602.9"/><line x1="242.1" y1="142" x2="708" y2="607.9"/><line x1="237.2" y1="146.9" x2="703.1" y2="612.8"/><line x1="232.2" y1="151.9" x2="698.1" y2="617.8"/><line x1="227.3" y1="156.8" x2="693.2" y2="622.7"/><line x1="222.3" y1="161.8" x2="688.2" y2="627.7"/><line x1="217.4" y1="166.7" x2="683.3" y2="632.6"/><line x1="212.4" y1="171.7" x2="678.3" y2="637.6"/><line x1="207.5" y1="176.6" x2="673.4" y2="642.5"/><line x1="202.5" y1="181.6" x2="668.4" y2="647.5"/><line x1="197.6" y1="186.5" x2="663.5" y2="652.4"/><line x1="192.6" y1="191.5" x2="658.5" y2="657.4"/><line x1="187.7" y1="196.4" x2="653.6" y2="662.3"/><line x1="182.7" y1="201.4" x2="648.6" y2="667.3"/><line x1="177.8" y1="206.3" x2="643.7" y2="672.2"/><line x1="172.8" y1="211.3" x2="638.7" y2="677.2"/><line x1="167.9" y1="216.2" x2="633.8" y2="682.1"/><line x1="162.9" y1="221.2" x2="628.8" y2="687.1"/><line x1="158" y1="226.1" x2="623.9" y2="692"/><line x1="153" y1="231.1" x2="618.9" y2="697"/><line x1="148.1" y1="236" x2="614" y2="701.9"/><line x1="143.1" y1="241" x2="609" y2="706.9"/><line x1="138.2" y1="245.9" x2="604.1" y2="711.8"/><line x1="133.2" y1="250.9" x2="599.1" y2="716.8"/><line x1="128.3" y1="255.8" x2="594.2" y2="721.7"/><line x1="123.3" y1="260.8" x2="589.2" y2="726.7"/><line x1="118.4" y1="265.7" x2="584.3" y2="731.6"/><line x1="113.4" y1="270.7" x2="579.3" y2="736.6"/><line x1="108.5" y1="275.6" x2="574.4" y2="741.5"/><line x1="103.5" y1="280.6" x2="569.4" y2="746.5"/><line x1="98.6" y1="285.5" x2="564.5" y2="751.4"/><line x1="93.6" y1="290.5" x2="559.5" y2="756.4"/><line x1="88.7" y1="295.4" x2="554.6" y2="761.3"/><line x1="83.7" y1="300.4" x2="549.6" y2="766.3"/><line x1="78.8" y1="305.3" x2="544.7" y2="771.2"/><line x1="73.8" y1="310.3" x2="539.7" y2="776.2"/><line x1="68.9" y1="315.2" x2="534.8" y2="781.1"/><line x1="63.9" y1="320.2" x2="529.8" y2="786.1"/><line x1="59" y1="325.1" x2="524.9" y2="791"/><line x1="54" y1="330.1" x2="519.9" y2="796"/><line x1="49.1" y1="335" x2="515" y2="800.9"/><line x1="44.1" y1="340" x2="510" y2="805.9"/><line x1="39.2" y1="344.9" x2="505.1" y2="810.8"/><line x1="34.2" y1="349.9" x2="500.1" y2="815.8"/><line x1="29.3" y1="354.8" x2="495.2" y2="820.7"/><line x1="24.3" y1="359.8" x2="490.2" y2="825.7"/><line x1="19.4" y1="364.7" x2="485.3" y2="830.6"/><line x1="14.4" y1="369.7" x2="480.3" y2="835.6"/><line x1="9.5" y1="374.6" x2="475.4" y2="840.5"/><line x1="4.5" y1="379.6" x2="470.4" y2="845.5"/><line x1="-0.4" y1="384.5" x2="465.5" y2="850.4"/><line x1="-5.4" y1="389.5" x2="460.5" y2="855.4"/><line x1="-10.3" y1="394.4" x2="455.6" y2="860.3"/><line x1="-15.3" y1="399.4" x2="450.6" y2="865.3"/></g><path d="M222 172 L678 172 L678 628 L222 628 Z M237 187 L237 613 L663 613 L663 187 Z" fill-rule="evenodd"/><rect x="270" y="132" width="360" height="36"/><circle cx="282" cy="138.5" r="4.2"/><circle cx="293.6" cy="138.5" r="4.2"/><circle cx="305.2" cy="138.5" r="4.2"/><circle cx="316.8" cy="138.5" r="4.2"/><circle cx="328.4" cy="138.5" r="4.2"/><circle cx="340" cy="138.5" r="4.2"/><circle cx="351.6" cy="138.5" r="4.2"/><circle cx="363.2" cy="138.5" r="4.2"/><circle cx="374.8" cy="138.5" r="4.2"/><circle cx="386.4" cy="138.5" r="4.2"/><circle cx="398" cy="138.5" r="4.2"/><circle cx="409.6" cy="138.5" r="4.2"/><circle cx="421.2" cy="138.5" r="4.2"/><circle cx="432.8" cy="138.5" r="4.2"/><circle cx="444.4" cy="138.5" r="4.2"/><circle cx="456" cy="138.5" r="4.2"/><circle cx="467.6" cy="138.5" r="4.2"/><circle cx="479.2" cy="138.5" r="4.2"/><circle cx="490.8" cy="138.5" r="4.2"/><circle cx="502.4" cy="138.5" r="4.2"/><circle cx="514" cy="138.5" r="4.2"/><circle cx="525.6" cy="138.5" r="4.2"/><circle cx="537.2" cy="138.5" r="4.2"/><circle cx="548.8" cy="138.5" r="4.2"/><circle cx="560.4" cy="138.5" r="4.2"/><circle cx="572" cy="138.5" r="4.2"/><circle cx="583.6" cy="138.5" r="4.2"/><circle cx="595.2" cy="138.5" r="4.2"/><circle cx="606.8" cy="138.5" r="4.2"/><circle cx="618.4" cy="138.5" r="4.2"/><circle cx="282" cy="150" r="4.2"/><circle cx="293.6" cy="150" r="4.2"/><circle cx="305.2" cy="150" r="4.2"/><circle cx="316.8" cy="150" r="4.2"/><circle cx="328.4" cy="150" r="4.2"/><circle cx="340" cy="150" r="4.2"/><circle cx="351.6" cy="150" r="4.2"/><circle cx="363.2" cy="150" r="4.2"/><circle cx="374.8" cy="150" r="4.2"/><circle cx="386.4" cy="150" r="4.2"/><circle cx="398" cy="150" r="4.2"/><circle cx="409.6" cy="150" r="4.2"/><circle cx="421.2" cy="150" r="4.2"/><circle cx="432.8" cy="150" r="4.2"/><circle cx="444.4" cy="150" r="4.2"/><circle cx="456" cy="150" r="4.2"/><circle cx="467.6" cy="150" r="4.2"/><circle cx="479.2" cy="150" r="4.2"/><circle cx="490.8" cy="150" r="4.2"/><circle cx="502.4" cy="150" r="4.2"/><circle cx="514" cy="150" r="4.2"/><circle cx="525.6" cy="150" r="4.2"/><circle cx="537.2" cy="150" r="4.2"/><circle cx="548.8" cy="150" r="4.2"/><circle cx="560.4" cy="150" r="4.2"/><circle cx="572" cy="150" r="4.2"/><circle cx="583.6" cy="150" r="4.2"/><circle cx="595.2" cy="150" r="4.2"/><circle cx="606.8" cy="150" r="4.2"/><circle cx="618.4" cy="150" r="4.2"/><circle cx="282" cy="161.5" r="4.2"/><circle cx="293.6" cy="161.5" r="4.2"/><circle cx="305.2" cy="161.5" r="4.2"/><circle cx="316.8" cy="161.5" r="4.2"/><circle cx="328.4" cy="161.5" r="4.2"/><circle cx="340" cy="161.5" r="4.2"/><circle cx="351.6" cy="161.5" r="4.2"/><circle cx="363.2" cy="161.5" r="4.2"/><circle cx="374.8" cy="161.5" r="4.2"/><circle cx="386.4" cy="161.5" r="4.2"/><circle cx="398" cy="161.5" r="4.2"/><circle cx="409.6" cy="161.5" r="4.2"/><circle cx="421.2" cy="161.5" r="4.2"/><circle cx="432.8" cy="161.5" r="4.2"/><circle cx="444.4" cy="161.5" r="4.2"/><circle cx="456" cy="161.5" r="4.2"/><circle cx="467.6" cy="161.5" r="4.2"/><circle cx="479.2" cy="161.5" r="4.2"/><circle cx="490.8" cy="161.5" r="4.2"/><circle cx="502.4" cy="161.5" r="4.2"/><circle cx="514" cy="161.5" r="4.2"/><circle cx="525.6" cy="161.5" r="4.2"/><circle cx="537.2" cy="161.5" r="4.2"/><circle cx="548.8" cy="161.5" r="4.2"/><circle cx="560.4" cy="161.5" r="4.2"/><circle cx="572" cy="161.5" r="4.2"/><circle cx="583.6" cy="161.5" r="4.2"/><circle cx="595.2" cy="161.5" r="4.2"/><circle cx="606.8" cy="161.5" r="4.2"/><circle cx="618.4" cy="161.5" r="4.2"/><rect x="270" y="632" width="360" height="36"/><circle cx="282" cy="638.5" r="4.2"/><circle cx="293.6" cy="638.5" r="4.2"/><circle cx="305.2" cy="638.5" r="4.2"/><circle cx="316.8" cy="638.5" r="4.2"/><circle cx="328.4" cy="638.5" r="4.2"/><circle cx="340" cy="638.5" r="4.2"/><circle cx="351.6" cy="638.5" r="4.2"/><circle cx="363.2" cy="638.5" r="4.2"/><circle cx="374.8" cy="638.5" r="4.2"/><circle cx="386.4" cy="638.5" r="4.2"/><circle cx="398" cy="638.5" r="4.2"/><circle cx="409.6" cy="638.5" r="4.2"/><circle cx="421.2" cy="638.5" r="4.2"/><circle cx="432.8" cy="638.5" r="4.2"/><circle cx="444.4" cy="638.5" r="4.2"/><circle cx="456" cy="638.5" r="4.2"/><circle cx="467.6" cy="638.5" r="4.2"/><circle cx="479.2" cy="638.5" r="4.2"/><circle cx="490.8" cy="638.5" r="4.2"/><circle cx="502.4" cy="638.5" r="4.2"/><circle cx="514" cy="638.5" r="4.2"/><circle cx="525.6" cy="638.5" r="4.2"/><circle cx="537.2" cy="638.5" r="4.2"/><circle cx="548.8" cy="638.5" r="4.2"/><circle cx="560.4" cy="638.5" r="4.2"/><circle cx="572" cy="638.5" r="4.2"/><circle cx="583.6" cy="638.5" r="4.2"/><circle cx="595.2" cy="638.5" r="4.2"/><circle cx="606.8" cy="638.5" r="4.2"/><circle cx="618.4" cy="638.5" r="4.2"/><circle cx="282" cy="650" r="4.2"/><circle cx="293.6" cy="650" r="4.2"/><circle cx="305.2" cy="650" r="4.2"/><circle cx="316.8" cy="650" r="4.2"/><circle cx="328.4" cy="650" r="4.2"/><circle cx="340" cy="650" r="4.2"/><circle cx="351.6" cy="650" r="4.2"/><circle cx="363.2" cy="650" r="4.2"/><circle cx="374.8" cy="650" r="4.2"/><circle cx="386.4" cy="650" r="4.2"/><circle cx="398" cy="650" r="4.2"/><circle cx="409.6" cy="650" r="4.2"/><circle cx="421.2" cy="650" r="4.2"/><circle cx="432.8" cy="650" r="4.2"/><circle cx="444.4" cy="650" r="4.2"/><circle cx="456" cy="650" r="4.2"/><circle cx="467.6" cy="650" r="4.2"/><circle cx="479.2" cy="650" r="4.2"/><circle cx="490.8" cy="650" r="4.2"/><circle cx="502.4" cy="650" r="4.2"/><circle cx="514" cy="650" r="4.2"/><circle cx="525.6" cy="650" r="4.2"/><circle cx="537.2" cy="650" r="4.2"/><circle cx="548.8" cy="650" r="4.2"/><circle cx="560.4" cy="650" r="4.2"/><circle cx="572" cy="650" r="4.2"/><circle cx="583.6" cy="650" r="4.2"/><circle cx="595.2" cy="650" r="4.2"/><circle cx="606.8" cy="650" r="4.2"/><circle cx="618.4" cy="650" r="4.2"/><circle cx="282" cy="661.5" r="4.2"/><circle cx="293.6" cy="661.5" r="4.2"/><circle cx="305.2" cy="661.5" r="4.2"/><circle cx="316.8" cy="661.5" r="4.2"/><circle cx="328.4" cy="661.5" r="4.2"/><circle cx="340" cy="661.5" r="4.2"/><circle cx="351.6" cy="661.5" r="4.2"/><circle cx="363.2" cy="661.5" r="4.2"/><circle cx="374.8" cy="661.5" r="4.2"/><circle cx="386.4" cy="661.5" r="4.2"/><circle cx="398" cy="661.5" r="4.2"/><circle cx="409.6" cy="661.5" r="4.2"/><circle cx="421.2" cy="661.5" r="4.2"/><circle cx="432.8" cy="661.5" r="4.2"/><circle cx="444.4" cy="661.5" r="4.2"/><circle cx="456" cy="661.5" r="4.2"/><circle cx="467.6" cy="661.5" r="4.2"/><circle cx="479.2" cy="661.5" r="4.2"/><circle cx="490.8" cy="661.5" r="4.2"/><circle cx="502.4" cy="661.5" r="4.2"/><circle cx="514" cy="661.5" r="4.2"/><circle cx="525.6" cy="661.5" r="4.2"/><circle cx="537.2" cy="661.5" r="4.2"/><circle cx="548.8" cy="661.5" r="4.2"/><circle cx="560.4" cy="661.5" r="4.2"/><circle cx="572" cy="661.5" r="4.2"/><circle cx="583.6" cy="661.5" r="4.2"/><circle cx="595.2" cy="661.5" r="4.2"/><circle cx="606.8" cy="661.5" r="4.2"/><circle cx="618.4" cy="661.5" r="4.2"/><circle class="cl" cx="450" cy="400" r="138"/><path class="fl" d="M468.8 281.5 Q539 245.8 543.3 324.5"/><path class="fl" d="M471.6 298.3 Q520 278.8 527.3 330.4"/><path class="fl" d="M562 357 Q628 400 562 443"/><path class="fl" d="M548.9 367.9 Q590 400 548.9 432.1"/><path class="fl" d="M543.3 475.5 Q539 554.2 468.8 518.5"/><path class="fl" d="M527.3 469.6 Q520 521.2 471.6 501.7"/><path class="fl" d="M431.2 518.5 Q361 554.2 356.7 475.5"/><path class="fl" d="M428.4 501.7 Q380 521.2 372.7 469.6"/><path class="fl" d="M338 443 Q272 400 338 357"/><path class="fl" d="M351.1 432.1 Q310 400 351.1 367.9"/><path class="fl" d="M356.7 324.5 Q361 245.8 431.2 281.5"/><path class="fl" d="M372.7 330.4 Q380 278.8 428.4 298.3"/><g class="h" clip-path="url(#gen-cut2)"><line x1="376.1" y1="323" x2="450" y2="249.1"/><line x1="380.4" y1="327.2" x2="454.2" y2="253.4"/><line x1="384.6" y1="331.5" x2="458.5" y2="257.6"/><line x1="388.9" y1="335.7" x2="462.7" y2="261.9"/><line x1="393.1" y1="340" x2="467" y2="266.1"/><line x1="397.3" y1="344.2" x2="471.2" y2="270.3"/><line x1="401.6" y1="348.5" x2="475.5" y2="274.6"/><line x1="405.8" y1="352.7" x2="479.7" y2="278.8"/><line x1="410.1" y1="356.9" x2="483.9" y2="283.1"/><line x1="414.3" y1="361.2" x2="488.2" y2="287.3"/><line x1="418.5" y1="365.4" x2="492.4" y2="291.5"/><line x1="422.8" y1="369.7" x2="496.7" y2="295.8"/><line x1="427" y1="373.9" x2="500.9" y2="300"/><line x1="431.3" y1="378.2" x2="505.2" y2="304.3"/><line x1="435.5" y1="382.4" x2="509.4" y2="308.5"/><line x1="439.8" y1="386.6" x2="513.6" y2="312.8"/><line x1="444" y1="390.9" x2="517.9" y2="317"/><line x1="448.2" y1="395.1" x2="522.1" y2="321.2"/></g><path d="M433 366 L433 280 L467 280 L467 366 Z"/><g class="h" clip-path="url(#gen-cut3)"><line x1="425.7" y1="361.5" x2="516.7" y2="270.5"/><line x1="429.9" y1="365.7" x2="520.9" y2="274.7"/><line x1="434.2" y1="370" x2="525.2" y2="279"/><line x1="438.4" y1="374.2" x2="529.4" y2="283.2"/><line x1="442.7" y1="378.5" x2="533.7" y2="287.5"/><line x1="446.9" y1="382.7" x2="537.9" y2="291.7"/><line x1="451.1" y1="387" x2="542.1" y2="296"/><line x1="455.4" y1="391.2" x2="546.4" y2="300.2"/><line x1="459.6" y1="395.4" x2="550.6" y2="304.4"/><line x1="463.9" y1="399.7" x2="554.9" y2="308.7"/><line x1="468.1" y1="403.9" x2="559.1" y2="312.9"/><line x1="472.4" y1="408.2" x2="563.4" y2="317.2"/><line x1="476.6" y1="412.4" x2="567.6" y2="321.4"/><line x1="480.8" y1="416.7" x2="571.8" y2="325.7"/><line x1="485.1" y1="420.9" x2="576.1" y2="329.9"/><line x1="489.3" y1="425.1" x2="580.3" y2="334.1"/><line x1="493.6" y1="429.4" x2="584.6" y2="338.4"/><line x1="497.8" y1="433.6" x2="588.8" y2="342.6"/><line x1="502.1" y1="437.9" x2="593.1" y2="346.9"/><line x1="506.3" y1="442.1" x2="597.3" y2="351.1"/><line x1="510.5" y1="446.4" x2="601.5" y2="355.4"/><line x1="514.8" y1="450.6" x2="605.8" y2="359.6"/></g><path d="M470.9 368.3 L545.4 325.3 L562.4 354.7 L487.9 397.7 Z"/><g class="h" clip-path="url(#gen-cut4)"><line x1="425.7" y1="438.5" x2="516.7" y2="347.5"/><line x1="429.9" y1="442.7" x2="520.9" y2="351.7"/><line x1="434.2" y1="447" x2="525.2" y2="356"/><line x1="438.4" y1="451.2" x2="529.4" y2="360.2"/><line x1="442.7" y1="455.5" x2="533.7" y2="364.5"/><line x1="446.9" y1="459.7" x2="537.9" y2="368.7"/><line x1="451.1" y1="464" x2="542.1" y2="373"/><line x1="455.4" y1="468.2" x2="546.4" y2="377.2"/><line x1="459.6" y1="472.4" x2="550.6" y2="381.4"/><line x1="463.9" y1="476.7" x2="554.9" y2="385.7"/><line x1="468.1" y1="480.9" x2="559.1" y2="389.9"/><line x1="472.4" y1="485.2" x2="563.4" y2="394.2"/><line x1="476.6" y1="489.4" x2="567.6" y2="398.4"/><line x1="480.8" y1="493.7" x2="571.8" y2="402.7"/><line x1="485.1" y1="497.9" x2="576.1" y2="406.9"/><line x1="489.3" y1="502.1" x2="580.3" y2="411.1"/><line x1="493.6" y1="506.4" x2="584.6" y2="415.4"/><line x1="497.8" y1="510.6" x2="588.8" y2="419.6"/><line x1="502.1" y1="514.9" x2="593.1" y2="423.9"/><line x1="506.3" y1="519.1" x2="597.3" y2="428.1"/><line x1="510.5" y1="523.4" x2="601.5" y2="432.4"/><line x1="514.8" y1="527.6" x2="605.8" y2="436.6"/></g><path d="M487.9 402.3 L562.4 445.3 L545.4 474.7 L470.9 431.7 Z"/><g class="h" clip-path="url(#gen-cut5)"><line x1="376.1" y1="477" x2="450" y2="403.1"/><line x1="380.4" y1="481.2" x2="454.2" y2="407.4"/><line x1="384.6" y1="485.5" x2="458.5" y2="411.6"/><line x1="388.9" y1="489.7" x2="462.7" y2="415.9"/><line x1="393.1" y1="494" x2="467" y2="420.1"/><line x1="397.3" y1="498.2" x2="471.2" y2="424.3"/><line x1="401.6" y1="502.5" x2="475.5" y2="428.6"/><line x1="405.8" y1="506.7" x2="479.7" y2="432.8"/><line x1="410.1" y1="510.9" x2="483.9" y2="437.1"/><line x1="414.3" y1="515.2" x2="488.2" y2="441.3"/><line x1="418.5" y1="519.4" x2="492.4" y2="445.5"/><line x1="422.8" y1="523.7" x2="496.7" y2="449.8"/><line x1="427" y1="527.9" x2="500.9" y2="454"/><line x1="431.3" y1="532.2" x2="505.2" y2="458.3"/><line x1="435.5" y1="536.4" x2="509.4" y2="462.5"/><line x1="439.8" y1="540.6" x2="513.6" y2="466.8"/><line x1="444" y1="544.9" x2="517.9" y2="471"/><line x1="448.2" y1="549.1" x2="522.1" y2="475.2"/></g><path d="M467 434 L467 520 L433 520 L433 434 Z"/><g class="h" clip-path="url(#gen-cut6)"><line x1="292.3" y1="438.5" x2="383.3" y2="347.5"/><line x1="296.6" y1="442.7" x2="387.6" y2="351.7"/><line x1="300.8" y1="447" x2="391.8" y2="356"/><line x1="305" y1="451.2" x2="396" y2="360.2"/><line x1="309.3" y1="455.5" x2="400.3" y2="364.5"/><line x1="313.5" y1="459.7" x2="404.5" y2="368.7"/><line x1="317.8" y1="464" x2="408.8" y2="373"/><line x1="322" y1="468.2" x2="413" y2="377.2"/><line x1="326.3" y1="472.4" x2="417.3" y2="381.4"/><line x1="330.5" y1="476.7" x2="421.5" y2="385.7"/><line x1="334.7" y1="480.9" x2="425.7" y2="389.9"/><line x1="339" y1="485.2" x2="430" y2="394.2"/><line x1="343.2" y1="489.4" x2="434.2" y2="398.4"/><line x1="347.5" y1="493.7" x2="438.5" y2="402.7"/><line x1="351.7" y1="497.9" x2="442.7" y2="406.9"/><line x1="356" y1="502.1" x2="447" y2="411.1"/><line x1="360.2" y1="506.4" x2="451.2" y2="415.4"/><line x1="364.4" y1="510.6" x2="455.4" y2="419.6"/><line x1="368.7" y1="514.9" x2="459.7" y2="423.9"/><line x1="372.9" y1="519.1" x2="463.9" y2="428.1"/><line x1="377.2" y1="523.4" x2="468.2" y2="432.4"/><line x1="381.4" y1="527.6" x2="472.4" y2="436.6"/></g><path d="M429.1 431.7 L354.6 474.7 L337.6 445.3 L412.1 402.3 Z"/><g class="h" clip-path="url(#gen-cut7)"><line x1="292.3" y1="361.5" x2="383.3" y2="270.5"/><line x1="296.6" y1="365.7" x2="387.6" y2="274.7"/><line x1="300.8" y1="370" x2="391.8" y2="279"/><line x1="305" y1="374.2" x2="396" y2="283.2"/><line x1="309.3" y1="378.5" x2="400.3" y2="287.5"/><line x1="313.5" y1="382.7" x2="404.5" y2="291.7"/><line x1="317.8" y1="387" x2="408.8" y2="296"/><line x1="322" y1="391.2" x2="413" y2="300.2"/><line x1="326.3" y1="395.4" x2="417.3" y2="304.4"/><line x1="330.5" y1="399.7" x2="421.5" y2="308.7"/><line x1="334.7" y1="403.9" x2="425.7" y2="312.9"/><line x1="339" y1="408.2" x2="430" y2="317.2"/><line x1="343.2" y1="412.4" x2="434.2" y2="321.4"/><line x1="347.5" y1="416.7" x2="438.5" y2="325.7"/><line x1="351.7" y1="420.9" x2="442.7" y2="329.9"/><line x1="356" y1="425.1" x2="447" y2="334.1"/><line x1="360.2" y1="429.4" x2="451.2" y2="338.4"/><line x1="364.4" y1="433.6" x2="455.4" y2="342.6"/><line x1="368.7" y1="437.9" x2="459.7" y2="346.9"/><line x1="372.9" y1="442.1" x2="463.9" y2="351.1"/><line x1="377.2" y1="446.4" x2="468.2" y2="355.4"/><line x1="381.4" y1="450.6" x2="472.4" y2="359.6"/></g><path d="M412.1 397.7 L337.6 354.7 L354.6 325.3 L429.1 368.3 Z"/><g class="h" clip-path="url(#gen-cut8)"><line x1="450" y1="340.9" x2="509.1" y2="400"/><line x1="446.5" y1="344.5" x2="505.5" y2="403.5"/><line x1="442.9" y1="348" x2="502" y2="407.1"/><line x1="439.4" y1="351.5" x2="498.5" y2="410.6"/><line x1="435.9" y1="355.1" x2="494.9" y2="414.1"/><line x1="432.3" y1="358.6" x2="491.4" y2="417.7"/><line x1="428.8" y1="362.1" x2="487.9" y2="421.2"/><line x1="425.3" y1="365.7" x2="484.3" y2="424.7"/><line x1="421.7" y1="369.2" x2="480.8" y2="428.3"/><line x1="418.2" y1="372.7" x2="477.3" y2="431.8"/><line x1="414.6" y1="376.3" x2="473.7" y2="435.4"/><line x1="411.1" y1="379.8" x2="470.2" y2="438.9"/><line x1="407.6" y1="383.4" x2="466.6" y2="442.4"/><line x1="404" y1="386.9" x2="463.1" y2="446"/><line x1="400.5" y1="390.4" x2="459.6" y2="449.5"/><line x1="397" y1="394" x2="456" y2="453"/><line x1="393.4" y1="397.5" x2="452.5" y2="456.6"/></g><path d="M424 400 A26 26 0 1 0 476 400 A26 26 0 1 0 424 400 Z"/><line class="cl" x1="158" y1="400" x2="742" y2="400"/><line class="cl" x1="450" y1="108" x2="450" y2="692"/><line class="cl" x1="450" y1="276" x2="450" y2="194"/><line class="cl" x1="557.4" y1="338" x2="628.4" y2="297"/><path d="M450 204 A196 196 0 0 1 619.7 302"/><path d="M612.7 296.3 L619.7 302 L618.3 293.1"/><path d="M458.4 200.8 L450 204 L458.4 207.2"/><text x="557" y="220.6" text-anchor="middle" font-size="17">60°</text><path d="M390.1 548.3 A160 160 0 0 1 308.7 475.1"/><path d="M315.5 481 L308.7 475.1 L309.8 484"/><line x1="558.7" y1="485" x2="663" y2="566.4"/><path d="M567.4 487.6 L558.7 485 L563.4 492.7"/><path d="M654.4 563.8 L663 566.4 L658.4 558.7"/><path d="M463.3 404.3 L539.9 403.1 L700 426 L708 426"/><circle cx="463.3" cy="404.3" r="2.2"/><text class="word" x="715" y="431.9" font-size="17">PLA shaft, sectioned</text><text class="key" x="715" y="440.7" font-size="40.9">a</text><path d="M536.3 357.9 L700 268"/><circle cx="536.3" cy="357.9" r="2.2"/><text class="word" x="707" y="273.9" font-size="17">magnet, one of six</text><text class="key" x="707" y="282.7" font-size="40.9">b</text><path d="M300 150 L300 120 L200 120"/><circle cx="300" cy="150" r="2.2"/><text class="word" x="193" y="126" text-anchor="end" font-size="17">copper winding, sectioned</text><text class="key" x="193" y="134.7" text-anchor="end" font-size="40.9">c</text><path d="M229 550 L200 610"/><circle cx="229" cy="550" r="2.2"/><text class="word" x="193" y="616" text-anchor="end" font-size="17">box wall, sectioned</text><text class="key" x="193" y="624.7" text-anchor="end" font-size="40.9">d</text><path d="M317.3 362 L200 330"/><circle cx="317.3" cy="362" r="2.2"/><text class="word" x="193" y="335.9" text-anchor="end" font-size="17">rotation path</text><text class="key" x="193" y="344.7" text-anchor="end" font-size="40.9">e</text><path d="M610.9 525.7 L700 560"/><circle cx="610.9" cy="525.7" r="2.2"/><text class="word" x="707" y="566" font-size="17">air gap</text><text class="key" x="707" y="574.7" font-size="40.9">f</text></svg>
+<!-- /FIG:generator -->
+                <figcaption>
+                  <span class="fig__no">Fig. 7.</span>
+                  The generator in cross-section: six magnets on the shaft, sweeping past the windings.
+                  Schematic, not to scale.
+                  <span class="fig__key">a, PLA shaft; b, one of six magnets; c, copper winding; d, box wall; e, rotation path; f, air gap.</span>
+                </figcaption>
+              </figure>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ============ Next ============ -->
-    <section class="nextnav">
-      <a href="task-manager.html">
-        <div>
-          <span>NEXT PROJECT</span>
-          <strong>Automated Task Management System</strong>
+      <!-- Power path -->
+      <section class="sec wrap" aria-labelledby="power">
+        <div class="grid">
+          <div class="sec__head"><h2 id="power">One rotor, two outputs</h2></div>
+          <div class="sec__half-l prose">
+            <p>
+              Wind reaches a single shaft, and from there the two outputs are served by completely
+              different physics — one purely mechanical, one electromagnetic. Both are limited by
+              the same thing: how fast that shaft turns.
+            </p>
+            <p>
+              The drag rotor gives plenty of torque, so the cup comes up without trouble. It turns
+              slowly, though, so the LED never gets driven hard.
+            </p>
+          </div>
+          <figure class="sec__half-r fig">
+<!-- FIG:power -->
+<svg class="fig-art" viewBox="0 0 520 720" role="img" aria-labelledby="pow-t pow-d" fill="none" stroke="currentColor" stroke-width="1.1"><title id="pow-t">Power path from wind to the two outputs</title><desc id="pow-d">Flow diagram in white hairlines. Wind pushes the paper sails, which turn the hub and rotor, which turn one shaft. The path then forks: on the left, six magnets sweep past copper coils and the LED lights, which needs RPM; on the right, a spool winds the string and the cup rises, which needs torque.</desc><text x="260" y="34" text-anchor="middle" font-size="17">wind</text><line x1="260" y1="44" x2="260" y2="76"/><path d="M256.8 67.6 L260 76 L263.2 67.6"/><rect x="135" y="80" width="250" height="58"/><text class="up" x="260" y="116" text-anchor="middle" font-size="21">Paper sails</text><line x1="260" y1="138" x2="260" y2="186"/><path d="M256.8 177.6 L260 186 L263.2 177.6"/><rect x="135" y="190" width="250" height="58"/><text class="up" x="260" y="226" text-anchor="middle" font-size="21">Hub and rotor</text><line x1="260" y1="248" x2="260" y2="296"/><path d="M256.8 287.6 L260 296 L263.2 287.6"/><rect x="135" y="300" width="250" height="58"/><text class="up" x="260" y="336" text-anchor="middle" font-size="21">One shaft</text><line x1="260" y1="358" x2="260" y2="392"/><line x1="118" y1="392" x2="402" y2="392"/><line x1="118" y1="392" x2="118" y2="436"/><path d="M114.8 427.6 L118 436 L121.2 427.6"/><line x1="402" y1="392" x2="402" y2="436"/><path d="M398.8 427.6 L402 436 L405.2 427.6"/><rect x="11" y="440" width="214" height="70"/><text class="up" x="118" y="472" text-anchor="middle" font-size="21">Six magnets</text><text x="118" y="495" text-anchor="middle" font-size="17">past copper coils</text><rect x="295" y="440" width="214" height="70"/><text class="up" x="402" y="472" text-anchor="middle" font-size="21">Spool</text><text x="402" y="495" text-anchor="middle" font-size="17">winds the string</text><line x1="118" y1="510" x2="118" y2="566"/><path d="M114.8 557.6 L118 566 L121.2 557.6"/><line x1="402" y1="510" x2="402" y2="566"/><path d="M398.8 557.6 L402 566 L405.2 557.6"/><text x="118" y="594" text-anchor="middle" font-size="21">the LED lights</text><text x="402" y="594" text-anchor="middle" font-size="21">the cup rises</text><text x="118" y="624" text-anchor="middle" font-size="17">needs RPM</text><text x="402" y="624" text-anchor="middle" font-size="17">needs torque</text><path class="ph" d="M20 418 L20 650 L238 650 L238 418"/><path class="ph" d="M282 418 L282 650 L500 650 L500 418"/><text x="24" y="680" font-size="17">electrical</text><text x="496" y="680" text-anchor="end" font-size="17">mechanical</text></svg>
+<!-- /FIG:power -->
+            <figcaption><span class="fig__no">Fig. 8.</span> Where the energy goes, from the wind to each output.</figcaption>
+          </figure>
         </div>
-        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-      </a>
-    </section>
+      </section>
 
-    <!-- Title block footer -->
-    <footer class="titleblock">
-      <div class="tb__row tb__row--top">
-        <div class="tb__cell"><span>DRAWN BY</span><strong>C. MEJIA</strong></div>
-        <div class="tb__cell"><span>SCHOOL</span><strong>STANFORD</strong></div>
-        <div class="tb__cell"><span>DATE</span><strong id="tbDate">——</strong></div>
-        <div class="tb__cell"><span>SCALE</span><strong>NTS</strong></div>
-        <div class="tb__cell"><span>UNITS</span><strong>mm</strong></div>
-        <div class="tb__cell"><span>SHEET</span><strong>1 / 1</strong></div>
-      </div>
-      <div class="tb__row tb__row--bottom">
-        <div class="tb__title">
-          <span>TITLE</span>
-          <strong>Wind Turbine · From Airfoil to Drag · Detail Sheet</strong>
+      <!-- Findings -->
+      <section class="sec band" aria-labelledby="findings">
+        <div class="wrap">
+          <div class="grid">
+            <div class="sec__head"><h2 id="findings">What we learned</h2></div>
+            <div class="sec__body prose">
+              <p>The useful conclusions all came from the version that didn’t work.</p>
+              <h3>Area decided everything</h3>
+              <p>
+                Whether the rotor turned at all came down to how much of the swept disc was covered,
+                not how refined the blade profile was. Our careful airfoil lost to taped paper bags.
+              </p>
+              <h3>Copying doesn’t transfer</h3>
+              <p>
+                Taking geometry from a machine hundreds of times larger brought along assumptions
+                that didn’t hold here: big blade area and strong, steady wind.
+              </p>
+              <h3>We were short on speed</h3>
+              <p>
+                The drag rotor lifts the weight fine but turns too slowly to drive the LED hard. A
+                gearbox between the shaft and the generator is the obvious next step, trading spare
+                torque for the RPM we lacked.
+              </p>
+            </div>
+            <figure class="sec__aside fig">
+              <div class="placeholder" style="aspect-ratio:3/4">
+                <svg viewBox="0 0 300 400" preserveAspectRatio="none" role="img" aria-labelledby="ph2-t ph2-d">
+                  <title id="ph2-t">Image placeholder</title>
+                  <desc id="ph2-d">An empty frame crossed by two diagonal hairlines, marking where a CAD screenshot will go.</desc>
+                  <path d="M0 0 L300 400 M300 0 L0 400" fill="none" stroke="#FAFCF5" stroke-width="1" vector-effect="non-scaling-stroke" opacity="0.5" />
+                </svg>
+                <p><strong>Placeholder</strong> CAD screenshot of the airfoil blade. To be added as assets/wind-turbine/cad-blade.jpg</p>
+              </div>
+              <figcaption><span class="fig__no">Fig. 9.</span> The airfoil blade model. Image to come.</figcaption>
+            </figure>
+          </div>
         </div>
-        <div class="tb__dwg">
-          <span>DWG N°</span>
-          <strong>CM-003</strong>
-        </div>
-        <div class="tb__rev">
-          <span>REV</span>
-          <strong>01</strong>
-        </div>
-      </div>
-    </footer>
+      </section>
 
+      <!-- Team -->
+      <section class="sec wrap" aria-labelledby="team">
+        <div class="grid">
+          <div class="sec__head"><h2 id="team">Who did what</h2></div>
+          <div class="sec__body prose">
+            <p>
+              A CEE 34N team project. The work was split across the rotor, the generator and the
+              structure, and all three of us were on final assembly.
+            </p>
+            <dl class="facts">
+              <div><dt>Josh</dt><dd>Foundation and shaft, coiling the generator, assembly.</dd></div>
+              <div><dt>Cristian</dt><dd>Airfoil blade design, 3D printing, assembly.</dd></div>
+              <div><dt>Eshan</dt><dd>Generator design, blade design, assembly.</dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+    </article>
+
+    <hr class="rule wrap-rule" />
+
+    <nav class="nextnav wrap" aria-label="Next project">
+      <div class="grid">
+        <p><span class="byline">Next project</span><br /><a href="motor-controller-enclosure.html">A sealed box for a solar car’s motor controller</a></p>
+      </div>
+    </nav>
   </main>
 
-  <script type="module" src="../script.js?v=6"></script>
+  <footer class="footer band">
+    <div class="wrap">
+      <p class="small">© 2026 Cristian Mejia</p>
+      <p class="small">Text, drawings and photographs are my own unless a caption says otherwise.</p>
+    </div>
+  </footer>
 </body>
 </html>

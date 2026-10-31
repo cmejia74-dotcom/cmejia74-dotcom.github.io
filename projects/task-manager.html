@@ -3,538 +3,286 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Automated Task Management System — a voice-driven, battery-powered ESP32 task device with a custom Fusion 360 enclosure. Build log, architecture, and hardware stack." />
-  <title>Automated Task Management System — Cristian Mejia</title>
+  <title>Automated task management system — Cristian Mejia</title>
+  <meta name="description" content="A voice-driven, battery-powered ESP32 task device with a hinged Fusion 360 enclosure: build log, signal path, components and enclosure design." />
+  <meta name="theme-color" content="#1B2F0A" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css?v=6" />
-  <link rel="stylesheet" href="../project.css?v=6" />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css?v=8" />
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
 
-  <!-- Crosshair cursor -->
-  <div class="cursor" id="cursor" aria-hidden="true">
-    <div class="cursor__h"></div>
-    <div class="cursor__v"></div>
-    <div class="cursor__dot"></div>
-    <div class="cursor__label" id="cursorLabel">X: 000  Y: 000</div>
-  </div>
 
-  <!-- Blueprint background -->
-  <div class="blueprint" aria-hidden="true"></div>
-
-  <!-- Corner ticks / registration marks -->
-  <svg class="ticks ticks--tl" viewBox="0 0 60 60" aria-hidden="true"><path d="M0 0 H30 M0 0 V30" /></svg>
-  <svg class="ticks ticks--tr" viewBox="0 0 60 60" aria-hidden="true"><path d="M60 0 H30 M60 0 V30" /></svg>
-  <svg class="ticks ticks--bl" viewBox="0 0 60 60" aria-hidden="true"><path d="M0 60 H30 M0 60 V30" /></svg>
-  <svg class="ticks ticks--br" viewBox="0 0 60 60" aria-hidden="true"><path d="M60 60 H30 M60 60 V30" /></svg>
-
-  <!-- Nav -->
-  <header class="nav">
-    <a class="nav__brand" href="../index.html">
-      <svg class="nav__logo" viewBox="0 0 40 40" width="22" height="22" aria-hidden="true">
-        <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="1.2" />
-        <circle cx="20" cy="20" r="3" fill="currentColor" />
-        <path d="M20 4 V10 M20 30 V36 M4 20 H10 M30 20 H36" stroke="currentColor" stroke-width="1.2" />
-      </svg>
-      <span>C.MEJIA<span class="nav__brand-dim">/ME</span></span>
-    </a>
-    <a class="nav__back" href="../index.html#work">
-      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
-      Back to index
-    </a>
-    <div class="nav__meta">
-      <span class="dot"></span>
-      <span id="clock">00:00:00 UTC</span>
-    </div>
+  <header class="masthead wrap">
+    <a class="masthead__name" href="../index.html">Cristian Mejia <span>Mechanical engineering, Stanford</span></a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="../index.html#work">All work</a></li>
+        <li><a href="../index.html#about">About</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <main id="top">
+  <main id="main">
+    <article aria-labelledby="title">
 
-    <!-- ============ Sheet header ============ -->
-    <section class="proj">
-      <div class="proj__tag">
-        <strong>DWG CM-002</strong>
-        <span class="sep">·</span>
-        INDEPENDENT PROJECT
-        <span class="sep">·</span>
-        BUILT
-      </div>
-
-      <h1 class="proj__title">Automated <em>Task</em> Management System</h1>
-
-      <p class="proj__sub">
-        A desk device you hold and talk to. It captures speech on-board, ships the audio to a
-        server that transcribes it and runs it through a language model, then draws the extracted
-        task back on its own screen — all running off a single lithium cell.
-      </p>
-
-      <dl class="proj__meta">
-        <div><dt>ROLE</dt><dd>Sole designer &amp; builder</dd></div>
-        <div><dt>SCOPE</dt><dd>Electronics · Firmware · Enclosure · Backend</dd></div>
-        <div><dt>STATUS</dt><dd>Working prototype</dd></div>
-        <div><dt>PLATFORM</dt><dd>ESP32 · 2.8" SPI TFT</dd></div>
-      </dl>
-    </section>
-
-    <!-- ============ Overview ============ -->
-    <div class="divider">
-      <span class="divider__dim">SHEET</span>
-      <span class="divider__num">A</span>
-      <span class="divider__title">DESIGN INTENT</span>
-      <span class="divider__dim divider__right">CM-002</span>
-    </div>
-
-    <section class="proj__intro">
-      <div>
-        <h2>Capture a task in the two seconds before you forget it.</h2>
-        <div class="note">
-          <span>DESIGN CONSTRAINT</span>
-          <p>“Speak, and the task is on the screen — no phone, no app, no typing.”</p>
-        </div>
-      </div>
-      <div>
-        <p>
-          Every task app I used had the same failure mode: the friction of unlocking a phone and
-          finding the right screen was longer than my memory of the task. So I built a single-purpose
-          object that does one thing — <strong>hold it, speak, and the task appears.</strong>
-        </p>
-        <p>
-          The hard part is that four systems have to talk to each other. An
-          <strong>I2S microphone</strong> puts out a continuous 16 kHz audio stream. An ESP32 has to
-          buffer that stream and push it over Wi-Fi without freezing the display it is also driving
-          over SPI. A server has to catch the raw audio, transcribe it, and get a language model to
-          figure out what the task actually <em>is</em>. Then the result has to land back on a 2.8"
-          screen fast enough to feel instant.
-        </p>
-        <p>
-          Because the microcontroller is capturing audio and driving the display at the same time,
-          the real work was <strong>timing and buffering</strong> — keeping the audio pipeline fed
-          while the touch controller and screen stayed responsive.
-        </p>
-      </div>
-    </section>
-
-    <!-- ============ Build log ============ -->
-    <div class="divider">
-      <span class="divider__dim">SHEET</span>
-      <span class="divider__num">B</span>
-      <span class="divider__title">BUILD LOG</span>
-      <span class="divider__dim divider__right">03 STAGES</span>
-    </div>
-
-    <section class="log">
-
-      <!-- Phase 01 -->
-      <article class="phase">
-        <div class="phase__rail"><span class="phase__no">01</span></div>
-        <div class="phase__body">
-          <span class="phase__k">STAGE 01 · DISPLAY BRING-UP</span>
-          <h3>Prove the screen before anything else</h3>
-          <p>
-            Nothing else can be debugged until you can see something. The first milestone was getting
-            the <strong>ILI9341 driven over SPI</strong> — wiring the four control lines, sorting out
-            the chip-select and reset pins, and drawing a single filled rectangle.
+      <header class="article-head wrap">
+        <div class="grid">
+          <h1 id="title">Automated task management system</h1>
+          <p class="standfirst">
+            A desk device you hold and talk to. It records what you say, sends the audio to a
+            server that transcribes it with Whisper and runs it through a language model, then
+            shows the task on its own screen, all running off a single lithium cell.
           </p>
-          <p>
-            A blue square is a deliberately boring target, and that is the point: it confirms the SPI
-            bus, the pin mapping, the supply rail, and the display initialization sequence are all
-            correct in one shot. Once the rectangle rendered, every later bug had a known-good
-            foundation underneath it.
+          <p class="byline">
+            <span>Independent project</span><span>Sole designer and builder</span><span>Electronics, firmware, enclosure and backend</span><span>Working prototype</span>
           </p>
-          <ul class="chips">
-            <li>SPI VERIFIED</li>
-            <li>PIN MAP LOCKED</li>
-            <li>3.3 V RAIL OK</li>
-          </ul>
         </div>
-        <div class="phase__plate">
-          <figure class="plate">
-            <div class="plate__frame">
-              <div class="shot">
-                <img src="../assets/task-manager/01-first-light.jpg" width="1200" height="1600"
-                     alt="A 2.8-inch TFT display lying flat showing a solid blue square, wired with jumper cables to a breadboard holding an ESP32." loading="lazy" decoding="async" />
-              </div>
-            </div>
-            <figcaption class="plate__cap">
-              <span class="k">PLATE 01</span>
-              <strong>First light</strong>
-              <em>ILI9341 rendering a filled rect over SPI — the bus, pin map and rail confirmed in one test.</em>
-            </figcaption>
-          </figure>
-        </div>
-      </article>
+      </header>
 
-      <!-- Phase 02 -->
-      <article class="phase">
-        <div class="phase__rail"><span class="phase__no">02</span></div>
-        <div class="phase__body">
-          <span class="phase__k">STAGE 02 · INTERFACE &amp; AUDIO</span>
-          <h3>A real interface, and a microphone behind it</h3>
-          <p>
-            With pixels under control, the square became an actual UI: a header that reports the live
-            task count, an empty state, and a full-width <strong>hold-to-speak</strong> control. Touch
-            comes from an <strong>XPT2046</strong> resistive controller sharing the SPI bus with the
-            display, so the two had to be arbitrated rather than left to collide.
-          </p>
-          <p>
-            Behind the screen, the <strong>INMP441</strong> streams 32-bit samples at 16 kHz over I2S.
-            Holding the button opens a capture window and starts filling a buffer; releasing it closes
-            the window and sends the buffer over the network. This is where latency either works or
-            does not — the buffer has to drain to Wi-Fi at least as fast as the microphone fills it,
-            or the audio breaks up.
-          </p>
-          <ul class="chips">
-            <li>TOUCH UI</li>
-            <li>I2S CAPTURE</li>
-            <li>16 kHz · 32-BIT</li>
-            <li>SHARED SPI BUS</li>
-          </ul>
-        </div>
-        <div class="phase__plate">
-          <figure class="plate">
-            <div class="plate__frame">
-              <div class="shot">
-                <img src="../assets/task-manager/02-task-ui.jpg" width="1200" height="1600"
-                     alt="The display standing upright showing a task interface: a Tasks (0) header, the text No tasks. Tap to speak, and a Hold to Speak button, with a breadboard of jumper wires behind it." loading="lazy" decoding="async" />
-              </div>
-            </div>
-            <figcaption class="plate__cap">
-              <span class="k">PLATE 02</span>
-              <strong>Task UI running</strong>
-              <em>Live task count, empty state and hold-to-speak control, with touch and display sharing one SPI bus.</em>
-            </figcaption>
-          </figure>
-        </div>
-      </article>
-
-      <!-- Phase 03 -->
-      <article class="phase">
-        <div class="phase__rail"><span class="phase__no">03</span></div>
-        <div class="phase__body">
-          <span class="phase__k">STAGE 03 · POWER &amp; UNTETHERING</span>
-          <h3>Off the bench supply, onto a cell</h3>
-          <p>
-            A device you pick up cannot be bolted to a laptop. Power moved to a
-            <strong>Samsung 35E 18650</strong> cell — 3500 mAh, flat-top — carried on an
-            <strong>18650 charge shield</strong> that regulates the 5 V and 3.3 V rails and provides
-            pass-through charging.
-          </p>
-          <p>
-            The requirement that drove the part choice was <strong>no auto-shutoff</strong>. Most
-            cheap power banks cut output when current draw drops below a threshold, which would kill
-            an idle device sitting on a desk waiting to be spoken to. A shield with UPS-style
-            pass-through keeps the ESP32 alive while charging and holds it up through the current
-            spike when the Wi-Fi radio transmits.
-          </p>
-          <ul class="chips">
-            <li>3500 mAh</li>
-            <li>5 V / 3.3 V REGULATED</li>
-            <li>PASS-THROUGH CHARGE</li>
-            <li>NO AUTO-SHUTOFF</li>
-          </ul>
-        </div>
-        <div class="phase__plate">
-          <figure class="plate">
-            <div class="plate__frame">
-              <div class="shot">
-                <img src="../assets/task-manager/03-battery.jpg" width="1200" height="1600"
-                     alt="Top-down view of the assembly: an 18650 lithium cell in a black charge shield connected by a blue USB cable to the breadboard and display, which is running the task interface." loading="lazy" decoding="async" />
-              </div>
-            </div>
-            <figcaption class="plate__cap">
-              <span class="k">PLATE 03</span>
-              <strong>Running untethered</strong>
-              <em>18650 cell and charge shield feeding the device over USB — the full stack live with no bench supply.</em>
-            </figcaption>
-          </figure>
-        </div>
-      </article>
-
-    </section>
-
-    <!-- ============ Architecture ============ -->
-    <div class="divider">
-      <span class="divider__dim">SHEET</span>
-      <span class="divider__num">C</span>
-      <span class="divider__title">SIGNAL PATH</span>
-      <span class="divider__dim divider__right">VOICE → TASK</span>
-    </div>
-
-    <section class="arch">
-      <div class="arch__head">
-        <h2>One round trip, four hand-offs</h2>
-        <p>
-          The device itself stays simple. It captures and displays; the interpretation happens
-          off-board. That split keeps the ESP32 doing what it is good at — real-time I/O — and puts
-          the heavier work where there is enough memory to do it.
-        </p>
-      </div>
-
-      <div class="arch__sheet">
-        <svg class="chain" viewBox="0 0 720 200" role="img"
-             aria-label="Diagram: on the device, an INMP441 microphone feeds the ESP32, which drives an ILI9341 touch display. The ESP32 sends 16 kHz PCM audio over Wi-Fi to a laptop server running FastAPI, which passes it to Whisper speech-to-text and then a language model; the extracted task text returns over Wi-Fi to the device display.">
-
-          <!-- ---- Device group ---- -->
-          <text class="t t--key" x="20" y="34">DEVICE</text>
-          <rect class="group" x="20" y="44" width="230" height="142" />
-
-          <rect class="box" x="34" y="56" width="202" height="30" />
-          <text class="t" x="135" y="75" text-anchor="middle">INMP441 · I2S</text>
-
-          <line class="flow" x1="135" y1="86" x2="135" y2="96" />
-          <path class="head" d="M132 96 L138 96 L135 100 Z" />
-
-          <rect class="box" x="34" y="100" width="202" height="30" />
-          <text class="t" x="135" y="119" text-anchor="middle">ESP32</text>
-
-          <line class="flow" x1="135" y1="130" x2="135" y2="140" />
-          <path class="head" d="M132 140 L138 140 L135 144 Z" />
-
-          <rect class="box" x="34" y="144" width="202" height="30" />
-          <text class="t" x="135" y="163" text-anchor="middle">ILI9341 + TOUCH</text>
-
-          <!-- ---- Server group ---- -->
-          <text class="t t--key" x="470" y="34">LAPTOP SERVER</text>
-          <rect class="group" x="470" y="44" width="230" height="142" />
-
-          <rect class="box" x="484" y="56" width="202" height="30" />
-          <text class="t" x="585" y="75" text-anchor="middle">FastAPI · INGEST</text>
-
-          <line class="flow" x1="585" y1="86" x2="585" y2="96" />
-          <path class="head" d="M582 96 L588 96 L585 100 Z" />
-
-          <rect class="box" x="484" y="100" width="202" height="30" />
-          <text class="t" x="585" y="119" text-anchor="middle">WHISPER · STT</text>
-
-          <line class="flow" x1="585" y1="130" x2="585" y2="140" />
-          <path class="head" d="M582 140 L588 140 L585 144 Z" />
-
-          <rect class="box" x="484" y="144" width="202" height="30" />
-          <text class="t" x="585" y="163" text-anchor="middle">LLM · EXTRACT</text>
-
-          <!-- ---- Outbound: audio ---- -->
-          <text class="t t--dim" x="360" y="107" text-anchor="middle">AUDIO 16 kHz PCM</text>
-          <line class="flow" x1="252" y1="115" x2="462" y2="115" />
-          <path class="head" d="M462 112 L462 118 L468 115 Z" />
-
-          <!-- ---- Wireless boundary ---- -->
-          <path class="bound" d="M348 140 Q360 126 372 140" />
-          <path class="bound" d="M353 144 Q360 136 367 144" />
-          <circle class="head" cx="360" cy="148" r="1.8" />
-          <text class="t t--key" x="380" y="142">Wi-Fi</text>
-
-          <!-- ---- Inbound: task text ---- -->
-          <line class="flow" x1="468" y1="155" x2="258" y2="155" />
-          <path class="head" d="M258 152 L258 158 L252 155 Z" />
-          <text class="t t--dim" x="360" y="174" text-anchor="middle">TASK TEXT</text>
-        </svg>
-      </div>
-    </section>
-
-    <!-- ============ Hardware stack ============ -->
-    <div class="divider">
-      <span class="divider__dim">SHEET</span>
-      <span class="divider__num">D</span>
-      <span class="divider__title">BILL OF MATERIALS</span>
-      <span class="divider__dim divider__right">06 SUBSYSTEMS</span>
-    </div>
-
-    <section class="stack">
-      <div class="stack__head">
-        <h2>Hardware stack</h2>
-        <p>Each part picked for a reason, grouped by the subsystem it belongs to.</p>
-      </div>
-
-      <div class="stack__grid">
-
-        <div class="sub">
-          <span>01 · CORE</span>
-          <ul>
-            <li>
-              <strong>ESP32 development board</strong>
-              <em>The physical client. Holds the Wi-Fi link, routes power, and manages the inputs and outputs.</em>
-            </li>
-          </ul>
-        </div>
-
-        <div class="sub">
-          <span>02 · INTERFACE</span>
-          <ul>
-            <li>
-              <strong>ILI9341 2.8" TFT LCD</strong>
-              <em>SPI-driven color display carrying the UI — task list, empty state, and the record control.</em>
-            </li>
-            <li>
-              <strong>XPT2046 touch controller</strong>
-              <em>Resistive touch layer over the panel, sharing the SPI bus with the display.</em>
-            </li>
-          </ul>
-        </div>
-
-        <div class="sub">
-          <span>03 · AUDIO</span>
-          <ul>
-            <li>
-              <strong>INMP441 digital microphone</strong>
-              <em>Omnidirectional I2S mic streaming 16 kHz, 32-bit samples. Digital output keeps the signal clean with no analog front end to design.</em>
-            </li>
-          </ul>
-        </div>
-
-        <div class="sub">
-          <span>04 · POWER</span>
-          <ul>
-            <li>
-              <strong>18650 charge shield V3</strong>
-              <em>Regulates 5 V and 3.3 V with UPS-style pass-through charging and no auto-shutoff, so an idle device stays awake.</em>
-            </li>
-            <li>
-              <strong>Samsung 35E 18650 cell</strong>
-              <em>3500 mAh flat-top lithium-ion — enough headroom for the Wi-Fi transmit spikes.</em>
-            </li>
-          </ul>
-        </div>
-
-        <div class="sub">
-          <span>05 · PROTOTYPING</span>
-          <ul>
-            <li>
-              <strong>Solderless breadboard</strong>
-              <em>Base for the build while the pin map was still moving.</em>
-            </li>
-            <li>
-              <strong>Jumper wires</strong>
-              <em>Data and power runs between the boards — visible in every plate above.</em>
-            </li>
-          </ul>
-        </div>
-
-        <div class="sub">
-          <span>06 · OFF-BOARD</span>
-          <ul>
-            <li>
-              <strong>Python / FastAPI server</strong>
-              <em>Local endpoint that catches the raw audio payload from the device.</em>
-            </li>
-            <li>
-              <strong>Transcription + LLM APIs</strong>
-              <em>Speech-to-text, then a language model that reads the transcript and extracts the actual task.</em>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ============ Enclosure / CAD ============ -->
-    <div class="divider">
-      <span class="divider__dim">SHEET</span>
-      <span class="divider__num">E</span>
-      <span class="divider__title">ENCLOSURE</span>
-      <span class="divider__dim divider__right">FUSION 360</span>
-    </div>
-
-    <section class="cadblock">
-      <div class="cadblock__inner">
-        <div class="cadblock__text">
-          <h2>Turning a breadboard into an object</h2>
-          <p>
-            The electronics work, but a loose breadboard is not a product. The enclosure is modeled in
-            <strong>Fusion 360</strong> as a two-part clamshell: the display and touch panel mount to
-            the lid, and every microcontroller, jumper and battery lives underneath, out of sight.
-          </p>
-          <p>
-            The lid is on a <strong>hinge</strong> rather than screws, so the internals stay reachable —
-            the wiring is still changing, and a case you have to destroy to open is a case you stop
-            opening. The cutouts are sized to the bare board rather than the module, the cable path
-            clears the hinge swing, and there is room to swap the 18650 without tearing the wiring
-            apart.
-          </p>
-          <div class="filerow">
-            <span class="dot"></span>
-            <strong>CM-002-ENCL</strong> · STEP / F3D · to be published
+      <!-- Why -->
+      <section class="sec wrap" aria-labelledby="why">
+        <div class="grid">
+          <div class="sec__head"><h2 id="why">Why build it</h2></div>
+          <div class="sec__body prose">
+            <p>
+              Every task app I used had the same problem: unlocking a phone and finding the right
+              screen took longer than I could remember the task. So I built a single-purpose
+              object that does one thing — hold it, speak, and the task appears.
+            </p>
+            <p class="pull">“Speak, and the task is on the screen — no phone, no app, no typing.”</p>
+            <p>
+              The hard part is that four systems have to talk to each other. An I2S microphone puts
+              out a continuous 16 kHz audio stream. An ESP32 has to buffer that stream and push it
+              over Wi-Fi without freezing the display it is also driving over SPI. A server has to
+              catch the raw audio, transcribe it, and get a language model to figure out what the
+              task actually is. Then the result has to land back on a 2.8-inch screen fast enough
+              to feel instant.
+            </p>
+            <p>
+              Because the microcontroller is capturing audio and driving the display at the same
+              time, the real work was timing and buffering: keeping the audio pipeline fed while
+              the touch controller and screen stayed responsive.
+            </p>
           </div>
         </div>
+      </section>
 
-        <div class="cadblock__art">
-          <svg class="cad" viewBox="0 0 300 262" role="img"
-               aria-label="Section drawing of the hinged enclosure: a base cavity holding the breadboard and 18650 cell, with the lid shown closed as a dashed ghost and open at forty degrees about a hinge pivot at the rear.">
-            <!-- ground -->
-            <line class="dim" x1="24" y1="230" x2="276" y2="230" />
+      <!-- Build log -->
+      <section class="sec band" aria-labelledby="log">
+        <div class="wrap">
+          <div class="step">
+            <div class="grid">
+              <div class="sec__head"><h2 id="log">Build log</h2></div>
+              <div class="sec__body prose">
+                <h3>1. Prove the screen before anything else</h3>
+                <p>
+                  Nothing else can be debugged until you can see something. The first milestone
+                  was getting the ILI9341 display running over SPI: wiring the control lines,
+                  sorting out the chip-select and reset pins, and drawing a single filled rectangle.
+                </p>
+                <p>
+                  A blue square is a deliberately boring target, and that is the point. It confirms
+                  the SPI bus, the pin mapping, the supply rail and the display’s initialization
+                  sequence all at once. Once the rectangle rendered, every later bug had a
+                  known-good foundation underneath it.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+                <div class="photo">
+                  <img src="../assets/task-manager/01-first-light.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+                       alt="The 2.8-inch display lying flat and showing a solid square, wired with jumper cables to a breadboard holding an ESP32." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 1.</span> First light: a filled rectangle over SPI, which proved the bus, pin map and supply in one test.</figcaption>
+              </figure>
+            </div>
+          </div>
 
-            <!-- base shell, sectioned -->
-            <rect class="outline" x="40" y="170" width="210" height="56" />
-            <rect class="dim" x="50" y="180" width="190" height="46" />
+          <div class="step">
+            <div class="grid">
+              <div class="sec__body prose">
+                <h3>2. A real interface, and a microphone behind it</h3>
+                <p>
+                  With the screen working, the square became an actual interface: a header that
+                  shows the live task count, an empty state, and a full-width hold-to-speak button.
+                  Touch comes from an XPT2046 resistive controller that shares the SPI bus with the
+                  display, so the two have to take turns rather than talk over each other.
+                </p>
+                <p>
+                  Behind the screen, the INMP441 microphone streams 32-bit samples at 16 kHz over
+                  I2S. Holding the button opens a capture window and starts filling a buffer;
+                  releasing it closes the window and sends the buffer over the network. This is
+                  where latency either works or doesn’t — the buffer has to drain to Wi-Fi at least
+                  as fast as the microphone fills it, or the audio breaks up.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+                <div class="photo">
+                  <img src="../assets/task-manager/02-task-ui.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+                       alt="The display standing upright with the task interface: a Tasks (0) header, the line No tasks, tap to speak, and a Hold to Speak button, with jumper wires behind it." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 2.</span> The task interface, with touch and display sharing one SPI bus.</figcaption>
+              </figure>
+            </div>
+          </div>
 
-            <!-- internals -->
-            <rect class="dim" x="62" y="200" width="110" height="16" />
-            <rect class="dim" x="186" y="198" width="46" height="20" rx="4" />
-
-            <!-- lid, closed (ghost) -->
-            <rect class="dim dash" x="44" y="150" width="204" height="13" />
-
-            <!-- lid, open at 40 degrees -->
-            <path class="outline" d="M250 164 L97 35 L106 25 L259 153 Z" />
-            <line class="dim" x1="254" y1="159" x2="101" y2="30" />
-
-            <!-- hinge pivot -->
-            <circle class="outline" cx="250" cy="164" r="5" />
-            <circle class="fill accent" cx="250" cy="164" r="1.6" />
-
-            <!-- sweep -->
-            <path class="dim dash" d="M130 164 Q133 122 158 87" />
-            <text class="label" x="172" y="145" text-anchor="middle">0° → 40°</text>
-
-            <!-- callouts -->
-            <line class="dim" x1="268" y1="176" x2="254" y2="168" />
-            <text class="label" x="296" y="180" text-anchor="end">HINGE</text>
-            <text class="label" x="150" y="252" text-anchor="middle">HINGED ENCLOSURE · SECTION</text>
-          </svg>
+          <div class="step">
+            <div class="grid">
+              <div class="sec__body prose">
+                <h3>3. Off the bench supply, onto a cell</h3>
+                <p>
+                  A device you pick up can’t be tied to a laptop. Power moved to a Samsung 35E 18650
+                  cell (3500 mAh, flat-top) on an 18650 charge shield that regulates the 5 V and
+                  3.3 V rails and allows pass-through charging.
+                </p>
+                <p>
+                  The requirement that decided the part was no auto-shutoff. Most cheap power banks
+                  cut their output when the current draw drops below a threshold, which would kill
+                  an idle device sitting on a desk waiting to be spoken to. A shield with UPS-style
+                  pass-through keeps the ESP32 alive while charging and holds it up through the
+                  current spike when the Wi-Fi radio transmits.
+                </p>
+              </div>
+              <figure class="sec__aside fig">
+                <div class="photo">
+                  <img src="../assets/task-manager/03-battery.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+                       alt="Top-down view of the assembly: an 18650 cell in a black charge shield connected by a USB cable to the breadboard and display, which is running the task interface." />
+                </div>
+                <figcaption><span class="fig__no">Fig. 3.</span> Running untethered from the cell and charge shield.</figcaption>
+              </figure>
+            </div>
+          </div>
         </div>
+      </section>
+
+      <!-- Signal path -->
+      <section class="sec wrap" aria-labelledby="path">
+        <div class="grid">
+          <div class="sec__head"><h2 id="path">Signal path</h2></div>
+          <div class="sec__half-l prose">
+            <p>
+              The device itself stays simple. It captures and displays; the interpretation happens
+              off-board. That split keeps the ESP32 doing what it is good at — real-time input and
+              output — and puts the heavier work on a laptop where there is enough memory for it.
+            </p>
+            <p>
+              One spoken task makes a single round trip: microphone to ESP32, ESP32 to the FastAPI
+              server over Wi-Fi, through Whisper and the language model, and back to the screen as
+              a line of text.
+            </p>
+          </div>
+          <figure class="sec__half-r fig">
+<!-- FIG:signal -->
+<svg class="fig-art" viewBox="0 0 520 700" role="img" aria-labelledby="sig-t sig-d" fill="none" stroke="currentColor" stroke-width="1.1"><title id="sig-t">Signal path from microphone to screen</title><desc id="sig-d">Flow diagram in white hairlines with two dashed groups: the device on the left and a laptop server on the right. On the device, the INMP441 microphone sends I2S audio at 16 kHz down to the ESP32. The ESP32 sends the audio over Wi-Fi to a FastAPI server, which passes it down to Whisper for transcription, then the transcript down to a language model. The extracted task goes back over Wi-Fi to the ESP32, which draws it on the ILI9341 display over SPI.</desc><path class="ph" d="M16 70 L16 590 L244 590 L244 70 Z"/><path class="ph" d="M276 70 L276 590 L504 590 L504 70 Z"/><text x="16" y="54" font-size="17">on the device</text><text x="504" y="54" text-anchor="end" font-size="17">on the laptop</text><rect x="30" y="110" width="200" height="70"/><text class="up" x="130" y="142" text-anchor="middle" font-size="21">INMP441</text><text x="130" y="165" text-anchor="middle" font-size="17">microphone</text><rect x="30" y="300" width="200" height="70"/><text class="up" x="130" y="332" text-anchor="middle" font-size="21">ESP32</text><text x="130" y="355" text-anchor="middle" font-size="17">buffers and sends</text><rect x="30" y="490" width="200" height="70"/><text class="up" x="130" y="522" text-anchor="middle" font-size="21">ILI9341</text><text x="130" y="545" text-anchor="middle" font-size="17">display and touch</text><rect x="290" y="110" width="200" height="70"/><text class="up" x="390" y="142" text-anchor="middle" font-size="21">FastAPI</text><text x="390" y="165" text-anchor="middle" font-size="17">server</text><rect x="290" y="300" width="200" height="70"/><text class="up" x="390" y="332" text-anchor="middle" font-size="21">Whisper</text><text x="390" y="355" text-anchor="middle" font-size="17">speech to text</text><rect x="290" y="490" width="200" height="70"/><text class="up" x="390" y="522" text-anchor="middle" font-size="21">Language model</text><text x="390" y="545" text-anchor="middle" font-size="17">finds the task</text><line x1="130" y1="180" x2="130" y2="296"/><path d="M126.8 287.6 L130 296 L133.2 287.6"/><text x="138" y="245" font-size="17">I2S, 16 kHz</text><line x1="130" y1="370" x2="130" y2="486"/><path d="M126.8 477.6 L130 486 L133.2 477.6"/><text x="138" y="435" font-size="17">SPI</text><line x1="390" y1="180" x2="390" y2="296"/><path d="M386.8 287.6 L390 296 L393.2 287.6"/><text x="398" y="245" font-size="17">audio</text><line x1="390" y1="370" x2="390" y2="486"/><path d="M386.8 477.6 L390 486 L393.2 477.6"/><text x="398" y="435" font-size="17">transcript</text><path d="M230 322 L260 322 L260 145"/><line x1="260" y1="145" x2="286" y2="145"/><path d="M277.6 148.2 L286 145 L277.6 141.8"/><path d="M290 525 L260 525 L260 350"/><line x1="260" y1="350" x2="234" y2="350"/><path d="M242.4 346.8 L234 350 L242.4 353.2"/><text x="260" y="640" text-anchor="middle" font-size="17">audio out and the task back, both over Wi-Fi</text></svg>
+<!-- /FIG:signal -->
+            <figcaption><span class="fig__no">Fig. 4.</span> One spoken task, from microphone to screen. Arrows show the direction data moves.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Components -->
+      <section class="sec band" aria-labelledby="parts">
+        <div class="wrap">
+          <div class="grid">
+            <div class="sec__head"><h2 id="parts">Components</h2></div>
+            <div class="sec__wide">
+              <p class="prose" style="margin-bottom:2rem">Each part was picked for a reason. Grouped by what it does:</p>
+              <dl class="parts">
+                <div>
+                  <dt>Core</dt>
+                  <dd><strong>ESP32 development board.</strong> Holds the Wi-Fi link, routes power, and manages the inputs and outputs.</dd>
+                </div>
+                <div>
+                  <dt>Interface</dt>
+                  <dd><strong>ILI9341 2.8-inch TFT.</strong> SPI color display for the task list, empty state and record button.</dd>
+                  <dd><strong>XPT2046 touch controller.</strong> Resistive touch layer over the panel, sharing the SPI bus with the display.</dd>
+                </div>
+                <div>
+                  <dt>Audio</dt>
+                  <dd><strong>INMP441 digital microphone.</strong> Omnidirectional I2S mic streaming 16 kHz, 32-bit samples. Digital output means there is no analog front end to design.</dd>
+                </div>
+                <div>
+                  <dt>Power</dt>
+                  <dd><strong>18650 charge shield V3.</strong> Regulates 5 V and 3.3 V, with pass-through charging and no auto-shutoff, so an idle device stays awake.</dd>
+                  <dd><strong>Samsung 35E 18650 cell.</strong> 3500 mAh flat-top lithium-ion, with headroom for the Wi-Fi transmit spikes.</dd>
+                </div>
+                <div>
+                  <dt>Prototyping</dt>
+                  <dd><strong>Solderless breadboard and jumper wires.</strong> The base for the build while the pin map was still changing.</dd>
+                </div>
+                <div>
+                  <dt>Off the device</dt>
+                  <dd><strong>Python and FastAPI server.</strong> A local endpoint on my laptop that catches the raw audio from the device.</dd>
+                  <dd><strong>Whisper and a language model.</strong> Speech to text, then a model that reads the transcript and pulls out the actual task.</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Enclosure -->
+      <section class="sec wrap" aria-labelledby="enclosure">
+        <div class="grid">
+          <div class="sec__head"><h2 id="enclosure">Enclosure</h2></div>
+          <div class="sec__body prose">
+            <p>
+              The electronics work, but a loose breadboard isn’t a product. I modeled the enclosure
+              in Fusion 360 as a two-part clamshell: the display and touch panel mount in the lid,
+              and every board, jumper and the battery live underneath, out of sight.
+            </p>
+            <p>
+              The lid is on a hinge rather than screws, so the inside stays reachable — the wiring
+              is still changing, and a case you have to wreck to open is a case you stop opening.
+              The cutouts are sized to the bare board rather than the module, the cable path clears
+              the hinge swing, and there is room to swap the 18650 without pulling the wiring apart.
+            </p>
+            <p class="byline">CAD files (STEP and F3D) will be posted here.</p>
+          </div>
+
+          <figure class="sec__wide fig">
+<!-- FIG:enclosure -->
+<svg class="fig-art" viewBox="0 0 960 600" role="img" aria-labelledby="encl-t encl-d" fill="none" stroke="currentColor" stroke-width="1.1"><title id="encl-t">Section through the hinged enclosure</title><desc id="encl-d">Schematic section drawn in white hairlines. An open-topped base with hatched walls and floor sits on a ground line. Inside are a breadboard with the ESP32 board on it, an 18650 cell on its charge shield, and the INMP441 microphone against the left wall with small arcs showing sound arriving from outside. A hinge pin at the back right carries the lid, drawn hatched and swung partly open, with the display and touch panel set into it; a dashed phantom outline shows the lid closed. An arc with an arrowhead shows the lid swing. Dimension lines give the overall width and the interior depth, and leader lines point to labels for each part.</desc><defs><clipPath id="encl-cut1"><path d="M200 300 L212 300 L212 458 L748 458 L748 300 L760 300 L760 470 L200 470 Z" clip-rule="nonzero"/></clipPath><clipPath id="encl-cut2"><path d="M258.7 45.7 L339.6 85.2 L334.3 96 L253.4 56.5 Z" clip-rule="nonzero"/></clipPath><clipPath id="encl-cut3"><path d="M618.2 221.1 L751.2 286 L746 296.8 L613 231.9 Z" clip-rule="nonzero"/></clipPath></defs><line x1="150" y1="472" x2="820" y2="472"/><line x1="156" y1="472" x2="147" y2="481"/><line x1="170" y1="472" x2="161" y2="481"/><line x1="184" y1="472" x2="175" y2="481"/><line x1="198" y1="472" x2="189" y2="481"/><line x1="212" y1="472" x2="203" y2="481"/><line x1="226" y1="472" x2="217" y2="481"/><line x1="240" y1="472" x2="231" y2="481"/><line x1="254" y1="472" x2="245" y2="481"/><line x1="268" y1="472" x2="259" y2="481"/><line x1="282" y1="472" x2="273" y2="481"/><line x1="296" y1="472" x2="287" y2="481"/><line x1="310" y1="472" x2="301" y2="481"/><line x1="324" y1="472" x2="315" y2="481"/><line x1="338" y1="472" x2="329" y2="481"/><line x1="352" y1="472" x2="343" y2="481"/><line x1="366" y1="472" x2="357" y2="481"/><line x1="380" y1="472" x2="371" y2="481"/><line x1="394" y1="472" x2="385" y2="481"/><line x1="408" y1="472" x2="399" y2="481"/><line x1="422" y1="472" x2="413" y2="481"/><line x1="436" y1="472" x2="427" y2="481"/><line x1="450" y1="472" x2="441" y2="481"/><line x1="464" y1="472" x2="455" y2="481"/><line x1="478" y1="472" x2="469" y2="481"/><line x1="492" y1="472" x2="483" y2="481"/><line x1="506" y1="472" x2="497" y2="481"/><line x1="520" y1="472" x2="511" y2="481"/><line x1="534" y1="472" x2="525" y2="481"/><line x1="548" y1="472" x2="539" y2="481"/><line x1="562" y1="472" x2="553" y2="481"/><line x1="576" y1="472" x2="567" y2="481"/><line x1="590" y1="472" x2="581" y2="481"/><line x1="604" y1="472" x2="595" y2="481"/><line x1="618" y1="472" x2="609" y2="481"/><line x1="632" y1="472" x2="623" y2="481"/><line x1="646" y1="472" x2="637" y2="481"/><line x1="660" y1="472" x2="651" y2="481"/><line x1="674" y1="472" x2="665" y2="481"/><line x1="688" y1="472" x2="679" y2="481"/><line x1="702" y1="472" x2="693" y2="481"/><line x1="716" y1="472" x2="707" y2="481"/><line x1="730" y1="472" x2="721" y2="481"/><line x1="744" y1="472" x2="735" y2="481"/><line x1="758" y1="472" x2="749" y2="481"/><line x1="772" y1="472" x2="763" y2="481"/><line x1="786" y1="472" x2="777" y2="481"/><line x1="800" y1="472" x2="791" y2="481"/><line x1="814" y1="472" x2="805" y2="481"/><g class="h" clip-path="url(#encl-cut1)"><line x1="480" y1="-38.7" x2="903.7" y2="385"/><line x1="475.1" y1="-33.8" x2="898.8" y2="389.9"/><line x1="470.1" y1="-28.8" x2="893.8" y2="394.9"/><line x1="465.2" y1="-23.9" x2="888.9" y2="399.8"/><line x1="460.2" y1="-18.9" x2="883.9" y2="404.8"/><line x1="455.3" y1="-14" x2="879" y2="409.7"/><line x1="450.3" y1="-9" x2="874" y2="414.7"/><line x1="445.4" y1="-4.1" x2="869.1" y2="419.6"/><line x1="440.4" y1="0.9" x2="864.1" y2="424.6"/><line x1="435.5" y1="5.8" x2="859.2" y2="429.5"/><line x1="430.5" y1="10.8" x2="854.2" y2="434.5"/><line x1="425.6" y1="15.7" x2="849.3" y2="439.4"/><line x1="420.6" y1="20.7" x2="844.3" y2="444.4"/><line x1="415.7" y1="25.6" x2="839.4" y2="449.3"/><line x1="410.7" y1="30.6" x2="834.4" y2="454.3"/><line x1="405.8" y1="35.5" x2="829.5" y2="459.2"/><line x1="400.8" y1="40.5" x2="824.5" y2="464.2"/><line x1="395.9" y1="45.4" x2="819.6" y2="469.1"/><line x1="390.9" y1="50.4" x2="814.6" y2="474.1"/><line x1="386" y1="55.3" x2="809.7" y2="479"/><line x1="381" y1="60.3" x2="804.7" y2="484"/><line x1="376.1" y1="65.2" x2="799.8" y2="488.9"/><line x1="371.1" y1="70.2" x2="794.8" y2="493.9"/><line x1="366.2" y1="75.1" x2="789.9" y2="498.8"/><line x1="361.2" y1="80.1" x2="784.9" y2="503.8"/><line x1="356.3" y1="85" x2="780" y2="508.7"/><line x1="351.3" y1="90" x2="775" y2="513.7"/><line x1="346.4" y1="94.9" x2="770.1" y2="518.6"/><line x1="341.4" y1="99.9" x2="765.1" y2="523.6"/><line x1="336.5" y1="104.8" x2="760.2" y2="528.5"/><line x1="331.5" y1="109.8" x2="755.2" y2="533.5"/><line x1="326.6" y1="114.7" x2="750.3" y2="538.4"/><line x1="321.6" y1="119.7" x2="745.3" y2="543.4"/><line x1="316.7" y1="124.6" x2="740.4" y2="548.3"/><line x1="311.7" y1="129.6" x2="735.4" y2="553.3"/><line x1="306.8" y1="134.5" x2="730.5" y2="558.2"/><line x1="301.8" y1="139.5" x2="725.5" y2="563.2"/><line x1="296.9" y1="144.4" x2="720.6" y2="568.1"/><line x1="291.9" y1="149.4" x2="715.6" y2="573.1"/><line x1="287" y1="154.3" x2="710.7" y2="578"/><line x1="282" y1="159.3" x2="705.7" y2="583"/><line x1="277.1" y1="164.2" x2="700.8" y2="587.9"/><line x1="272.1" y1="169.2" x2="695.8" y2="592.9"/><line x1="267.2" y1="174.1" x2="690.9" y2="597.8"/><line x1="262.2" y1="179.1" x2="685.9" y2="602.8"/><line x1="257.3" y1="184" x2="681" y2="607.7"/><line x1="252.3" y1="189" x2="676" y2="612.7"/><line x1="247.4" y1="193.9" x2="671.1" y2="617.6"/><line x1="242.4" y1="198.9" x2="666.1" y2="622.6"/><line x1="237.5" y1="203.8" x2="661.2" y2="627.5"/><line x1="232.5" y1="208.8" x2="656.2" y2="632.5"/><line x1="227.6" y1="213.7" x2="651.3" y2="637.4"/><line x1="222.6" y1="218.7" x2="646.3" y2="642.4"/><line x1="217.7" y1="223.6" x2="641.4" y2="647.3"/><line x1="212.7" y1="228.6" x2="636.4" y2="652.3"/><line x1="207.8" y1="233.5" x2="631.5" y2="657.2"/><line x1="202.8" y1="238.5" x2="626.5" y2="662.2"/><line x1="197.9" y1="243.4" x2="621.6" y2="667.1"/><line x1="192.9" y1="248.4" x2="616.6" y2="672.1"/><line x1="188" y1="253.3" x2="611.7" y2="677"/><line x1="183" y1="258.3" x2="606.7" y2="682"/><line x1="178.1" y1="263.2" x2="601.8" y2="686.9"/><line x1="173.1" y1="268.2" x2="596.8" y2="691.9"/><line x1="168.2" y1="273.1" x2="591.9" y2="696.8"/><line x1="163.2" y1="278.1" x2="586.9" y2="701.8"/><line x1="158.3" y1="283" x2="582" y2="706.7"/><line x1="153.3" y1="288" x2="577" y2="711.7"/><line x1="148.4" y1="292.9" x2="572.1" y2="716.6"/><line x1="143.4" y1="297.9" x2="567.1" y2="721.6"/><line x1="138.5" y1="302.8" x2="562.2" y2="726.5"/><line x1="133.5" y1="307.8" x2="557.2" y2="731.5"/><line x1="128.6" y1="312.7" x2="552.3" y2="736.4"/><line x1="123.6" y1="317.7" x2="547.3" y2="741.4"/><line x1="118.7" y1="322.6" x2="542.4" y2="746.3"/><line x1="113.7" y1="327.6" x2="537.4" y2="751.3"/><line x1="108.8" y1="332.5" x2="532.5" y2="756.2"/><line x1="103.8" y1="337.5" x2="527.5" y2="761.2"/><line x1="98.9" y1="342.4" x2="522.6" y2="766.1"/><line x1="93.9" y1="347.4" x2="517.6" y2="771.1"/><line x1="89" y1="352.3" x2="512.7" y2="776"/><line x1="84" y1="357.3" x2="507.7" y2="781"/><line x1="79.1" y1="362.2" x2="502.8" y2="785.9"/><line x1="74.1" y1="367.2" x2="497.8" y2="790.9"/><line x1="69.2" y1="372.1" x2="492.9" y2="795.8"/><line x1="64.2" y1="377.1" x2="487.9" y2="800.8"/><line x1="59.3" y1="382" x2="483" y2="805.7"/></g><path d="M200 300 L212 300 L212 458 L748 458 L748 300 L760 300 L760 470 L200 470 Z"/><rect x="244" y="434" width="290" height="24"/><line class="hid" x1="250" y1="442" x2="528" y2="442"/><line class="hid" x1="250" y1="450" x2="528" y2="450"/><rect x="292" y="419" width="150" height="15"/><line x1="298" y1="434" x2="298" y2="438"/><line x1="307" y1="434" x2="307" y2="438"/><line x1="316" y1="434" x2="316" y2="438"/><line x1="325" y1="434" x2="325" y2="438"/><line x1="334" y1="434" x2="334" y2="438"/><line x1="343" y1="434" x2="343" y2="438"/><line x1="352" y1="434" x2="352" y2="438"/><line x1="361" y1="434" x2="361" y2="438"/><line x1="370" y1="434" x2="370" y2="438"/><line x1="379" y1="434" x2="379" y2="438"/><line x1="388" y1="434" x2="388" y2="438"/><line x1="397" y1="434" x2="397" y2="438"/><line x1="406" y1="434" x2="406" y2="438"/><line x1="415" y1="434" x2="415" y2="438"/><line x1="424" y1="434" x2="424" y2="438"/><line x1="433" y1="434" x2="433" y2="438"/><rect x="282" y="423" width="10" height="8"/><rect x="566" y="447" width="160" height="11"/><rect x="578" y="413" width="136" height="34" rx="14"/><line x1="704" y1="413" x2="704" y2="447"/><rect x="212" y="362" width="13" height="34"/><path d="M191.2 366.2 A16 16 0 0 0 191.2 391.8"/><path d="M184.6 356.6 A28 28 0 0 0 184.6 401.4"/><path d="M178.0 347.0 A40 40 0 0 0 178.0 411.0"/><path d="M330 419 C 318 392, 262 390, 225 382"/><path d="M430 419 C 470 380, 560 396, 592 413"/><path d="M420 419 C 430 340, 640 330, 742 312"/><circle cx="754" cy="294" r="7"/><line class="cl" x1="740" y1="294" x2="768" y2="294"/><line class="cl" x1="754" y1="280" x2="754" y2="308"/><rect class="ph" x="200" y="288" width="554" height="12"/><g class="h" clip-path="url(#encl-cut2)"><line x1="502.3" y1="-240.5" x2="914.1" y2="171.3"/><line x1="497.4" y1="-235.5" x2="909.1" y2="176.2"/><line x1="492.4" y1="-230.6" x2="904.2" y2="181.2"/><line x1="487.5" y1="-225.6" x2="899.2" y2="186.1"/><line x1="482.5" y1="-220.7" x2="894.3" y2="191.1"/><line x1="477.6" y1="-215.7" x2="889.3" y2="196"/><line x1="472.6" y1="-210.8" x2="884.4" y2="201"/><line x1="467.7" y1="-205.8" x2="879.4" y2="205.9"/><line x1="462.7" y1="-200.9" x2="874.5" y2="210.9"/><line x1="457.8" y1="-195.9" x2="869.5" y2="215.8"/><line x1="452.8" y1="-191" x2="864.6" y2="220.8"/><line x1="447.9" y1="-186" x2="859.6" y2="225.7"/><line x1="442.9" y1="-181.1" x2="854.7" y2="230.7"/><line x1="438" y1="-176.1" x2="849.7" y2="235.6"/><line x1="433" y1="-171.2" x2="844.8" y2="240.6"/><line x1="428.1" y1="-166.2" x2="839.8" y2="245.5"/><line x1="423.1" y1="-161.3" x2="834.9" y2="250.5"/><line x1="418.2" y1="-156.3" x2="829.9" y2="255.4"/><line x1="413.2" y1="-151.4" x2="825" y2="260.4"/><line x1="408.3" y1="-146.4" x2="820" y2="265.3"/><line x1="403.3" y1="-141.5" x2="815.1" y2="270.3"/><line x1="398.4" y1="-136.5" x2="810.1" y2="275.2"/><line x1="393.4" y1="-131.6" x2="805.2" y2="280.2"/><line x1="388.5" y1="-126.6" x2="800.2" y2="285.1"/><line x1="383.5" y1="-121.7" x2="795.3" y2="290.1"/><line x1="378.6" y1="-116.7" x2="790.3" y2="295"/><line x1="373.6" y1="-111.8" x2="785.4" y2="299.9"/><line x1="368.7" y1="-106.8" x2="780.4" y2="304.9"/><line x1="363.7" y1="-101.9" x2="775.5" y2="309.8"/><line x1="358.8" y1="-96.9" x2="770.5" y2="314.8"/><line x1="353.8" y1="-92" x2="765.6" y2="319.7"/><line x1="348.9" y1="-87" x2="760.6" y2="324.7"/><line x1="343.9" y1="-82.1" x2="755.7" y2="329.6"/><line x1="339" y1="-77.1" x2="750.7" y2="334.6"/><line x1="334" y1="-72.2" x2="745.8" y2="339.5"/><line x1="329.1" y1="-67.2" x2="740.8" y2="344.5"/><line x1="324.1" y1="-62.3" x2="735.9" y2="349.4"/><line x1="319.2" y1="-57.3" x2="730.9" y2="354.4"/><line x1="314.2" y1="-52.4" x2="726" y2="359.3"/><line x1="309.3" y1="-47.4" x2="721" y2="364.3"/><line x1="304.3" y1="-42.5" x2="716.1" y2="369.2"/><line x1="299.4" y1="-37.5" x2="711.1" y2="374.2"/><line x1="294.4" y1="-32.6" x2="706.2" y2="379.1"/><line x1="289.5" y1="-27.6" x2="701.2" y2="384.1"/><line x1="284.5" y1="-22.7" x2="696.3" y2="389"/><line x1="279.6" y1="-17.7" x2="691.3" y2="394"/><line x1="274.6" y1="-12.8" x2="686.4" y2="398.9"/><line x1="269.7" y1="-7.8" x2="681.4" y2="403.9"/><line x1="264.7" y1="-2.9" x2="676.5" y2="408.8"/><line x1="259.8" y1="2.1" x2="671.5" y2="413.8"/><line x1="254.9" y1="7" x2="666.6" y2="418.7"/><line x1="249.9" y1="12" x2="661.6" y2="423.7"/><line x1="245" y1="16.9" x2="656.7" y2="428.6"/><line x1="240" y1="21.9" x2="651.7" y2="433.6"/><line x1="235.1" y1="26.8" x2="646.8" y2="438.5"/><line x1="230.1" y1="31.8" x2="641.8" y2="443.5"/><line x1="225.2" y1="36.7" x2="636.9" y2="448.4"/><line x1="220.2" y1="41.7" x2="631.9" y2="453.4"/><line x1="215.3" y1="46.6" x2="627" y2="458.3"/><line x1="210.3" y1="51.6" x2="622" y2="463.3"/><line x1="205.4" y1="56.5" x2="617.1" y2="468.2"/><line x1="200.4" y1="61.5" x2="612.1" y2="473.2"/><line x1="195.5" y1="66.4" x2="607.2" y2="478.1"/><line x1="190.5" y1="71.4" x2="602.2" y2="483.1"/><line x1="185.6" y1="76.3" x2="597.3" y2="488"/><line x1="180.6" y1="81.3" x2="592.3" y2="493"/><line x1="175.7" y1="86.2" x2="587.4" y2="497.9"/><line x1="170.7" y1="91.2" x2="582.4" y2="502.9"/><line x1="165.8" y1="96.1" x2="577.5" y2="507.8"/><line x1="160.8" y1="101.1" x2="572.5" y2="512.8"/><line x1="155.9" y1="106" x2="567.6" y2="517.7"/><line x1="150.9" y1="111" x2="562.6" y2="522.7"/><line x1="146" y1="115.9" x2="557.7" y2="527.6"/><line x1="141" y1="120.9" x2="552.7" y2="532.6"/><line x1="136.1" y1="125.8" x2="547.8" y2="537.5"/><line x1="131.1" y1="130.8" x2="542.8" y2="542.5"/><line x1="126.2" y1="135.7" x2="537.9" y2="547.4"/><line x1="121.2" y1="140.7" x2="532.9" y2="552.4"/><line x1="116.3" y1="145.6" x2="528" y2="557.3"/><line x1="111.3" y1="150.6" x2="523" y2="562.3"/><line x1="106.4" y1="155.5" x2="518.1" y2="567.2"/><line x1="101.4" y1="160.5" x2="513.1" y2="572.2"/><line x1="96.5" y1="165.4" x2="508.2" y2="577.1"/><line x1="91.5" y1="170.4" x2="503.2" y2="582.1"/></g><path d="M258.7 45.7 L339.6 85.2 L334.3 96 L253.4 56.5 Z"/><g class="h" clip-path="url(#encl-cut3)"><line x1="502.3" y1="-240.5" x2="914.1" y2="171.3"/><line x1="497.4" y1="-235.5" x2="909.1" y2="176.2"/><line x1="492.4" y1="-230.6" x2="904.2" y2="181.2"/><line x1="487.5" y1="-225.6" x2="899.2" y2="186.1"/><line x1="482.5" y1="-220.7" x2="894.3" y2="191.1"/><line x1="477.6" y1="-215.7" x2="889.3" y2="196"/><line x1="472.6" y1="-210.8" x2="884.4" y2="201"/><line x1="467.7" y1="-205.8" x2="879.4" y2="205.9"/><line x1="462.7" y1="-200.9" x2="874.5" y2="210.9"/><line x1="457.8" y1="-195.9" x2="869.5" y2="215.8"/><line x1="452.8" y1="-191" x2="864.6" y2="220.8"/><line x1="447.9" y1="-186" x2="859.6" y2="225.7"/><line x1="442.9" y1="-181.1" x2="854.7" y2="230.7"/><line x1="438" y1="-176.1" x2="849.7" y2="235.6"/><line x1="433" y1="-171.2" x2="844.8" y2="240.6"/><line x1="428.1" y1="-166.2" x2="839.8" y2="245.5"/><line x1="423.1" y1="-161.3" x2="834.9" y2="250.5"/><line x1="418.2" y1="-156.3" x2="829.9" y2="255.4"/><line x1="413.2" y1="-151.4" x2="825" y2="260.4"/><line x1="408.3" y1="-146.4" x2="820" y2="265.3"/><line x1="403.3" y1="-141.5" x2="815.1" y2="270.3"/><line x1="398.4" y1="-136.5" x2="810.1" y2="275.2"/><line x1="393.4" y1="-131.6" x2="805.2" y2="280.2"/><line x1="388.5" y1="-126.6" x2="800.2" y2="285.1"/><line x1="383.5" y1="-121.7" x2="795.3" y2="290.1"/><line x1="378.6" y1="-116.7" x2="790.3" y2="295"/><line x1="373.6" y1="-111.8" x2="785.4" y2="299.9"/><line x1="368.7" y1="-106.8" x2="780.4" y2="304.9"/><line x1="363.7" y1="-101.9" x2="775.5" y2="309.8"/><line x1="358.8" y1="-96.9" x2="770.5" y2="314.8"/><line x1="353.8" y1="-92" x2="765.6" y2="319.7"/><line x1="348.9" y1="-87" x2="760.6" y2="324.7"/><line x1="343.9" y1="-82.1" x2="755.7" y2="329.6"/><line x1="339" y1="-77.1" x2="750.7" y2="334.6"/><line x1="334" y1="-72.2" x2="745.8" y2="339.5"/><line x1="329.1" y1="-67.2" x2="740.8" y2="344.5"/><line x1="324.1" y1="-62.3" x2="735.9" y2="349.4"/><line x1="319.2" y1="-57.3" x2="730.9" y2="354.4"/><line x1="314.2" y1="-52.4" x2="726" y2="359.3"/><line x1="309.3" y1="-47.4" x2="721" y2="364.3"/><line x1="304.3" y1="-42.5" x2="716.1" y2="369.2"/><line x1="299.4" y1="-37.5" x2="711.1" y2="374.2"/><line x1="294.4" y1="-32.6" x2="706.2" y2="379.1"/><line x1="289.5" y1="-27.6" x2="701.2" y2="384.1"/><line x1="284.5" y1="-22.7" x2="696.3" y2="389"/><line x1="279.6" y1="-17.7" x2="691.3" y2="394"/><line x1="274.6" y1="-12.8" x2="686.4" y2="398.9"/><line x1="269.7" y1="-7.8" x2="681.4" y2="403.9"/><line x1="264.7" y1="-2.9" x2="676.5" y2="408.8"/><line x1="259.8" y1="2.1" x2="671.5" y2="413.8"/><line x1="254.9" y1="7" x2="666.6" y2="418.7"/><line x1="249.9" y1="12" x2="661.6" y2="423.7"/><line x1="245" y1="16.9" x2="656.7" y2="428.6"/><line x1="240" y1="21.9" x2="651.7" y2="433.6"/><line x1="235.1" y1="26.8" x2="646.8" y2="438.5"/><line x1="230.1" y1="31.8" x2="641.8" y2="443.5"/><line x1="225.2" y1="36.7" x2="636.9" y2="448.4"/><line x1="220.2" y1="41.7" x2="631.9" y2="453.4"/><line x1="215.3" y1="46.6" x2="627" y2="458.3"/><line x1="210.3" y1="51.6" x2="622" y2="463.3"/><line x1="205.4" y1="56.5" x2="617.1" y2="468.2"/><line x1="200.4" y1="61.5" x2="612.1" y2="473.2"/><line x1="195.5" y1="66.4" x2="607.2" y2="478.1"/><line x1="190.5" y1="71.4" x2="602.2" y2="483.1"/><line x1="185.6" y1="76.3" x2="597.3" y2="488"/><line x1="180.6" y1="81.3" x2="592.3" y2="493"/><line x1="175.7" y1="86.2" x2="587.4" y2="497.9"/><line x1="170.7" y1="91.2" x2="582.4" y2="502.9"/><line x1="165.8" y1="96.1" x2="577.5" y2="507.8"/><line x1="160.8" y1="101.1" x2="572.5" y2="512.8"/><line x1="155.9" y1="106" x2="567.6" y2="517.7"/><line x1="150.9" y1="111" x2="562.6" y2="522.7"/><line x1="146" y1="115.9" x2="557.7" y2="527.6"/><line x1="141" y1="120.9" x2="552.7" y2="532.6"/><line x1="136.1" y1="125.8" x2="547.8" y2="537.5"/><line x1="131.1" y1="130.8" x2="542.8" y2="542.5"/><line x1="126.2" y1="135.7" x2="537.9" y2="547.4"/><line x1="121.2" y1="140.7" x2="532.9" y2="552.4"/><line x1="116.3" y1="145.6" x2="528" y2="557.3"/><line x1="111.3" y1="150.6" x2="523" y2="562.3"/><line x1="106.4" y1="155.5" x2="518.1" y2="567.2"/><line x1="101.4" y1="160.5" x2="513.1" y2="572.2"/><line x1="96.5" y1="165.4" x2="508.2" y2="577.1"/><line x1="91.5" y1="170.4" x2="503.2" y2="582.1"/></g><path d="M618.2 221.1 L751.2 286 L746 296.8 L613 231.9 Z"/><path d="M340.5 83.4 L619.1 219.3 L613 231.9 L334.3 96 Z"/><line x1="344.1" y1="89.6" x2="611.9" y2="220.3"/><path d="M352.3 104.8 L595 223.1 L591.5 230.3 L348.8 111.9 Z"/><path class="cl" d="M154 294 A600 600 0 0 1 214.7 31"/><path d="M213.9 39.9 L214.7 31 L208.1 37.1"/><text class="word" x="118" y="214" text-anchor="end" font-size="17">lid swing</text><line x1="200" y1="476" x2="200" y2="528"/><line x1="760" y1="476" x2="760" y2="528"/><line x1="200" y1="522" x2="760" y2="522"/><path d="M751.6 525.2 L760 522 L751.6 518.8"/><path d="M208.4 518.8 L200 522 L208.4 525.2"/><text x="480" y="514" text-anchor="middle" font-size="17">overall width</text><line x1="766" y1="300" x2="832" y2="300"/><line x1="766" y1="458" x2="832" y2="458"/><line x1="826" y1="300" x2="826" y2="458"/><path d="M822.8 449.6 L826 458 L829.2 449.6"/><path d="M829.2 308.4 L826 300 L822.8 308.4"/><text x="834" y="379" text-anchor="middle" font-size="17" transform="rotate(90 834 379)">interior depth</text><path d="M478.9 153.2 L530 86 L570 86"/><circle cx="478.9" cy="153.2" r="2.2"/><text class="word" x="577" y="92" font-size="17">display and touch panel</text><text class="key" x="577" y="101.7" font-size="43.6">a</text><path d="M759 289 L800 232 L840 232"/><circle cx="759" cy="289" r="2.2"/><text class="word" x="847" y="237.9" font-size="17">hinge pin</text><text class="key" x="847" y="247.7" font-size="43.6">b</text><path d="M232 288 L168 262 L150 262"/><circle cx="232" cy="288" r="2.2"/><text class="word" x="143" y="267.9" text-anchor="end" font-size="17">lid, closed</text><text class="key" x="143" y="277.7" text-anchor="end" font-size="43.6">c</text><path d="M218 370 L240 340 L300 340"/><circle cx="218" cy="370" r="2.2"/><text class="word" x="307" y="345.9" font-size="17">INMP441 microphone</text><text class="key" x="307" y="355.7" font-size="43.6">d</text><path d="M360 427 L340 560 L300 560"/><circle cx="360" cy="427" r="2.2"/><text class="word" x="293" y="566" text-anchor="end" font-size="17">ESP32 on breadboard</text><text class="key" x="293" y="575.7" text-anchor="end" font-size="43.6">e</text><path d="M646 430 L660 560 L700 560"/><circle cx="646" cy="430" r="2.2"/><text class="word" x="707" y="566" font-size="17">18650 cell on charge shield</text><text class="key" x="707" y="575.7" font-size="43.6">f</text></svg>
+<!-- /FIG:enclosure -->
+            <figcaption>
+              <span class="fig__no">Fig. 5.</span>
+              Section through the hinged enclosure, lid partly open; the dashed outline shows it closed.
+              <span class="fig__key">a, display and touch panel; b, hinge pin; c, lid closed; d, INMP441 microphone; e, ESP32 on breadboard; f, 18650 cell on charge shield.</span>
+            </figcaption>
+          </figure>
+
+          <figure class="sec__half-l fig">
+            <div class="placeholder">
+              <svg viewBox="0 0 400 300" preserveAspectRatio="none" role="img" aria-labelledby="ph1-t ph1-d">
+                <title id="ph1-t">Image placeholder</title>
+                <desc id="ph1-d">An empty frame crossed by two diagonal hairlines, marking where a CAD screenshot will go.</desc>
+                <path d="M0 0 L400 300 M400 0 L0 300" fill="none" stroke="#FAFCF5" stroke-width="1" vector-effect="non-scaling-stroke" opacity="0.5" />
+              </svg>
+              <p><strong>Placeholder</strong> Fusion 360 screenshot of the enclosure, lid open. To be added as assets/task-manager/cad-enclosure.jpg</p>
+            </div>
+            <figcaption><span class="fig__no">Fig. 6.</span> The enclosure model in Fusion 360. Image to come.</figcaption>
+          </figure>
+        </div>
+      </section>
+    </article>
+
+    <hr class="rule wrap-rule" />
+
+    <nav class="nextnav wrap" aria-label="Next project">
+      <div class="grid">
+        <p><span class="byline">Next project</span><br /><a href="wind-turbine.html">A wind turbine that had to lift and light</a></p>
       </div>
-    </section>
-
-    <!-- ============ Next ============ -->
-    <section class="nextnav">
-      <a href="wind-turbine.html">
-        <div>
-          <span>NEXT PROJECT</span>
-          <strong>Small-Scale Wind Turbine</strong>
-        </div>
-        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-      </a>
-    </section>
-
-    <!-- Title block footer -->
-    <footer class="titleblock">
-      <div class="tb__row tb__row--top">
-        <div class="tb__cell"><span>DRAWN BY</span><strong>C. MEJIA</strong></div>
-        <div class="tb__cell"><span>SCHOOL</span><strong>STANFORD</strong></div>
-        <div class="tb__cell"><span>DATE</span><strong id="tbDate">——</strong></div>
-        <div class="tb__cell"><span>SCALE</span><strong>NTS</strong></div>
-        <div class="tb__cell"><span>UNITS</span><strong>mm</strong></div>
-        <div class="tb__cell"><span>SHEET</span><strong>1 / 1</strong></div>
-      </div>
-      <div class="tb__row tb__row--bottom">
-        <div class="tb__title">
-          <span>TITLE</span>
-          <strong>Automated Task Management System · Detail Sheet</strong>
-        </div>
-        <div class="tb__dwg">
-          <span>DWG N°</span>
-          <strong>CM-002</strong>
-        </div>
-        <div class="tb__rev">
-          <span>REV</span>
-          <strong>01</strong>
-        </div>
-      </div>
-    </footer>
-
+    </nav>
   </main>
 
-  <script type="module" src="../script.js?v=6"></script>
+  <footer class="footer band">
+    <div class="wrap">
+      <p class="small">© 2026 Cristian Mejia</p>
+      <p class="small">Text, drawings and photographs are my own unless a caption says otherwise.</p>
+    </div>
+  </footer>
 </body>
 </html>

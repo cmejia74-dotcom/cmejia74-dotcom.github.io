@@ -3,500 +3,293 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Cristian Mejia — Stanford Mechanical Engineering portfolio. CAD design, embedded hardware, and fabrication." />
   <title>Cristian Mejia — Mechanical Engineering Portfolio</title>
+  <meta name="description" content="Cristian Mejia, Stanford Mechanical Engineering. Write-ups of things I've designed and built: a voice-driven ESP32 task manager and a small drag-rotor wind turbine." />
+  <meta name="theme-color" content="#1B2F0A" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=6" />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=8" />
 </head>
 <body>
+  <a class="skip" href="#main">Skip to content</a>
 
-  <!-- Boot / schematic loader -->
-  <div class="boot" id="boot" aria-hidden="true">
-    <div class="boot__grid"></div>
-    <div class="boot__panel">
-      <div class="boot__line">> INIT AXIS.SYS</div>
-      <div class="boot__line">> LOADING DRAWINGS <span class="boot__dots"></span></div>
-      <div class="boot__bar"><span></span></div>
-      <div class="boot__line boot__line--muted">rev. 04 · ISO 128 · mm</div>
-    </div>
-  </div>
 
-  <!-- Crosshair cursor -->
-  <div class="cursor" id="cursor" aria-hidden="true">
-    <div class="cursor__h"></div>
-    <div class="cursor__v"></div>
-    <div class="cursor__dot"></div>
-    <div class="cursor__label" id="cursorLabel">X: 000  Y: 000</div>
-  </div>
-
-  <!-- Blueprint background -->
-  <div class="blueprint" aria-hidden="true"></div>
-
-  <!-- Corner ticks / registration marks -->
-  <svg class="ticks ticks--tl" viewBox="0 0 60 60" aria-hidden="true"><path d="M0 0 H30 M0 0 V30" /></svg>
-  <svg class="ticks ticks--tr" viewBox="0 0 60 60" aria-hidden="true"><path d="M60 0 H30 M60 0 V30" /></svg>
-  <svg class="ticks ticks--bl" viewBox="0 0 60 60" aria-hidden="true"><path d="M0 60 H30 M0 60 V30" /></svg>
-  <svg class="ticks ticks--br" viewBox="0 0 60 60" aria-hidden="true"><path d="M60 60 H30 M60 60 V30" /></svg>
-
-  <!-- Nav -->
-  <header class="nav">
-    <a class="nav__brand" href="#top">
-      <svg class="nav__logo" viewBox="0 0 40 40" width="22" height="22" aria-hidden="true">
-        <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="1.2" />
-        <circle cx="20" cy="20" r="3" fill="currentColor" />
-        <path d="M20 4 V10 M20 30 V36 M4 20 H10 M30 20 H36" stroke="currentColor" stroke-width="1.2" />
-      </svg>
-      <span>C.MEJIA<span class="nav__brand-dim">/ME</span></span>
-    </a>
-    <nav class="nav__links" aria-label="Primary">
-      <a href="#work">01 · Work</a>
-      <a href="#about">02 · About</a>
-      <a href="#skills">03 · Skills</a>
-      <a href="#contact">04 · Contact</a>
+  <header class="masthead wrap">
+    <a class="masthead__name" href="#main">Cristian Mejia <span>Mechanical engineering, Stanford</span></a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </nav>
-    <div class="nav__meta">
-      <span class="dot"></span>
-      <span id="clock">00:00:00 UTC</span>
-    </div>
   </header>
 
-  <main id="top">
+  <main id="main">
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero__left">
-        <div class="tag">
-          <span class="tag__code">CM-001</span>
-          <span class="tag__sep">|</span>
-          <span>ENGINEERING PORTFOLIO · 2025—2026</span>
-        </div>
-        <h1 class="hero__title">
-          <span class="line"><span class="num">A</span>Cristian Mejia's</span>
-          <span class="line accent"><span class="num">B</span><em>Engineering</em></span>
-          <span class="line"><span class="num">C</span>Portfolio</span>
-        </h1>
-        <div class="hero__byline">
-          <span class="hero__byline-rule"></span>
-          <span>Selected design studies, CAD, and fabrication — documented in progress.</span>
-        </div>
-        <p class="hero__lede">
-          I'm an <strong>undergraduate at Stanford</strong>, majoring in Mechanical
-          Engineering with a minor in Aeronautics &amp; Astronautics. This site is where I
-          document what I design and build, starting with my coursework.
-        </p>
-        <div class="hero__cta">
-          <a href="#work" class="btn btn--primary">
-            <span>View the work</span>
-            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
-          </a>
-          <a href="#contact" class="btn btn--ghost">Get in touch →</a>
-        </div>
-        <dl class="hero__stats">
-          <div><dt>School</dt><dd>Stanford</dd></div>
-          <div><dt>Class</dt><dd>'29</dd></div>
-          <div><dt>Focus</dt><dd>ME + A/A</dd></div>
-          <div><dt>Units</dt><dd>mm / in</dd></div>
-        </dl>
-      </div>
+    <!-- Hero -->
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="grid">
+        <h1 class="hero__head" id="hero-title">Mechanical Engineering Portfolio</h1>
 
-      <div class="hero__right">
-        <!-- 3D canvas + annotation overlay -->
-        <div class="stage" id="stage">
-          <canvas id="gear"></canvas>
-          <svg class="annot" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-            <!-- Flight callouts -->
-            <g class="annot__meas">
-              <line x1="80" y1="120" x2="220" y2="200" />
-              <circle cx="80" cy="120" r="3" />
-              <text x="40" y="110">MACH 1.8</text>
-            </g>
-            <g class="annot__meas annot__meas--2">
-              <line x1="520" y1="160" x2="380" y2="230" />
-              <circle cx="520" cy="160" r="3" />
-              <text x="470" y="150">ALT 30,000 FT</text>
-            </g>
-            <g class="annot__meas annot__meas--3">
-              <line x1="540" y1="460" x2="380" y2="380" />
-              <circle cx="540" cy="460" r="3" />
-              <text x="480" y="480">HDG 045°</text>
-            </g>
-            <g class="annot__meas annot__meas--4">
-              <line x1="80" y1="480" x2="220" y2="400" />
-              <circle cx="80" cy="120" r="3" />
-              <text x="40" y="495">AOA 4°</text>
-            </g>
-
-            <!-- Reticle -->
-            <g class="annot__reticle">
-              <circle cx="300" cy="300" r="90" />
-              <circle cx="300" cy="300" r="140" />
-              <line x1="300" y1="150" x2="300" y2="450" />
-              <line x1="150" y1="300" x2="450" y2="300" />
-            </g>
-          </svg>
-          <div class="stage__badge">
-            <span class="stage__badge-dot"></span>
-            SIM · drag to look
-          </div>
-          <div class="stage__label">
-            <span>AIRFRAME</span>
-            <strong>F/A-CM-01</strong>
-          </div>
+        <div class="hero__text">
+          <p class="standfirst">
+            I’m Cristian Mejia, an undergraduate at Stanford majoring in Mechanical Engineering
+            and planning to minor in Aeronautics and Astronautics. This is where I write up what I make:
+            what I was trying to do, how I drew it, and what happened when it met the real world.
+          </p>
+          <p class="byline">Stanford University · Class of 2029</p>
         </div>
-      </div>
 
-      <div class="hero__scroll">
-        <span>SCROLL</span>
-        <div class="hero__scroll-line"></div>
+        <figure class="hero__fig fig">
+<!-- FIG:generator -->
+<svg class="fig-art" viewBox="0 0 900 800" role="img" aria-labelledby="gen-t gen-d" fill="none" stroke="currentColor" stroke-width="1.1"><title id="gen-t">Cross-section of the six-magnet generator</title><desc id="gen-d">Schematic cross-section drawn in white hairlines. A hatched circular PLA shaft sits at the center with six rectangular magnets arranged radially around it at 60 degree intervals, each hatched as a cut section. A dash-dot circle marks the path the magnet tips sweep. Dotted curves between neighboring magnets suggest the magnetic field. A square box wall, hatched, surrounds the rotor with an air gap; bundles of copper wire, drawn as rows of small circles, sit against the top and bottom walls. Centerlines cross at the shaft, an angular dimension marks 60 degrees between two magnets, and leader lines point to labels for the shaft, a magnet, the winding, the box wall, the rotation path and the air gap.</desc><defs><clipPath id="gen-cut1"><path d="M222 172 L678 172 L678 628 L222 628 Z M237 187 L237 613 L663 613 L663 187 Z" clip-rule="evenodd"/></clipPath><clipPath id="gen-cut2"><path d="M433 366 L433 280 L467 280 L467 366 Z" clip-rule="nonzero"/></clipPath><clipPath id="gen-cut3"><path d="M470.9 368.3 L545.4 325.3 L562.4 354.7 L487.9 397.7 Z" clip-rule="nonzero"/></clipPath><clipPath id="gen-cut4"><path d="M487.9 402.3 L562.4 445.3 L545.4 474.7 L470.9 431.7 Z" clip-rule="nonzero"/></clipPath><clipPath id="gen-cut5"><path d="M467 434 L467 520 L433 520 L433 434 Z" clip-rule="nonzero"/></clipPath><clipPath id="gen-cut6"><path d="M429.1 431.7 L354.6 474.7 L337.6 445.3 L412.1 402.3 Z" clip-rule="nonzero"/></clipPath><clipPath id="gen-cut7"><path d="M412.1 397.7 L337.6 354.7 L354.6 325.3 L429.1 368.3 Z" clip-rule="nonzero"/></clipPath><clipPath id="gen-cut8"><path d="M424 400 A26 26 0 1 0 476 400 A26 26 0 1 0 424 400 Z" clip-rule="nonzero"/></clipPath></defs><g class="grid"><line x1="30" y1="20" x2="30" y2="780"/><line x1="70" y1="20" x2="70" y2="780"/><line x1="110" y1="20" x2="110" y2="780"/><line x1="150" y1="20" x2="150" y2="780"/><line x1="190" y1="20" x2="190" y2="780"/><line x1="230" y1="20" x2="230" y2="780"/><line x1="270" y1="20" x2="270" y2="780"/><line x1="310" y1="20" x2="310" y2="780"/><line x1="350" y1="20" x2="350" y2="780"/><line x1="390" y1="20" x2="390" y2="780"/><line x1="430" y1="20" x2="430" y2="780"/><line x1="470" y1="20" x2="470" y2="780"/><line x1="510" y1="20" x2="510" y2="780"/><line x1="550" y1="20" x2="550" y2="780"/><line x1="590" y1="20" x2="590" y2="780"/><line x1="630" y1="20" x2="630" y2="780"/><line x1="670" y1="20" x2="670" y2="780"/><line x1="710" y1="20" x2="710" y2="780"/><line x1="750" y1="20" x2="750" y2="780"/><line x1="790" y1="20" x2="790" y2="780"/><line x1="830" y1="20" x2="830" y2="780"/><line x1="870" y1="20" x2="870" y2="780"/><line x1="30" y1="20" x2="870" y2="20"/><line x1="30" y1="60" x2="870" y2="60"/><line x1="30" y1="100" x2="870" y2="100"/><line x1="30" y1="140" x2="870" y2="140"/><line x1="30" y1="180" x2="870" y2="180"/><line x1="30" y1="220" x2="870" y2="220"/><line x1="30" y1="260" x2="870" y2="260"/><line x1="30" y1="300" x2="870" y2="300"/><line x1="30" y1="340" x2="870" y2="340"/><line x1="30" y1="380" x2="870" y2="380"/><line x1="30" y1="420" x2="870" y2="420"/><line x1="30" y1="460" x2="870" y2="460"/><line x1="30" y1="500" x2="870" y2="500"/><line x1="30" y1="540" x2="870" y2="540"/><line x1="30" y1="580" x2="870" y2="580"/><line x1="30" y1="620" x2="870" y2="620"/><line x1="30" y1="660" x2="870" y2="660"/><line x1="30" y1="700" x2="870" y2="700"/><line x1="30" y1="740" x2="870" y2="740"/><line x1="30" y1="780" x2="870" y2="780"/></g><g class="h" clip-path="url(#gen-cut1)"><line x1="450" y1="-65.9" x2="915.9" y2="400"/><line x1="445.1" y1="-60.9" x2="910.9" y2="404.9"/><line x1="440.1" y1="-56" x2="906" y2="409.9"/><line x1="435.2" y1="-51.1" x2="901.1" y2="414.8"/><line x1="430.2" y1="-46.1" x2="896.1" y2="419.8"/><line x1="425.3" y1="-41.2" x2="891.2" y2="424.7"/><line x1="420.3" y1="-36.2" x2="886.2" y2="429.7"/><line x1="415.4" y1="-31.3" x2="881.3" y2="434.6"/><line x1="410.4" y1="-26.3" x2="876.3" y2="439.6"/><line x1="405.5" y1="-21.4" x2="871.4" y2="444.5"/><line x1="400.5" y1="-16.4" x2="866.4" y2="449.5"/><line x1="395.6" y1="-11.5" x2="861.5" y2="454.4"/><line x1="390.6" y1="-6.5" x2="856.5" y2="459.4"/><line x1="385.7" y1="-1.6" x2="851.6" y2="464.3"/><line x1="380.7" y1="3.4" x2="846.6" y2="469.3"/><line x1="375.8" y1="8.3" x2="841.7" y2="474.2"/><line x1="370.8" y1="13.3" x2="836.7" y2="479.2"/><line x1="365.9" y1="18.2" x2="831.8" y2="484.1"/><line x1="360.9" y1="23.2" x2="826.8" y2="489.1"/><line x1="356" y1="28.1" x2="821.9" y2="494"/><line x1="351" y1="33.1" x2="816.9" y2="499"/><line x1="346.1" y1="38" x2="812" y2="503.9"/><line x1="341.1" y1="43" x2="807" y2="508.9"/><line x1="336.2" y1="47.9" x2="802.1" y2="513.8"/><line x1="331.2" y1="52.9" x2="797.1" y2="518.8"/><line x1="326.3" y1="57.8" x2="792.2" y2="523.7"/><line x1="321.3" y1="62.8" x2="787.2" y2="528.7"/><line x1="316.4" y1="67.7" x2="782.3" y2="533.6"/><line x1="311.4" y1="72.7" x2="777.3" y2="538.6"/><line x1="306.5" y1="77.6" x2="772.4" y2="543.5"/><line x1="301.5" y1="82.6" x2="767.4" y2="548.5"/><line x1="296.6" y1="87.5" x2="762.5" y2="553.4"/><line x1="291.6" y1="92.5" x2="757.5" y2="558.4"/><line x1="286.7" y1="97.4" x2="752.6" y2="563.3"/><line x1="281.7" y1="102.4" x2="747.6" y2="568.3"/><line x1="276.8" y1="107.3" x2="742.7" y2="573.2"/><line x1="271.8" y1="112.3" x2="737.7" y2="578.2"/><line x1="266.9" y1="117.2" x2="732.8" y2="583.1"/><line x1="261.9" y1="122.2" x2="727.8" y2="588.1"/><line x1="257" y1="127.1" x2="722.9" y2="593"/><line x1="252" y1="132.1" x2="717.9" y2="598"/><line x1="247.1" y1="137" x2="713" y2="602.9"/><line x1="242.1" y1="142" x2="708" y2="607.9"/><line x1="237.2" y1="146.9" x2="703.1" y2="612.8"/><line x1="232.2" y1="151.9" x2="698.1" y2="617.8"/><line x1="227.3" y1="156.8" x2="693.2" y2="622.7"/><line x1="222.3" y1="161.8" x2="688.2" y2="627.7"/><line x1="217.4" y1="166.7" x2="683.3" y2="632.6"/><line x1="212.4" y1="171.7" x2="678.3" y2="637.6"/><line x1="207.5" y1="176.6" x2="673.4" y2="642.5"/><line x1="202.5" y1="181.6" x2="668.4" y2="647.5"/><line x1="197.6" y1="186.5" x2="663.5" y2="652.4"/><line x1="192.6" y1="191.5" x2="658.5" y2="657.4"/><line x1="187.7" y1="196.4" x2="653.6" y2="662.3"/><line x1="182.7" y1="201.4" x2="648.6" y2="667.3"/><line x1="177.8" y1="206.3" x2="643.7" y2="672.2"/><line x1="172.8" y1="211.3" x2="638.7" y2="677.2"/><line x1="167.9" y1="216.2" x2="633.8" y2="682.1"/><line x1="162.9" y1="221.2" x2="628.8" y2="687.1"/><line x1="158" y1="226.1" x2="623.9" y2="692"/><line x1="153" y1="231.1" x2="618.9" y2="697"/><line x1="148.1" y1="236" x2="614" y2="701.9"/><line x1="143.1" y1="241" x2="609" y2="706.9"/><line x1="138.2" y1="245.9" x2="604.1" y2="711.8"/><line x1="133.2" y1="250.9" x2="599.1" y2="716.8"/><line x1="128.3" y1="255.8" x2="594.2" y2="721.7"/><line x1="123.3" y1="260.8" x2="589.2" y2="726.7"/><line x1="118.4" y1="265.7" x2="584.3" y2="731.6"/><line x1="113.4" y1="270.7" x2="579.3" y2="736.6"/><line x1="108.5" y1="275.6" x2="574.4" y2="741.5"/><line x1="103.5" y1="280.6" x2="569.4" y2="746.5"/><line x1="98.6" y1="285.5" x2="564.5" y2="751.4"/><line x1="93.6" y1="290.5" x2="559.5" y2="756.4"/><line x1="88.7" y1="295.4" x2="554.6" y2="761.3"/><line x1="83.7" y1="300.4" x2="549.6" y2="766.3"/><line x1="78.8" y1="305.3" x2="544.7" y2="771.2"/><line x1="73.8" y1="310.3" x2="539.7" y2="776.2"/><line x1="68.9" y1="315.2" x2="534.8" y2="781.1"/><line x1="63.9" y1="320.2" x2="529.8" y2="786.1"/><line x1="59" y1="325.1" x2="524.9" y2="791"/><line x1="54" y1="330.1" x2="519.9" y2="796"/><line x1="49.1" y1="335" x2="515" y2="800.9"/><line x1="44.1" y1="340" x2="510" y2="805.9"/><line x1="39.2" y1="344.9" x2="505.1" y2="810.8"/><line x1="34.2" y1="349.9" x2="500.1" y2="815.8"/><line x1="29.3" y1="354.8" x2="495.2" y2="820.7"/><line x1="24.3" y1="359.8" x2="490.2" y2="825.7"/><line x1="19.4" y1="364.7" x2="485.3" y2="830.6"/><line x1="14.4" y1="369.7" x2="480.3" y2="835.6"/><line x1="9.5" y1="374.6" x2="475.4" y2="840.5"/><line x1="4.5" y1="379.6" x2="470.4" y2="845.5"/><line x1="-0.4" y1="384.5" x2="465.5" y2="850.4"/><line x1="-5.4" y1="389.5" x2="460.5" y2="855.4"/><line x1="-10.3" y1="394.4" x2="455.6" y2="860.3"/><line x1="-15.3" y1="399.4" x2="450.6" y2="865.3"/></g><path d="M222 172 L678 172 L678 628 L222 628 Z M237 187 L237 613 L663 613 L663 187 Z" fill-rule="evenodd"/><rect x="270" y="132" width="360" height="36"/><circle cx="282" cy="138.5" r="4.2"/><circle cx="293.6" cy="138.5" r="4.2"/><circle cx="305.2" cy="138.5" r="4.2"/><circle cx="316.8" cy="138.5" r="4.2"/><circle cx="328.4" cy="138.5" r="4.2"/><circle cx="340" cy="138.5" r="4.2"/><circle cx="351.6" cy="138.5" r="4.2"/><circle cx="363.2" cy="138.5" r="4.2"/><circle cx="374.8" cy="138.5" r="4.2"/><circle cx="386.4" cy="138.5" r="4.2"/><circle cx="398" cy="138.5" r="4.2"/><circle cx="409.6" cy="138.5" r="4.2"/><circle cx="421.2" cy="138.5" r="4.2"/><circle cx="432.8" cy="138.5" r="4.2"/><circle cx="444.4" cy="138.5" r="4.2"/><circle cx="456" cy="138.5" r="4.2"/><circle cx="467.6" cy="138.5" r="4.2"/><circle cx="479.2" cy="138.5" r="4.2"/><circle cx="490.8" cy="138.5" r="4.2"/><circle cx="502.4" cy="138.5" r="4.2"/><circle cx="514" cy="138.5" r="4.2"/><circle cx="525.6" cy="138.5" r="4.2"/><circle cx="537.2" cy="138.5" r="4.2"/><circle cx="548.8" cy="138.5" r="4.2"/><circle cx="560.4" cy="138.5" r="4.2"/><circle cx="572" cy="138.5" r="4.2"/><circle cx="583.6" cy="138.5" r="4.2"/><circle cx="595.2" cy="138.5" r="4.2"/><circle cx="606.8" cy="138.5" r="4.2"/><circle cx="618.4" cy="138.5" r="4.2"/><circle cx="282" cy="150" r="4.2"/><circle cx="293.6" cy="150" r="4.2"/><circle cx="305.2" cy="150" r="4.2"/><circle cx="316.8" cy="150" r="4.2"/><circle cx="328.4" cy="150" r="4.2"/><circle cx="340" cy="150" r="4.2"/><circle cx="351.6" cy="150" r="4.2"/><circle cx="363.2" cy="150" r="4.2"/><circle cx="374.8" cy="150" r="4.2"/><circle cx="386.4" cy="150" r="4.2"/><circle cx="398" cy="150" r="4.2"/><circle cx="409.6" cy="150" r="4.2"/><circle cx="421.2" cy="150" r="4.2"/><circle cx="432.8" cy="150" r="4.2"/><circle cx="444.4" cy="150" r="4.2"/><circle cx="456" cy="150" r="4.2"/><circle cx="467.6" cy="150" r="4.2"/><circle cx="479.2" cy="150" r="4.2"/><circle cx="490.8" cy="150" r="4.2"/><circle cx="502.4" cy="150" r="4.2"/><circle cx="514" cy="150" r="4.2"/><circle cx="525.6" cy="150" r="4.2"/><circle cx="537.2" cy="150" r="4.2"/><circle cx="548.8" cy="150" r="4.2"/><circle cx="560.4" cy="150" r="4.2"/><circle cx="572" cy="150" r="4.2"/><circle cx="583.6" cy="150" r="4.2"/><circle cx="595.2" cy="150" r="4.2"/><circle cx="606.8" cy="150" r="4.2"/><circle cx="618.4" cy="150" r="4.2"/><circle cx="282" cy="161.5" r="4.2"/><circle cx="293.6" cy="161.5" r="4.2"/><circle cx="305.2" cy="161.5" r="4.2"/><circle cx="316.8" cy="161.5" r="4.2"/><circle cx="328.4" cy="161.5" r="4.2"/><circle cx="340" cy="161.5" r="4.2"/><circle cx="351.6" cy="161.5" r="4.2"/><circle cx="363.2" cy="161.5" r="4.2"/><circle cx="374.8" cy="161.5" r="4.2"/><circle cx="386.4" cy="161.5" r="4.2"/><circle cx="398" cy="161.5" r="4.2"/><circle cx="409.6" cy="161.5" r="4.2"/><circle cx="421.2" cy="161.5" r="4.2"/><circle cx="432.8" cy="161.5" r="4.2"/><circle cx="444.4" cy="161.5" r="4.2"/><circle cx="456" cy="161.5" r="4.2"/><circle cx="467.6" cy="161.5" r="4.2"/><circle cx="479.2" cy="161.5" r="4.2"/><circle cx="490.8" cy="161.5" r="4.2"/><circle cx="502.4" cy="161.5" r="4.2"/><circle cx="514" cy="161.5" r="4.2"/><circle cx="525.6" cy="161.5" r="4.2"/><circle cx="537.2" cy="161.5" r="4.2"/><circle cx="548.8" cy="161.5" r="4.2"/><circle cx="560.4" cy="161.5" r="4.2"/><circle cx="572" cy="161.5" r="4.2"/><circle cx="583.6" cy="161.5" r="4.2"/><circle cx="595.2" cy="161.5" r="4.2"/><circle cx="606.8" cy="161.5" r="4.2"/><circle cx="618.4" cy="161.5" r="4.2"/><rect x="270" y="632" width="360" height="36"/><circle cx="282" cy="638.5" r="4.2"/><circle cx="293.6" cy="638.5" r="4.2"/><circle cx="305.2" cy="638.5" r="4.2"/><circle cx="316.8" cy="638.5" r="4.2"/><circle cx="328.4" cy="638.5" r="4.2"/><circle cx="340" cy="638.5" r="4.2"/><circle cx="351.6" cy="638.5" r="4.2"/><circle cx="363.2" cy="638.5" r="4.2"/><circle cx="374.8" cy="638.5" r="4.2"/><circle cx="386.4" cy="638.5" r="4.2"/><circle cx="398" cy="638.5" r="4.2"/><circle cx="409.6" cy="638.5" r="4.2"/><circle cx="421.2" cy="638.5" r="4.2"/><circle cx="432.8" cy="638.5" r="4.2"/><circle cx="444.4" cy="638.5" r="4.2"/><circle cx="456" cy="638.5" r="4.2"/><circle cx="467.6" cy="638.5" r="4.2"/><circle cx="479.2" cy="638.5" r="4.2"/><circle cx="490.8" cy="638.5" r="4.2"/><circle cx="502.4" cy="638.5" r="4.2"/><circle cx="514" cy="638.5" r="4.2"/><circle cx="525.6" cy="638.5" r="4.2"/><circle cx="537.2" cy="638.5" r="4.2"/><circle cx="548.8" cy="638.5" r="4.2"/><circle cx="560.4" cy="638.5" r="4.2"/><circle cx="572" cy="638.5" r="4.2"/><circle cx="583.6" cy="638.5" r="4.2"/><circle cx="595.2" cy="638.5" r="4.2"/><circle cx="606.8" cy="638.5" r="4.2"/><circle cx="618.4" cy="638.5" r="4.2"/><circle cx="282" cy="650" r="4.2"/><circle cx="293.6" cy="650" r="4.2"/><circle cx="305.2" cy="650" r="4.2"/><circle cx="316.8" cy="650" r="4.2"/><circle cx="328.4" cy="650" r="4.2"/><circle cx="340" cy="650" r="4.2"/><circle cx="351.6" cy="650" r="4.2"/><circle cx="363.2" cy="650" r="4.2"/><circle cx="374.8" cy="650" r="4.2"/><circle cx="386.4" cy="650" r="4.2"/><circle cx="398" cy="650" r="4.2"/><circle cx="409.6" cy="650" r="4.2"/><circle cx="421.2" cy="650" r="4.2"/><circle cx="432.8" cy="650" r="4.2"/><circle cx="444.4" cy="650" r="4.2"/><circle cx="456" cy="650" r="4.2"/><circle cx="467.6" cy="650" r="4.2"/><circle cx="479.2" cy="650" r="4.2"/><circle cx="490.8" cy="650" r="4.2"/><circle cx="502.4" cy="650" r="4.2"/><circle cx="514" cy="650" r="4.2"/><circle cx="525.6" cy="650" r="4.2"/><circle cx="537.2" cy="650" r="4.2"/><circle cx="548.8" cy="650" r="4.2"/><circle cx="560.4" cy="650" r="4.2"/><circle cx="572" cy="650" r="4.2"/><circle cx="583.6" cy="650" r="4.2"/><circle cx="595.2" cy="650" r="4.2"/><circle cx="606.8" cy="650" r="4.2"/><circle cx="618.4" cy="650" r="4.2"/><circle cx="282" cy="661.5" r="4.2"/><circle cx="293.6" cy="661.5" r="4.2"/><circle cx="305.2" cy="661.5" r="4.2"/><circle cx="316.8" cy="661.5" r="4.2"/><circle cx="328.4" cy="661.5" r="4.2"/><circle cx="340" cy="661.5" r="4.2"/><circle cx="351.6" cy="661.5" r="4.2"/><circle cx="363.2" cy="661.5" r="4.2"/><circle cx="374.8" cy="661.5" r="4.2"/><circle cx="386.4" cy="661.5" r="4.2"/><circle cx="398" cy="661.5" r="4.2"/><circle cx="409.6" cy="661.5" r="4.2"/><circle cx="421.2" cy="661.5" r="4.2"/><circle cx="432.8" cy="661.5" r="4.2"/><circle cx="444.4" cy="661.5" r="4.2"/><circle cx="456" cy="661.5" r="4.2"/><circle cx="467.6" cy="661.5" r="4.2"/><circle cx="479.2" cy="661.5" r="4.2"/><circle cx="490.8" cy="661.5" r="4.2"/><circle cx="502.4" cy="661.5" r="4.2"/><circle cx="514" cy="661.5" r="4.2"/><circle cx="525.6" cy="661.5" r="4.2"/><circle cx="537.2" cy="661.5" r="4.2"/><circle cx="548.8" cy="661.5" r="4.2"/><circle cx="560.4" cy="661.5" r="4.2"/><circle cx="572" cy="661.5" r="4.2"/><circle cx="583.6" cy="661.5" r="4.2"/><circle cx="595.2" cy="661.5" r="4.2"/><circle cx="606.8" cy="661.5" r="4.2"/><circle cx="618.4" cy="661.5" r="4.2"/><circle class="cl" cx="450" cy="400" r="138"/><path class="fl" d="M468.8 281.5 Q539 245.8 543.3 324.5"/><path class="fl" d="M471.6 298.3 Q520 278.8 527.3 330.4"/><path class="fl" d="M562 357 Q628 400 562 443"/><path class="fl" d="M548.9 367.9 Q590 400 548.9 432.1"/><path class="fl" d="M543.3 475.5 Q539 554.2 468.8 518.5"/><path class="fl" d="M527.3 469.6 Q520 521.2 471.6 501.7"/><path class="fl" d="M431.2 518.5 Q361 554.2 356.7 475.5"/><path class="fl" d="M428.4 501.7 Q380 521.2 372.7 469.6"/><path class="fl" d="M338 443 Q272 400 338 357"/><path class="fl" d="M351.1 432.1 Q310 400 351.1 367.9"/><path class="fl" d="M356.7 324.5 Q361 245.8 431.2 281.5"/><path class="fl" d="M372.7 330.4 Q380 278.8 428.4 298.3"/><g class="h" clip-path="url(#gen-cut2)"><line x1="376.1" y1="323" x2="450" y2="249.1"/><line x1="380.4" y1="327.2" x2="454.2" y2="253.4"/><line x1="384.6" y1="331.5" x2="458.5" y2="257.6"/><line x1="388.9" y1="335.7" x2="462.7" y2="261.9"/><line x1="393.1" y1="340" x2="467" y2="266.1"/><line x1="397.3" y1="344.2" x2="471.2" y2="270.3"/><line x1="401.6" y1="348.5" x2="475.5" y2="274.6"/><line x1="405.8" y1="352.7" x2="479.7" y2="278.8"/><line x1="410.1" y1="356.9" x2="483.9" y2="283.1"/><line x1="414.3" y1="361.2" x2="488.2" y2="287.3"/><line x1="418.5" y1="365.4" x2="492.4" y2="291.5"/><line x1="422.8" y1="369.7" x2="496.7" y2="295.8"/><line x1="427" y1="373.9" x2="500.9" y2="300"/><line x1="431.3" y1="378.2" x2="505.2" y2="304.3"/><line x1="435.5" y1="382.4" x2="509.4" y2="308.5"/><line x1="439.8" y1="386.6" x2="513.6" y2="312.8"/><line x1="444" y1="390.9" x2="517.9" y2="317"/><line x1="448.2" y1="395.1" x2="522.1" y2="321.2"/></g><path d="M433 366 L433 280 L467 280 L467 366 Z"/><g class="h" clip-path="url(#gen-cut3)"><line x1="425.7" y1="361.5" x2="516.7" y2="270.5"/><line x1="429.9" y1="365.7" x2="520.9" y2="274.7"/><line x1="434.2" y1="370" x2="525.2" y2="279"/><line x1="438.4" y1="374.2" x2="529.4" y2="283.2"/><line x1="442.7" y1="378.5" x2="533.7" y2="287.5"/><line x1="446.9" y1="382.7" x2="537.9" y2="291.7"/><line x1="451.1" y1="387" x2="542.1" y2="296"/><line x1="455.4" y1="391.2" x2="546.4" y2="300.2"/><line x1="459.6" y1="395.4" x2="550.6" y2="304.4"/><line x1="463.9" y1="399.7" x2="554.9" y2="308.7"/><line x1="468.1" y1="403.9" x2="559.1" y2="312.9"/><line x1="472.4" y1="408.2" x2="563.4" y2="317.2"/><line x1="476.6" y1="412.4" x2="567.6" y2="321.4"/><line x1="480.8" y1="416.7" x2="571.8" y2="325.7"/><line x1="485.1" y1="420.9" x2="576.1" y2="329.9"/><line x1="489.3" y1="425.1" x2="580.3" y2="334.1"/><line x1="493.6" y1="429.4" x2="584.6" y2="338.4"/><line x1="497.8" y1="433.6" x2="588.8" y2="342.6"/><line x1="502.1" y1="437.9" x2="593.1" y2="346.9"/><line x1="506.3" y1="442.1" x2="597.3" y2="351.1"/><line x1="510.5" y1="446.4" x2="601.5" y2="355.4"/><line x1="514.8" y1="450.6" x2="605.8" y2="359.6"/></g><path d="M470.9 368.3 L545.4 325.3 L562.4 354.7 L487.9 397.7 Z"/><g class="h" clip-path="url(#gen-cut4)"><line x1="425.7" y1="438.5" x2="516.7" y2="347.5"/><line x1="429.9" y1="442.7" x2="520.9" y2="351.7"/><line x1="434.2" y1="447" x2="525.2" y2="356"/><line x1="438.4" y1="451.2" x2="529.4" y2="360.2"/><line x1="442.7" y1="455.5" x2="533.7" y2="364.5"/><line x1="446.9" y1="459.7" x2="537.9" y2="368.7"/><line x1="451.1" y1="464" x2="542.1" y2="373"/><line x1="455.4" y1="468.2" x2="546.4" y2="377.2"/><line x1="459.6" y1="472.4" x2="550.6" y2="381.4"/><line x1="463.9" y1="476.7" x2="554.9" y2="385.7"/><line x1="468.1" y1="480.9" x2="559.1" y2="389.9"/><line x1="472.4" y1="485.2" x2="563.4" y2="394.2"/><line x1="476.6" y1="489.4" x2="567.6" y2="398.4"/><line x1="480.8" y1="493.7" x2="571.8" y2="402.7"/><line x1="485.1" y1="497.9" x2="576.1" y2="406.9"/><line x1="489.3" y1="502.1" x2="580.3" y2="411.1"/><line x1="493.6" y1="506.4" x2="584.6" y2="415.4"/><line x1="497.8" y1="510.6" x2="588.8" y2="419.6"/><line x1="502.1" y1="514.9" x2="593.1" y2="423.9"/><line x1="506.3" y1="519.1" x2="597.3" y2="428.1"/><line x1="510.5" y1="523.4" x2="601.5" y2="432.4"/><line x1="514.8" y1="527.6" x2="605.8" y2="436.6"/></g><path d="M487.9 402.3 L562.4 445.3 L545.4 474.7 L470.9 431.7 Z"/><g class="h" clip-path="url(#gen-cut5)"><line x1="376.1" y1="477" x2="450" y2="403.1"/><line x1="380.4" y1="481.2" x2="454.2" y2="407.4"/><line x1="384.6" y1="485.5" x2="458.5" y2="411.6"/><line x1="388.9" y1="489.7" x2="462.7" y2="415.9"/><line x1="393.1" y1="494" x2="467" y2="420.1"/><line x1="397.3" y1="498.2" x2="471.2" y2="424.3"/><line x1="401.6" y1="502.5" x2="475.5" y2="428.6"/><line x1="405.8" y1="506.7" x2="479.7" y2="432.8"/><line x1="410.1" y1="510.9" x2="483.9" y2="437.1"/><line x1="414.3" y1="515.2" x2="488.2" y2="441.3"/><line x1="418.5" y1="519.4" x2="492.4" y2="445.5"/><line x1="422.8" y1="523.7" x2="496.7" y2="449.8"/><line x1="427" y1="527.9" x2="500.9" y2="454"/><line x1="431.3" y1="532.2" x2="505.2" y2="458.3"/><line x1="435.5" y1="536.4" x2="509.4" y2="462.5"/><line x1="439.8" y1="540.6" x2="513.6" y2="466.8"/><line x1="444" y1="544.9" x2="517.9" y2="471"/><line x1="448.2" y1="549.1" x2="522.1" y2="475.2"/></g><path d="M467 434 L467 520 L433 520 L433 434 Z"/><g class="h" clip-path="url(#gen-cut6)"><line x1="292.3" y1="438.5" x2="383.3" y2="347.5"/><line x1="296.6" y1="442.7" x2="387.6" y2="351.7"/><line x1="300.8" y1="447" x2="391.8" y2="356"/><line x1="305" y1="451.2" x2="396" y2="360.2"/><line x1="309.3" y1="455.5" x2="400.3" y2="364.5"/><line x1="313.5" y1="459.7" x2="404.5" y2="368.7"/><line x1="317.8" y1="464" x2="408.8" y2="373"/><line x1="322" y1="468.2" x2="413" y2="377.2"/><line x1="326.3" y1="472.4" x2="417.3" y2="381.4"/><line x1="330.5" y1="476.7" x2="421.5" y2="385.7"/><line x1="334.7" y1="480.9" x2="425.7" y2="389.9"/><line x1="339" y1="485.2" x2="430" y2="394.2"/><line x1="343.2" y1="489.4" x2="434.2" y2="398.4"/><line x1="347.5" y1="493.7" x2="438.5" y2="402.7"/><line x1="351.7" y1="497.9" x2="442.7" y2="406.9"/><line x1="356" y1="502.1" x2="447" y2="411.1"/><line x1="360.2" y1="506.4" x2="451.2" y2="415.4"/><line x1="364.4" y1="510.6" x2="455.4" y2="419.6"/><line x1="368.7" y1="514.9" x2="459.7" y2="423.9"/><line x1="372.9" y1="519.1" x2="463.9" y2="428.1"/><line x1="377.2" y1="523.4" x2="468.2" y2="432.4"/><line x1="381.4" y1="527.6" x2="472.4" y2="436.6"/></g><path d="M429.1 431.7 L354.6 474.7 L337.6 445.3 L412.1 402.3 Z"/><g class="h" clip-path="url(#gen-cut7)"><line x1="292.3" y1="361.5" x2="383.3" y2="270.5"/><line x1="296.6" y1="365.7" x2="387.6" y2="274.7"/><line x1="300.8" y1="370" x2="391.8" y2="279"/><line x1="305" y1="374.2" x2="396" y2="283.2"/><line x1="309.3" y1="378.5" x2="400.3" y2="287.5"/><line x1="313.5" y1="382.7" x2="404.5" y2="291.7"/><line x1="317.8" y1="387" x2="408.8" y2="296"/><line x1="322" y1="391.2" x2="413" y2="300.2"/><line x1="326.3" y1="395.4" x2="417.3" y2="304.4"/><line x1="330.5" y1="399.7" x2="421.5" y2="308.7"/><line x1="334.7" y1="403.9" x2="425.7" y2="312.9"/><line x1="339" y1="408.2" x2="430" y2="317.2"/><line x1="343.2" y1="412.4" x2="434.2" y2="321.4"/><line x1="347.5" y1="416.7" x2="438.5" y2="325.7"/><line x1="351.7" y1="420.9" x2="442.7" y2="329.9"/><line x1="356" y1="425.1" x2="447" y2="334.1"/><line x1="360.2" y1="429.4" x2="451.2" y2="338.4"/><line x1="364.4" y1="433.6" x2="455.4" y2="342.6"/><line x1="368.7" y1="437.9" x2="459.7" y2="346.9"/><line x1="372.9" y1="442.1" x2="463.9" y2="351.1"/><line x1="377.2" y1="446.4" x2="468.2" y2="355.4"/><line x1="381.4" y1="450.6" x2="472.4" y2="359.6"/></g><path d="M412.1 397.7 L337.6 354.7 L354.6 325.3 L429.1 368.3 Z"/><g class="h" clip-path="url(#gen-cut8)"><line x1="450" y1="340.9" x2="509.1" y2="400"/><line x1="446.5" y1="344.5" x2="505.5" y2="403.5"/><line x1="442.9" y1="348" x2="502" y2="407.1"/><line x1="439.4" y1="351.5" x2="498.5" y2="410.6"/><line x1="435.9" y1="355.1" x2="494.9" y2="414.1"/><line x1="432.3" y1="358.6" x2="491.4" y2="417.7"/><line x1="428.8" y1="362.1" x2="487.9" y2="421.2"/><line x1="425.3" y1="365.7" x2="484.3" y2="424.7"/><line x1="421.7" y1="369.2" x2="480.8" y2="428.3"/><line x1="418.2" y1="372.7" x2="477.3" y2="431.8"/><line x1="414.6" y1="376.3" x2="473.7" y2="435.4"/><line x1="411.1" y1="379.8" x2="470.2" y2="438.9"/><line x1="407.6" y1="383.4" x2="466.6" y2="442.4"/><line x1="404" y1="386.9" x2="463.1" y2="446"/><line x1="400.5" y1="390.4" x2="459.6" y2="449.5"/><line x1="397" y1="394" x2="456" y2="453"/><line x1="393.4" y1="397.5" x2="452.5" y2="456.6"/></g><path d="M424 400 A26 26 0 1 0 476 400 A26 26 0 1 0 424 400 Z"/><line class="cl" x1="158" y1="400" x2="742" y2="400"/><line class="cl" x1="450" y1="108" x2="450" y2="692"/><line class="cl" x1="450" y1="276" x2="450" y2="194"/><line class="cl" x1="557.4" y1="338" x2="628.4" y2="297"/><path d="M450 204 A196 196 0 0 1 619.7 302"/><path d="M612.7 296.3 L619.7 302 L618.3 293.1"/><path d="M458.4 200.8 L450 204 L458.4 207.2"/><text x="557" y="220.6" text-anchor="middle" font-size="17">60°</text><path d="M390.1 548.3 A160 160 0 0 1 308.7 475.1"/><path d="M315.5 481 L308.7 475.1 L309.8 484"/><line x1="558.7" y1="485" x2="663" y2="566.4"/><path d="M567.4 487.6 L558.7 485 L563.4 492.7"/><path d="M654.4 563.8 L663 566.4 L658.4 558.7"/><path d="M463.3 404.3 L539.9 403.1 L700 426 L708 426"/><circle cx="463.3" cy="404.3" r="2.2"/><text class="word" x="715" y="431.9" font-size="17">PLA shaft, sectioned</text><text class="key" x="715" y="440.7" font-size="40.9">a</text><path d="M536.3 357.9 L700 268"/><circle cx="536.3" cy="357.9" r="2.2"/><text class="word" x="707" y="273.9" font-size="17">magnet, one of six</text><text class="key" x="707" y="282.7" font-size="40.9">b</text><path d="M300 150 L300 120 L200 120"/><circle cx="300" cy="150" r="2.2"/><text class="word" x="193" y="126" text-anchor="end" font-size="17">copper winding, sectioned</text><text class="key" x="193" y="134.7" text-anchor="end" font-size="40.9">c</text><path d="M229 550 L200 610"/><circle cx="229" cy="550" r="2.2"/><text class="word" x="193" y="616" text-anchor="end" font-size="17">box wall, sectioned</text><text class="key" x="193" y="624.7" text-anchor="end" font-size="40.9">d</text><path d="M317.3 362 L200 330"/><circle cx="317.3" cy="362" r="2.2"/><text class="word" x="193" y="335.9" text-anchor="end" font-size="17">rotation path</text><text class="key" x="193" y="344.7" text-anchor="end" font-size="40.9">e</text><path d="M610.9 525.7 L700 560"/><circle cx="610.9" cy="525.7" r="2.2"/><text class="word" x="707" y="566" font-size="17">air gap</text><text class="key" x="707" y="574.7" font-size="40.9">f</text></svg>
+<!-- /FIG:generator -->
+          <figcaption>
+            <span class="fig__no">Fig. 1.</span>
+            The six-magnet generator from my wind turbine project, drawn in cross-section like a
+            stem under a microscope. A printed PLA shaft carries the magnets past copper windings
+            held in the box. Schematic, not to scale.
+            <span class="fig__key">a, PLA shaft; b, one of six magnets; c, copper winding; d, box wall; e, rotation path; f, air gap.</span>
+          </figcaption>
+        </figure>
       </div>
     </section>
 
-    <!-- SECTION DIVIDER -->
-    <div class="divider">
-      <span class="divider__dim">SECTION</span>
-      <span class="divider__num">01</span>
-      <span class="divider__title">SELECTED WORK</span>
-      <span class="divider__dim divider__right">02 DRAWINGS</span>
-    </div>
-
-    <!-- WORK -->
-    <section class="work" id="work">
-      <div class="work__intro">
-        <h2>Selected Work <span>/ 2025–2026</span></h2>
-        <p>Things I've designed and built — the hardware, the CAD, and the code that makes them run.</p>
+    <!-- Work -->
+    <section id="work" aria-labelledby="work-title">
+      <div class="work-intro wrap">
+        <div class="grid">
+          <h2 id="work-title">Selected work</h2>
+          <p>
+            Three projects so far, newest first: an enclosure I’m designing for the Stanford
+            Solar Car Project, a task manager I built on my own at my desk, and a wind turbine I
+            built with a team for a wind energy class.
+          </p>
+        </div>
       </div>
 
-      <div class="work__grid">
-        <!-- Project 1 · Voice-driven task deck (ESP32 + LLM, independent) -->
-        <article class="card card--feature card--linked" data-title="Automated Task Management System" style="--i:1">
-          <a class="card__link" href="projects/task-manager.html" aria-label="Automated Task Management System — open the full project sheet"></a>
-          <div class="card__sheet">
-            <span class="status status--built">BUILT · INDEPENDENT</span>
-            <span class="card__peek">DWG CM-002</span>
-            <svg viewBox="0 0 300 200" aria-hidden="true" class="cad cad--deck">
-              <!-- Hinged lid holding the display -->
-              <rect x="70" y="25" width="160" height="80" class="outline" />
-              <rect x="78" y="33" width="144" height="64" class="dim" />
+      <hr class="rule wrap-rule" />
 
-              <!-- Screen UI · status bar -->
-              <line x1="78" y1="44" x2="222" y2="44" class="dim" />
-              <text x="84" y="41" class="label">TASKS</text>
-              <path d="M202 40 Q208 34 214 40" class="dim" />
-              <path d="M204.5 43 Q208 40 211.5 43" class="dim" />
-              <circle cx="208" cy="45.5" r="1" class="fill accent" />
+      <!-- Project: motor controller enclosure -->
+      <article class="feature feature--b wrap" aria-labelledby="mc-title">
+        <div class="grid">
 
-              <!-- Screen UI · record button -->
-              <circle cx="100" cy="68" r="11" class="outline" />
-              <circle cx="100" cy="68" r="5" class="fill accent rec-dot" />
-              <text x="100" y="90" class="label" text-anchor="middle">REC</text>
+          <figure class="feature__photo fig">
+            <div class="photo">
+              <img src="assets/motor-controller-enclosure/10-mounted.jpg" width="758" height="633" loading="lazy" decoding="async"
+                   alt="Fusion 360 model of the enclosure in its mounted orientation: a box standing out from a larger flat flange behind it, an M6 bolt at each flange corner, a top that slopes down away from the flange, and a row of connector openings in the bottom wall." />
+            </div>
+            <figcaption><span class="fig__no">Fig. 2.</span> The current model in Fusion 360, oriented as mounted: the flange at the back bolts to the chassis at its corners, the top slopes so water runs off, and the connectors face down.</figcaption>
+          </figure>
+          <header class="feature__head">
+            <h2 id="mc-title">A sealed box for a solar car’s motor controller</h2>
+            <p class="byline">Stanford Solar Car Project · Dynamics team · Fusion 360, ASA · 2026</p>
+          </header>
 
-              <!-- Screen UI · generated task cards -->
-              <rect x="128" y="50" width="86" height="12" class="outline" />
-              <line x1="133" y1="56" x2="196" y2="56" class="dim" />
-              <rect x="128" y="66" width="86" height="12" class="outline" />
-              <line x1="133" y1="72" x2="186" y2="72" class="dim" />
-              <rect x="128" y="82" width="86" height="12" class="outline" />
-              <line x1="133" y1="88" x2="203" y2="88" class="dim" />
-
-              <!-- Hinge barrels -->
-              <circle cx="82" cy="105" r="4" class="outline" />
-              <circle cx="218" cy="105" r="4" class="outline" />
-
-              <!-- Enclosure base · open top + front face -->
-              <path d="M70 105 L230 105 L245 140 L55 140 Z" class="outline" />
-              <path d="M55 140 L245 140 L245 155 L55 155 Z" class="outline" />
-
-              <!-- Breadboard -->
-              <path d="M95 112 L195 112 L205 130 L85 130 Z" class="dim" />
-              <line x1="97" y1="117" x2="196" y2="117" class="dim dash" />
-              <line x1="93" y1="122" x2="199" y2="122" class="dim dash" />
-              <line x1="89" y1="127" x2="202" y2="127" class="dim dash" />
-
-              <!-- ESP32 dev board -->
-              <path d="M110 114 L152 114 L158 127 L103 127 Z" class="outline" />
-
-              <!-- I2S microphone -->
-              <path d="M63 130 L78 130 L81 138 L65 138 Z" class="outline" />
-              <path d="M54 127 Q47 134 54 141" class="dim" />
-              <path d="M48 123 Q38 134 48 145" class="dim" />
-
-              <!-- 18650 cell on charge shield -->
-              <rect x="208" y="114" width="30" height="13" rx="6" class="outline" />
-
-              <!-- Jumper wiring -->
-              <path d="M124 114 Q128 108 92 106" class="dim" />
-              <path d="M108 127 Q94 130 82 133" class="dim" />
-
-              <!-- Callouts -->
-              <text x="6" y="16" class="label">ILI9341 TFT + TOUCH</text>
-              <line x1="88" y1="19" x2="102" y2="34" class="dim dash" />
-
-              <text x="2" y="112" class="label">ESP32</text>
-              <line x1="33" y1="113" x2="104" y2="120" class="dim dash" />
-
-              <text x="298" y="100" class="label" text-anchor="end">HINGED LID</text>
-              <line x1="240" y1="99" x2="223" y2="104" class="dim dash" />
-
-              <text x="298" y="170" class="label" text-anchor="end">18650 + CHARGE SHIELD</text>
-              <line x1="270" y1="167" x2="238" y2="128" class="dim dash" />
-
-              <text x="150" y="188" class="label" text-anchor="middle">INMP441 I2S MIC · BREADBOARD</text>
-              <text x="150" y="197" class="label" text-anchor="middle">Wi-Fi → FastAPI → WHISPER → LLM</text>
-            </svg>
+          <div class="feature__body prose">
+            <p>
+              The motor controller on Sunstruck, our car for the 2027 World Solar Challenge, needs
+              to stay dry and stay put. I designed a water-resistant enclosure for it in Fusion 360,
+              to be 3D printed in ASA and bolted to the carbon fiber chassis with four M6 bolts
+              into threaded inserts.
+            </p>
+            <p>
+              It mounts by the wide flange at its back, with an M6 bolt in each corner and a loop
+              of closed-cell EPDM foam sealing the flange against the chassis. The top is slanted
+              so water runs off instead of sitting on it, and the controller’s connectors face
+              down through openings projected from its own model and offset 0.5 mm for clearance.
+            </p>
+            <a class="more" href="projects/motor-controller-enclosure.html">Read the full project notes</a>
           </div>
-          <div class="card__meta">
-            <span class="card__num">01</span>
-            <h3>Automated Task Management System</h3>
-            <p>A desk device that turns something you say out loud into a task on its screen. An ESP32 streams 16 kHz audio from an I2S microphone over Wi-Fi to a FastAPI server, which transcribes it and hands the text to an LLM that pulls out what the task actually is and sends it back to the display. I modeled the hinged enclosure in Fusion 360 so the screen mounts cleanly and the breadboard and wiring stay hidden.</p>
-            <ul class="card__tags">
-              <li>ESP32</li><li>Fusion 360</li><li>Python</li><li>LLM API</li>
+        </div>
+      </article>
+
+      <hr class="rule wrap-rule" />
+
+      <!-- Project: task manager -->
+      <article class="feature feature--a wrap" aria-labelledby="tm-title">
+        <div class="grid">
+          <header class="feature__head">
+            <h2 id="tm-title">An automated task manager you talk to</h2>
+            <p class="byline">Independent project · ESP32, Fusion 360, Python · 2026</p>
+          </header>
+
+          <div class="feature__body prose">
+            <p>
+              A desk device that turns something you say out loud into a task on its screen. An
+              ESP32 streams 16 kHz audio from an I2S microphone over Wi-Fi to a FastAPI server,
+              which transcribes it with Whisper and hands the text to a language model that pulls
+              out what the task actually is. The result comes back to a 2.8-inch touchscreen.
+            </p>
+            <p>
+              I wired the electronics, wrote the firmware and the server, and modeled a hinged
+              enclosure in Fusion 360 so the screen mounts cleanly and the breadboard and wiring
+              stay hidden.
+            </p>
+            <a class="more" href="projects/task-manager.html">Read the full project notes</a>
+          </div>
+
+          <figure class="feature__photo fig">
+            <div class="photo">
+              <img src="assets/task-manager/02-task-ui.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+                   alt="The touchscreen standing upright showing the task interface — a Tasks (0) header, the line No tasks, tap to speak, and a Hold to Speak button — with a breadboard of jumper wires behind it." />
+            </div>
+            <figcaption><span class="fig__no">Fig. 3.</span> The interface running on the breadboard prototype.</figcaption>
+          </figure>
+
+          <figure class="feature__fig fig">
+<!-- FIG:enclosure -->
+<svg class="fig-art" viewBox="0 0 960 600" role="img" aria-labelledby="encl-t encl-d" fill="none" stroke="currentColor" stroke-width="1.1"><title id="encl-t">Section through the hinged enclosure</title><desc id="encl-d">Schematic section drawn in white hairlines. An open-topped base with hatched walls and floor sits on a ground line. Inside are a breadboard with the ESP32 board on it, an 18650 cell on its charge shield, and the INMP441 microphone against the left wall with small arcs showing sound arriving from outside. A hinge pin at the back right carries the lid, drawn hatched and swung partly open, with the display and touch panel set into it; a dashed phantom outline shows the lid closed. An arc with an arrowhead shows the lid swing. Dimension lines give the overall width and the interior depth, and leader lines point to labels for each part.</desc><defs><clipPath id="encl-cut1"><path d="M200 300 L212 300 L212 458 L748 458 L748 300 L760 300 L760 470 L200 470 Z" clip-rule="nonzero"/></clipPath><clipPath id="encl-cut2"><path d="M258.7 45.7 L339.6 85.2 L334.3 96 L253.4 56.5 Z" clip-rule="nonzero"/></clipPath><clipPath id="encl-cut3"><path d="M618.2 221.1 L751.2 286 L746 296.8 L613 231.9 Z" clip-rule="nonzero"/></clipPath></defs><line x1="150" y1="472" x2="820" y2="472"/><line x1="156" y1="472" x2="147" y2="481"/><line x1="170" y1="472" x2="161" y2="481"/><line x1="184" y1="472" x2="175" y2="481"/><line x1="198" y1="472" x2="189" y2="481"/><line x1="212" y1="472" x2="203" y2="481"/><line x1="226" y1="472" x2="217" y2="481"/><line x1="240" y1="472" x2="231" y2="481"/><line x1="254" y1="472" x2="245" y2="481"/><line x1="268" y1="472" x2="259" y2="481"/><line x1="282" y1="472" x2="273" y2="481"/><line x1="296" y1="472" x2="287" y2="481"/><line x1="310" y1="472" x2="301" y2="481"/><line x1="324" y1="472" x2="315" y2="481"/><line x1="338" y1="472" x2="329" y2="481"/><line x1="352" y1="472" x2="343" y2="481"/><line x1="366" y1="472" x2="357" y2="481"/><line x1="380" y1="472" x2="371" y2="481"/><line x1="394" y1="472" x2="385" y2="481"/><line x1="408" y1="472" x2="399" y2="481"/><line x1="422" y1="472" x2="413" y2="481"/><line x1="436" y1="472" x2="427" y2="481"/><line x1="450" y1="472" x2="441" y2="481"/><line x1="464" y1="472" x2="455" y2="481"/><line x1="478" y1="472" x2="469" y2="481"/><line x1="492" y1="472" x2="483" y2="481"/><line x1="506" y1="472" x2="497" y2="481"/><line x1="520" y1="472" x2="511" y2="481"/><line x1="534" y1="472" x2="525" y2="481"/><line x1="548" y1="472" x2="539" y2="481"/><line x1="562" y1="472" x2="553" y2="481"/><line x1="576" y1="472" x2="567" y2="481"/><line x1="590" y1="472" x2="581" y2="481"/><line x1="604" y1="472" x2="595" y2="481"/><line x1="618" y1="472" x2="609" y2="481"/><line x1="632" y1="472" x2="623" y2="481"/><line x1="646" y1="472" x2="637" y2="481"/><line x1="660" y1="472" x2="651" y2="481"/><line x1="674" y1="472" x2="665" y2="481"/><line x1="688" y1="472" x2="679" y2="481"/><line x1="702" y1="472" x2="693" y2="481"/><line x1="716" y1="472" x2="707" y2="481"/><line x1="730" y1="472" x2="721" y2="481"/><line x1="744" y1="472" x2="735" y2="481"/><line x1="758" y1="472" x2="749" y2="481"/><line x1="772" y1="472" x2="763" y2="481"/><line x1="786" y1="472" x2="777" y2="481"/><line x1="800" y1="472" x2="791" y2="481"/><line x1="814" y1="472" x2="805" y2="481"/><g class="h" clip-path="url(#encl-cut1)"><line x1="480" y1="-38.7" x2="903.7" y2="385"/><line x1="475.1" y1="-33.8" x2="898.8" y2="389.9"/><line x1="470.1" y1="-28.8" x2="893.8" y2="394.9"/><line x1="465.2" y1="-23.9" x2="888.9" y2="399.8"/><line x1="460.2" y1="-18.9" x2="883.9" y2="404.8"/><line x1="455.3" y1="-14" x2="879" y2="409.7"/><line x1="450.3" y1="-9" x2="874" y2="414.7"/><line x1="445.4" y1="-4.1" x2="869.1" y2="419.6"/><line x1="440.4" y1="0.9" x2="864.1" y2="424.6"/><line x1="435.5" y1="5.8" x2="859.2" y2="429.5"/><line x1="430.5" y1="10.8" x2="854.2" y2="434.5"/><line x1="425.6" y1="15.7" x2="849.3" y2="439.4"/><line x1="420.6" y1="20.7" x2="844.3" y2="444.4"/><line x1="415.7" y1="25.6" x2="839.4" y2="449.3"/><line x1="410.7" y1="30.6" x2="834.4" y2="454.3"/><line x1="405.8" y1="35.5" x2="829.5" y2="459.2"/><line x1="400.8" y1="40.5" x2="824.5" y2="464.2"/><line x1="395.9" y1="45.4" x2="819.6" y2="469.1"/><line x1="390.9" y1="50.4" x2="814.6" y2="474.1"/><line x1="386" y1="55.3" x2="809.7" y2="479"/><line x1="381" y1="60.3" x2="804.7" y2="484"/><line x1="376.1" y1="65.2" x2="799.8" y2="488.9"/><line x1="371.1" y1="70.2" x2="794.8" y2="493.9"/><line x1="366.2" y1="75.1" x2="789.9" y2="498.8"/><line x1="361.2" y1="80.1" x2="784.9" y2="503.8"/><line x1="356.3" y1="85" x2="780" y2="508.7"/><line x1="351.3" y1="90" x2="775" y2="513.7"/><line x1="346.4" y1="94.9" x2="770.1" y2="518.6"/><line x1="341.4" y1="99.9" x2="765.1" y2="523.6"/><line x1="336.5" y1="104.8" x2="760.2" y2="528.5"/><line x1="331.5" y1="109.8" x2="755.2" y2="533.5"/><line x1="326.6" y1="114.7" x2="750.3" y2="538.4"/><line x1="321.6" y1="119.7" x2="745.3" y2="543.4"/><line x1="316.7" y1="124.6" x2="740.4" y2="548.3"/><line x1="311.7" y1="129.6" x2="735.4" y2="553.3"/><line x1="306.8" y1="134.5" x2="730.5" y2="558.2"/><line x1="301.8" y1="139.5" x2="725.5" y2="563.2"/><line x1="296.9" y1="144.4" x2="720.6" y2="568.1"/><line x1="291.9" y1="149.4" x2="715.6" y2="573.1"/><line x1="287" y1="154.3" x2="710.7" y2="578"/><line x1="282" y1="159.3" x2="705.7" y2="583"/><line x1="277.1" y1="164.2" x2="700.8" y2="587.9"/><line x1="272.1" y1="169.2" x2="695.8" y2="592.9"/><line x1="267.2" y1="174.1" x2="690.9" y2="597.8"/><line x1="262.2" y1="179.1" x2="685.9" y2="602.8"/><line x1="257.3" y1="184" x2="681" y2="607.7"/><line x1="252.3" y1="189" x2="676" y2="612.7"/><line x1="247.4" y1="193.9" x2="671.1" y2="617.6"/><line x1="242.4" y1="198.9" x2="666.1" y2="622.6"/><line x1="237.5" y1="203.8" x2="661.2" y2="627.5"/><line x1="232.5" y1="208.8" x2="656.2" y2="632.5"/><line x1="227.6" y1="213.7" x2="651.3" y2="637.4"/><line x1="222.6" y1="218.7" x2="646.3" y2="642.4"/><line x1="217.7" y1="223.6" x2="641.4" y2="647.3"/><line x1="212.7" y1="228.6" x2="636.4" y2="652.3"/><line x1="207.8" y1="233.5" x2="631.5" y2="657.2"/><line x1="202.8" y1="238.5" x2="626.5" y2="662.2"/><line x1="197.9" y1="243.4" x2="621.6" y2="667.1"/><line x1="192.9" y1="248.4" x2="616.6" y2="672.1"/><line x1="188" y1="253.3" x2="611.7" y2="677"/><line x1="183" y1="258.3" x2="606.7" y2="682"/><line x1="178.1" y1="263.2" x2="601.8" y2="686.9"/><line x1="173.1" y1="268.2" x2="596.8" y2="691.9"/><line x1="168.2" y1="273.1" x2="591.9" y2="696.8"/><line x1="163.2" y1="278.1" x2="586.9" y2="701.8"/><line x1="158.3" y1="283" x2="582" y2="706.7"/><line x1="153.3" y1="288" x2="577" y2="711.7"/><line x1="148.4" y1="292.9" x2="572.1" y2="716.6"/><line x1="143.4" y1="297.9" x2="567.1" y2="721.6"/><line x1="138.5" y1="302.8" x2="562.2" y2="726.5"/><line x1="133.5" y1="307.8" x2="557.2" y2="731.5"/><line x1="128.6" y1="312.7" x2="552.3" y2="736.4"/><line x1="123.6" y1="317.7" x2="547.3" y2="741.4"/><line x1="118.7" y1="322.6" x2="542.4" y2="746.3"/><line x1="113.7" y1="327.6" x2="537.4" y2="751.3"/><line x1="108.8" y1="332.5" x2="532.5" y2="756.2"/><line x1="103.8" y1="337.5" x2="527.5" y2="761.2"/><line x1="98.9" y1="342.4" x2="522.6" y2="766.1"/><line x1="93.9" y1="347.4" x2="517.6" y2="771.1"/><line x1="89" y1="352.3" x2="512.7" y2="776"/><line x1="84" y1="357.3" x2="507.7" y2="781"/><line x1="79.1" y1="362.2" x2="502.8" y2="785.9"/><line x1="74.1" y1="367.2" x2="497.8" y2="790.9"/><line x1="69.2" y1="372.1" x2="492.9" y2="795.8"/><line x1="64.2" y1="377.1" x2="487.9" y2="800.8"/><line x1="59.3" y1="382" x2="483" y2="805.7"/></g><path d="M200 300 L212 300 L212 458 L748 458 L748 300 L760 300 L760 470 L200 470 Z"/><rect x="244" y="434" width="290" height="24"/><line class="hid" x1="250" y1="442" x2="528" y2="442"/><line class="hid" x1="250" y1="450" x2="528" y2="450"/><rect x="292" y="419" width="150" height="15"/><line x1="298" y1="434" x2="298" y2="438"/><line x1="307" y1="434" x2="307" y2="438"/><line x1="316" y1="434" x2="316" y2="438"/><line x1="325" y1="434" x2="325" y2="438"/><line x1="334" y1="434" x2="334" y2="438"/><line x1="343" y1="434" x2="343" y2="438"/><line x1="352" y1="434" x2="352" y2="438"/><line x1="361" y1="434" x2="361" y2="438"/><line x1="370" y1="434" x2="370" y2="438"/><line x1="379" y1="434" x2="379" y2="438"/><line x1="388" y1="434" x2="388" y2="438"/><line x1="397" y1="434" x2="397" y2="438"/><line x1="406" y1="434" x2="406" y2="438"/><line x1="415" y1="434" x2="415" y2="438"/><line x1="424" y1="434" x2="424" y2="438"/><line x1="433" y1="434" x2="433" y2="438"/><rect x="282" y="423" width="10" height="8"/><rect x="566" y="447" width="160" height="11"/><rect x="578" y="413" width="136" height="34" rx="14"/><line x1="704" y1="413" x2="704" y2="447"/><rect x="212" y="362" width="13" height="34"/><path d="M191.2 366.2 A16 16 0 0 0 191.2 391.8"/><path d="M184.6 356.6 A28 28 0 0 0 184.6 401.4"/><path d="M178.0 347.0 A40 40 0 0 0 178.0 411.0"/><path d="M330 419 C 318 392, 262 390, 225 382"/><path d="M430 419 C 470 380, 560 396, 592 413"/><path d="M420 419 C 430 340, 640 330, 742 312"/><circle cx="754" cy="294" r="7"/><line class="cl" x1="740" y1="294" x2="768" y2="294"/><line class="cl" x1="754" y1="280" x2="754" y2="308"/><rect class="ph" x="200" y="288" width="554" height="12"/><g class="h" clip-path="url(#encl-cut2)"><line x1="502.3" y1="-240.5" x2="914.1" y2="171.3"/><line x1="497.4" y1="-235.5" x2="909.1" y2="176.2"/><line x1="492.4" y1="-230.6" x2="904.2" y2="181.2"/><line x1="487.5" y1="-225.6" x2="899.2" y2="186.1"/><line x1="482.5" y1="-220.7" x2="894.3" y2="191.1"/><line x1="477.6" y1="-215.7" x2="889.3" y2="196"/><line x1="472.6" y1="-210.8" x2="884.4" y2="201"/><line x1="467.7" y1="-205.8" x2="879.4" y2="205.9"/><line x1="462.7" y1="-200.9" x2="874.5" y2="210.9"/><line x1="457.8" y1="-195.9" x2="869.5" y2="215.8"/><line x1="452.8" y1="-191" x2="864.6" y2="220.8"/><line x1="447.9" y1="-186" x2="859.6" y2="225.7"/><line x1="442.9" y1="-181.1" x2="854.7" y2="230.7"/><line x1="438" y1="-176.1" x2="849.7" y2="235.6"/><line x1="433" y1="-171.2" x2="844.8" y2="240.6"/><line x1="428.1" y1="-166.2" x2="839.8" y2="245.5"/><line x1="423.1" y1="-161.3" x2="834.9" y2="250.5"/><line x1="418.2" y1="-156.3" x2="829.9" y2="255.4"/><line x1="413.2" y1="-151.4" x2="825" y2="260.4"/><line x1="408.3" y1="-146.4" x2="820" y2="265.3"/><line x1="403.3" y1="-141.5" x2="815.1" y2="270.3"/><line x1="398.4" y1="-136.5" x2="810.1" y2="275.2"/><line x1="393.4" y1="-131.6" x2="805.2" y2="280.2"/><line x1="388.5" y1="-126.6" x2="800.2" y2="285.1"/><line x1="383.5" y1="-121.7" x2="795.3" y2="290.1"/><line x1="378.6" y1="-116.7" x2="790.3" y2="295"/><line x1="373.6" y1="-111.8" x2="785.4" y2="299.9"/><line x1="368.7" y1="-106.8" x2="780.4" y2="304.9"/><line x1="363.7" y1="-101.9" x2="775.5" y2="309.8"/><line x1="358.8" y1="-96.9" x2="770.5" y2="314.8"/><line x1="353.8" y1="-92" x2="765.6" y2="319.7"/><line x1="348.9" y1="-87" x2="760.6" y2="324.7"/><line x1="343.9" y1="-82.1" x2="755.7" y2="329.6"/><line x1="339" y1="-77.1" x2="750.7" y2="334.6"/><line x1="334" y1="-72.2" x2="745.8" y2="339.5"/><line x1="329.1" y1="-67.2" x2="740.8" y2="344.5"/><line x1="324.1" y1="-62.3" x2="735.9" y2="349.4"/><line x1="319.2" y1="-57.3" x2="730.9" y2="354.4"/><line x1="314.2" y1="-52.4" x2="726" y2="359.3"/><line x1="309.3" y1="-47.4" x2="721" y2="364.3"/><line x1="304.3" y1="-42.5" x2="716.1" y2="369.2"/><line x1="299.4" y1="-37.5" x2="711.1" y2="374.2"/><line x1="294.4" y1="-32.6" x2="706.2" y2="379.1"/><line x1="289.5" y1="-27.6" x2="701.2" y2="384.1"/><line x1="284.5" y1="-22.7" x2="696.3" y2="389"/><line x1="279.6" y1="-17.7" x2="691.3" y2="394"/><line x1="274.6" y1="-12.8" x2="686.4" y2="398.9"/><line x1="269.7" y1="-7.8" x2="681.4" y2="403.9"/><line x1="264.7" y1="-2.9" x2="676.5" y2="408.8"/><line x1="259.8" y1="2.1" x2="671.5" y2="413.8"/><line x1="254.9" y1="7" x2="666.6" y2="418.7"/><line x1="249.9" y1="12" x2="661.6" y2="423.7"/><line x1="245" y1="16.9" x2="656.7" y2="428.6"/><line x1="240" y1="21.9" x2="651.7" y2="433.6"/><line x1="235.1" y1="26.8" x2="646.8" y2="438.5"/><line x1="230.1" y1="31.8" x2="641.8" y2="443.5"/><line x1="225.2" y1="36.7" x2="636.9" y2="448.4"/><line x1="220.2" y1="41.7" x2="631.9" y2="453.4"/><line x1="215.3" y1="46.6" x2="627" y2="458.3"/><line x1="210.3" y1="51.6" x2="622" y2="463.3"/><line x1="205.4" y1="56.5" x2="617.1" y2="468.2"/><line x1="200.4" y1="61.5" x2="612.1" y2="473.2"/><line x1="195.5" y1="66.4" x2="607.2" y2="478.1"/><line x1="190.5" y1="71.4" x2="602.2" y2="483.1"/><line x1="185.6" y1="76.3" x2="597.3" y2="488"/><line x1="180.6" y1="81.3" x2="592.3" y2="493"/><line x1="175.7" y1="86.2" x2="587.4" y2="497.9"/><line x1="170.7" y1="91.2" x2="582.4" y2="502.9"/><line x1="165.8" y1="96.1" x2="577.5" y2="507.8"/><line x1="160.8" y1="101.1" x2="572.5" y2="512.8"/><line x1="155.9" y1="106" x2="567.6" y2="517.7"/><line x1="150.9" y1="111" x2="562.6" y2="522.7"/><line x1="146" y1="115.9" x2="557.7" y2="527.6"/><line x1="141" y1="120.9" x2="552.7" y2="532.6"/><line x1="136.1" y1="125.8" x2="547.8" y2="537.5"/><line x1="131.1" y1="130.8" x2="542.8" y2="542.5"/><line x1="126.2" y1="135.7" x2="537.9" y2="547.4"/><line x1="121.2" y1="140.7" x2="532.9" y2="552.4"/><line x1="116.3" y1="145.6" x2="528" y2="557.3"/><line x1="111.3" y1="150.6" x2="523" y2="562.3"/><line x1="106.4" y1="155.5" x2="518.1" y2="567.2"/><line x1="101.4" y1="160.5" x2="513.1" y2="572.2"/><line x1="96.5" y1="165.4" x2="508.2" y2="577.1"/><line x1="91.5" y1="170.4" x2="503.2" y2="582.1"/></g><path d="M258.7 45.7 L339.6 85.2 L334.3 96 L253.4 56.5 Z"/><g class="h" clip-path="url(#encl-cut3)"><line x1="502.3" y1="-240.5" x2="914.1" y2="171.3"/><line x1="497.4" y1="-235.5" x2="909.1" y2="176.2"/><line x1="492.4" y1="-230.6" x2="904.2" y2="181.2"/><line x1="487.5" y1="-225.6" x2="899.2" y2="186.1"/><line x1="482.5" y1="-220.7" x2="894.3" y2="191.1"/><line x1="477.6" y1="-215.7" x2="889.3" y2="196"/><line x1="472.6" y1="-210.8" x2="884.4" y2="201"/><line x1="467.7" y1="-205.8" x2="879.4" y2="205.9"/><line x1="462.7" y1="-200.9" x2="874.5" y2="210.9"/><line x1="457.8" y1="-195.9" x2="869.5" y2="215.8"/><line x1="452.8" y1="-191" x2="864.6" y2="220.8"/><line x1="447.9" y1="-186" x2="859.6" y2="225.7"/><line x1="442.9" y1="-181.1" x2="854.7" y2="230.7"/><line x1="438" y1="-176.1" x2="849.7" y2="235.6"/><line x1="433" y1="-171.2" x2="844.8" y2="240.6"/><line x1="428.1" y1="-166.2" x2="839.8" y2="245.5"/><line x1="423.1" y1="-161.3" x2="834.9" y2="250.5"/><line x1="418.2" y1="-156.3" x2="829.9" y2="255.4"/><line x1="413.2" y1="-151.4" x2="825" y2="260.4"/><line x1="408.3" y1="-146.4" x2="820" y2="265.3"/><line x1="403.3" y1="-141.5" x2="815.1" y2="270.3"/><line x1="398.4" y1="-136.5" x2="810.1" y2="275.2"/><line x1="393.4" y1="-131.6" x2="805.2" y2="280.2"/><line x1="388.5" y1="-126.6" x2="800.2" y2="285.1"/><line x1="383.5" y1="-121.7" x2="795.3" y2="290.1"/><line x1="378.6" y1="-116.7" x2="790.3" y2="295"/><line x1="373.6" y1="-111.8" x2="785.4" y2="299.9"/><line x1="368.7" y1="-106.8" x2="780.4" y2="304.9"/><line x1="363.7" y1="-101.9" x2="775.5" y2="309.8"/><line x1="358.8" y1="-96.9" x2="770.5" y2="314.8"/><line x1="353.8" y1="-92" x2="765.6" y2="319.7"/><line x1="348.9" y1="-87" x2="760.6" y2="324.7"/><line x1="343.9" y1="-82.1" x2="755.7" y2="329.6"/><line x1="339" y1="-77.1" x2="750.7" y2="334.6"/><line x1="334" y1="-72.2" x2="745.8" y2="339.5"/><line x1="329.1" y1="-67.2" x2="740.8" y2="344.5"/><line x1="324.1" y1="-62.3" x2="735.9" y2="349.4"/><line x1="319.2" y1="-57.3" x2="730.9" y2="354.4"/><line x1="314.2" y1="-52.4" x2="726" y2="359.3"/><line x1="309.3" y1="-47.4" x2="721" y2="364.3"/><line x1="304.3" y1="-42.5" x2="716.1" y2="369.2"/><line x1="299.4" y1="-37.5" x2="711.1" y2="374.2"/><line x1="294.4" y1="-32.6" x2="706.2" y2="379.1"/><line x1="289.5" y1="-27.6" x2="701.2" y2="384.1"/><line x1="284.5" y1="-22.7" x2="696.3" y2="389"/><line x1="279.6" y1="-17.7" x2="691.3" y2="394"/><line x1="274.6" y1="-12.8" x2="686.4" y2="398.9"/><line x1="269.7" y1="-7.8" x2="681.4" y2="403.9"/><line x1="264.7" y1="-2.9" x2="676.5" y2="408.8"/><line x1="259.8" y1="2.1" x2="671.5" y2="413.8"/><line x1="254.9" y1="7" x2="666.6" y2="418.7"/><line x1="249.9" y1="12" x2="661.6" y2="423.7"/><line x1="245" y1="16.9" x2="656.7" y2="428.6"/><line x1="240" y1="21.9" x2="651.7" y2="433.6"/><line x1="235.1" y1="26.8" x2="646.8" y2="438.5"/><line x1="230.1" y1="31.8" x2="641.8" y2="443.5"/><line x1="225.2" y1="36.7" x2="636.9" y2="448.4"/><line x1="220.2" y1="41.7" x2="631.9" y2="453.4"/><line x1="215.3" y1="46.6" x2="627" y2="458.3"/><line x1="210.3" y1="51.6" x2="622" y2="463.3"/><line x1="205.4" y1="56.5" x2="617.1" y2="468.2"/><line x1="200.4" y1="61.5" x2="612.1" y2="473.2"/><line x1="195.5" y1="66.4" x2="607.2" y2="478.1"/><line x1="190.5" y1="71.4" x2="602.2" y2="483.1"/><line x1="185.6" y1="76.3" x2="597.3" y2="488"/><line x1="180.6" y1="81.3" x2="592.3" y2="493"/><line x1="175.7" y1="86.2" x2="587.4" y2="497.9"/><line x1="170.7" y1="91.2" x2="582.4" y2="502.9"/><line x1="165.8" y1="96.1" x2="577.5" y2="507.8"/><line x1="160.8" y1="101.1" x2="572.5" y2="512.8"/><line x1="155.9" y1="106" x2="567.6" y2="517.7"/><line x1="150.9" y1="111" x2="562.6" y2="522.7"/><line x1="146" y1="115.9" x2="557.7" y2="527.6"/><line x1="141" y1="120.9" x2="552.7" y2="532.6"/><line x1="136.1" y1="125.8" x2="547.8" y2="537.5"/><line x1="131.1" y1="130.8" x2="542.8" y2="542.5"/><line x1="126.2" y1="135.7" x2="537.9" y2="547.4"/><line x1="121.2" y1="140.7" x2="532.9" y2="552.4"/><line x1="116.3" y1="145.6" x2="528" y2="557.3"/><line x1="111.3" y1="150.6" x2="523" y2="562.3"/><line x1="106.4" y1="155.5" x2="518.1" y2="567.2"/><line x1="101.4" y1="160.5" x2="513.1" y2="572.2"/><line x1="96.5" y1="165.4" x2="508.2" y2="577.1"/><line x1="91.5" y1="170.4" x2="503.2" y2="582.1"/></g><path d="M618.2 221.1 L751.2 286 L746 296.8 L613 231.9 Z"/><path d="M340.5 83.4 L619.1 219.3 L613 231.9 L334.3 96 Z"/><line x1="344.1" y1="89.6" x2="611.9" y2="220.3"/><path d="M352.3 104.8 L595 223.1 L591.5 230.3 L348.8 111.9 Z"/><path class="cl" d="M154 294 A600 600 0 0 1 214.7 31"/><path d="M213.9 39.9 L214.7 31 L208.1 37.1"/><text class="word" x="118" y="214" text-anchor="end" font-size="17">lid swing</text><line x1="200" y1="476" x2="200" y2="528"/><line x1="760" y1="476" x2="760" y2="528"/><line x1="200" y1="522" x2="760" y2="522"/><path d="M751.6 525.2 L760 522 L751.6 518.8"/><path d="M208.4 518.8 L200 522 L208.4 525.2"/><text x="480" y="514" text-anchor="middle" font-size="17">overall width</text><line x1="766" y1="300" x2="832" y2="300"/><line x1="766" y1="458" x2="832" y2="458"/><line x1="826" y1="300" x2="826" y2="458"/><path d="M822.8 449.6 L826 458 L829.2 449.6"/><path d="M829.2 308.4 L826 300 L822.8 308.4"/><text x="834" y="379" text-anchor="middle" font-size="17" transform="rotate(90 834 379)">interior depth</text><path d="M478.9 153.2 L530 86 L570 86"/><circle cx="478.9" cy="153.2" r="2.2"/><text class="word" x="577" y="92" font-size="17">display and touch panel</text><text class="key" x="577" y="101.7" font-size="43.6">a</text><path d="M759 289 L800 232 L840 232"/><circle cx="759" cy="289" r="2.2"/><text class="word" x="847" y="237.9" font-size="17">hinge pin</text><text class="key" x="847" y="247.7" font-size="43.6">b</text><path d="M232 288 L168 262 L150 262"/><circle cx="232" cy="288" r="2.2"/><text class="word" x="143" y="267.9" text-anchor="end" font-size="17">lid, closed</text><text class="key" x="143" y="277.7" text-anchor="end" font-size="43.6">c</text><path d="M218 370 L240 340 L300 340"/><circle cx="218" cy="370" r="2.2"/><text class="word" x="307" y="345.9" font-size="17">INMP441 microphone</text><text class="key" x="307" y="355.7" font-size="43.6">d</text><path d="M360 427 L340 560 L300 560"/><circle cx="360" cy="427" r="2.2"/><text class="word" x="293" y="566" text-anchor="end" font-size="17">ESP32 on breadboard</text><text class="key" x="293" y="575.7" text-anchor="end" font-size="43.6">e</text><path d="M646 430 L660 560 L700 560"/><circle cx="646" cy="430" r="2.2"/><text class="word" x="707" y="566" font-size="17">18650 cell on charge shield</text><text class="key" x="707" y="575.7" font-size="43.6">f</text></svg>
+<!-- /FIG:enclosure -->
+            <figcaption>
+              <span class="fig__no">Fig. 4.</span>
+              Section through the hinged enclosure, lid partly open. The display sits in the lid;
+              everything else lives in the base, out of sight. The dashed outline shows the lid closed.
+              <span class="fig__key">a, display and touch panel; b, hinge pin; c, lid closed; d, INMP441 microphone; e, ESP32 on breadboard; f, 18650 cell on charge shield.</span>
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <hr class="rule wrap-rule" />
+
+      <!-- Project: wind turbine -->
+      <article class="feature feature--b wrap" aria-labelledby="wt-title">
+        <div class="grid">
+          <figure class="feature__photo fig">
+            <div class="photo">
+              <img src="assets/wind-turbine/03-assembly.jpg" width="1200" height="1600" loading="lazy" decoding="async"
+                   alt="The finished turbine on its tower: paper-bag sails on a printed hub, the coil-wound generator box on a platform, and a white cup hanging from a string beside the LED." />
+            </div>
+            <figcaption><span class="fig__no">Fig. 5.</span> The finished turbine, both outputs running off one rotor.</figcaption>
+          </figure>
+
+          <header class="feature__head">
+            <h2 id="wt-title">A wind turbine that had to lift and light</h2>
+            <p class="byline">CEE 34N team project · 3D printing, generator design · 2026</p>
+          </header>
+
+          <div class="feature__body prose">
+            <p>
+              Built with a team of three for CEE 34N, Wind Energy Explained. The brief was to lift
+              a cup of coins on a string and light an LED with the same rotor. Our first rotor,
+              three thin airfoil blades that I modeled and printed, would not start turning on its
+              own, so we rebuilt it as a drag rotor with wide paper-bag sails that starts in gentle air.
+            </p>
+            <p>
+              A hand-wound generator with six magnets on a printed PLA shaft lights the LED, while
+              the same shaft winds up the string. I designed and printed the blades and helped
+              with assembly.
+            </p>
+            <a class="more" href="projects/wind-turbine.html">Read the full project notes</a>
+          </div>
+
+          <figure class="feature__fig fig">
+<!-- FIG:elevation -->
+<svg class="fig-art" viewBox="0 0 720 900" role="img" aria-labelledby="elev-t elev-d" fill="none" stroke="currentColor" stroke-width="1.1"><title id="elev-t">Side elevation of the wind turbine</title><desc id="elev-d">Schematic side view drawn in white hairlines. Wind arrows come from the left toward a printed nose-cone hub; two paper sails are seen edge-on above and below it with a vertical dimension for the rotor diameter. A horizontal dash-dot centerline marks the shaft, which runs back into the generator box, drawn with vertical lines for the copper winding, sitting on a platform at the top of a PVC tower. The shaft continues out the back as a spool with cord wound on it; a string hangs down to a cup, with a small arrow showing that the cup rises. An LED hangs off the front of the platform. The tower stands in a weighted base on a hatched ground line, and a second dimension gives the hub height.</desc><line x1="220" y1="840" x2="600" y2="840"/><line x1="226" y1="840" x2="217" y2="849"/><line x1="240" y1="840" x2="231" y2="849"/><line x1="254" y1="840" x2="245" y2="849"/><line x1="268" y1="840" x2="259" y2="849"/><line x1="282" y1="840" x2="273" y2="849"/><line x1="296" y1="840" x2="287" y2="849"/><line x1="310" y1="840" x2="301" y2="849"/><line x1="324" y1="840" x2="315" y2="849"/><line x1="338" y1="840" x2="329" y2="849"/><line x1="352" y1="840" x2="343" y2="849"/><line x1="366" y1="840" x2="357" y2="849"/><line x1="380" y1="840" x2="371" y2="849"/><line x1="394" y1="840" x2="385" y2="849"/><line x1="408" y1="840" x2="399" y2="849"/><line x1="422" y1="840" x2="413" y2="849"/><line x1="436" y1="840" x2="427" y2="849"/><line x1="450" y1="840" x2="441" y2="849"/><line x1="464" y1="840" x2="455" y2="849"/><line x1="478" y1="840" x2="469" y2="849"/><line x1="492" y1="840" x2="483" y2="849"/><line x1="506" y1="840" x2="497" y2="849"/><line x1="520" y1="840" x2="511" y2="849"/><line x1="534" y1="840" x2="525" y2="849"/><line x1="548" y1="840" x2="539" y2="849"/><line x1="562" y1="840" x2="553" y2="849"/><line x1="576" y1="840" x2="567" y2="849"/><line x1="590" y1="840" x2="581" y2="849"/><path d="M306 740 L454 740 L446 840 L314 840 Z"/><line x1="306" y1="756" x2="454" y2="756"/><line x1="370" y1="262" x2="370" y2="740"/><line x1="390" y1="262" x2="390" y2="740"/><line class="cl" x1="380" y1="236" x2="380" y2="856"/><line x1="370" y1="430" x2="390" y2="430"/><line x1="370" y1="438" x2="390" y2="438"/><rect x="330" y="250" width="196" height="12"/><rect x="392" y="176" width="112" height="74"/><line x1="404" y1="176" x2="404" y2="250"/><line x1="409" y1="176" x2="409" y2="250"/><line x1="414" y1="176" x2="414" y2="250"/><line x1="419" y1="176" x2="419" y2="250"/><line x1="424" y1="176" x2="424" y2="250"/><line x1="429" y1="176" x2="429" y2="250"/><line x1="434" y1="176" x2="434" y2="250"/><line x1="439" y1="176" x2="439" y2="250"/><line x1="444" y1="176" x2="444" y2="250"/><line x1="449" y1="176" x2="449" y2="250"/><line x1="454" y1="176" x2="454" y2="250"/><line x1="459" y1="176" x2="459" y2="250"/><line x1="464" y1="176" x2="464" y2="250"/><line x1="469" y1="176" x2="469" y2="250"/><line x1="474" y1="176" x2="474" y2="250"/><line x1="479" y1="176" x2="479" y2="250"/><line x1="484" y1="176" x2="484" y2="250"/><line x1="489" y1="176" x2="489" y2="250"/><line class="cl" x1="56" y1="212" x2="662" y2="212"/><line x1="232" y1="207" x2="392" y2="207"/><line x1="232" y1="217" x2="392" y2="217"/><line x1="504" y1="208" x2="620" y2="208"/><line x1="504" y1="216" x2="620" y2="216"/><line x1="620" y1="208" x2="620" y2="216"/><path d="M548 203 C 551 209, 551 215, 548 221"/><path d="M552 203 C 555 209, 555 215, 552 221"/><path d="M556 203 C 559 209, 559 215, 556 221"/><path d="M560 203 C 563 209, 563 215, 560 221"/><path d="M564 203 C 567 209, 567 215, 564 221"/><path d="M568 203 C 571 209, 571 215, 568 221"/><path d="M572 203 C 575 209, 575 215, 572 221"/><path d="M576 203 C 579 209, 579 215, 576 221"/><path d="M580 203 C 583 209, 583 215, 580 221"/><path d="M584 203 C 587 209, 587 215, 584 221"/><path d="M588 203 C 591 209, 591 215, 588 221"/><line x1="588" y1="221" x2="588" y2="586"/><path d="M562 586 L614 586 L606 642 L570 642 Z"/><line x1="566" y1="600" x2="610" y2="600"/><line x1="622" y1="520" x2="622" y2="470"/><path d="M625.2 478.4 L622 470 L618.8 478.4"/><text class="word" x="632" y="500" font-size="17">rises</text><path d="M236 178 C 196 178, 166 196, 166 212 C 166 228, 196 246, 236 246"/><line x1="236" y1="178" x2="236" y2="246"/><path d="M240 186 L254 186 L270 28 L234 22 Z"/><line x1="247" y1="186" x2="252" y2="26"/><path d="M240 238 L254 238 L270 396 L234 402 Z"/><line x1="247" y1="238" x2="252" y2="398"/><line x1="392" y1="240" x2="352" y2="266"/><line x1="392" y1="244" x2="358" y2="270"/><circle cx="348" cy="282" r="9"/><path d="M341 290 L341 300 M355 290 L355 300"/><line x1="30" y1="120" x2="118" y2="120"/><path d="M109.6 123.2 L118 120 L109.6 116.8"/><line x1="30" y1="212" x2="118" y2="212"/><path d="M109.6 215.2 L118 212 L109.6 208.8"/><line x1="30" y1="304" x2="118" y2="304"/><path d="M109.6 307.2 L118 304 L109.6 300.8"/><text class="word" x="30" y="100" font-size="17">wind</text><line x1="228" y1="22" x2="158" y2="22"/><line x1="228" y1="402" x2="158" y2="402"/><line x1="164" y1="22" x2="164" y2="402"/><path d="M160.8 393.6 L164 402 L167.2 393.6"/><path d="M167.2 30.4 L164 22 L160.8 30.4"/><text x="156" y="212" text-anchor="middle" font-size="17" transform="rotate(-90 156 212)">rotor diameter</text><line x1="600" y1="840" x2="680" y2="840"/><line x1="664" y1="212" x2="680" y2="212"/><line x1="674" y1="218" x2="674" y2="834"/><path d="M677.2 226.4 L674 218 L670.8 226.4"/><path d="M670.8 825.6 L674 834 L677.2 825.6"/><text class="word" x="690" y="526" text-anchor="middle" font-size="17" transform="rotate(90 690 526)">hub height</text><path d="M198 192 L150 58 L110 58"/><circle cx="198" cy="192" r="2.2"/><text class="word" x="103" y="64" text-anchor="end" font-size="17">printed hub</text><text class="key" x="103" y="69.8" text-anchor="end" font-size="32.7">a</text><path d="M262 96 L300 72 L330 72"/><circle cx="262" cy="96" r="2.2"/><text class="word" x="337" y="78" font-size="17">paper sail, edge-on</text><text class="key" x="337" y="83.8" font-size="32.7">b</text><path d="M470 182 L520 128 L560 128"/><circle cx="470" cy="182" r="2.2"/><text class="word" x="567" y="133.9" font-size="17">generator and winding</text><text class="key" x="567" y="139.8" font-size="32.7">c</text><path d="M572 204 L600 168 L628 168"/><circle cx="572" cy="204" r="2.2"/><text class="word" x="635" y="173.9" font-size="17">spool</text><text class="key" x="635" y="179.8" font-size="32.7">d</text><path d="M572 630 L540 690 L520 690"/><circle cx="572" cy="630" r="2.2"/><text class="word" x="513" y="696" text-anchor="end" font-size="17">string and cup</text><text class="key" x="513" y="701.8" text-anchor="end" font-size="32.7">e</text><path d="M356 290 L420 330 L440 330"/><circle cx="356" cy="290" r="2.2"/><text class="word" x="447" y="335.9" font-size="17">LED</text><text class="key" x="447" y="341.8" font-size="32.7">f</text><path d="M370 600 L320 620 L290 620"/><circle cx="370" cy="600" r="2.2"/><text class="word" x="283" y="626" text-anchor="end" font-size="17">PVC tower</text><text class="key" x="283" y="631.8" text-anchor="end" font-size="32.7">g</text><path d="M310 790 L260 790 L240 790"/><circle cx="310" cy="790" r="2.2"/><text class="word" x="233" y="796" text-anchor="end" font-size="17">weighted base</text><text class="key" x="233" y="801.8" text-anchor="end" font-size="32.7">h</text></svg>
+<!-- /FIG:elevation -->
+            <figcaption>
+              <span class="fig__no">Fig. 6.</span>
+              Side elevation of the turbine. Wind turns the sails; the generator sits right behind
+              the hub, and the shaft continues out the back as a spool for the string. Schematic.
+              <span class="fig__key">a, printed hub; b, paper sail, seen edge-on; c, generator box and winding; d, spool on the shaft; e, string and cup; f, LED; g, PVC tower; h, weighted base.</span>
+            </figcaption>
+          </figure>
+
+          <figure class="feature__plate fig">
+            <div class="plate-frame">
+<!-- FIG:micrograph -->
+<svg class="fig-art" viewBox="0 0 600 450" role="img" aria-labelledby="micro-t micro-d"><title id="micro-t">Rendered micrograph texture</title><desc id="micro-d">A high-contrast black-and-white organic texture: a network of thin, irregular white walls enclosing dark cells of varying size, slightly stretched in one direction. A small scale bar sits in the lower right corner.</desc><defs><filter id="micro" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.014 0.026" numOctaves="4" seed="11" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0.98  0 0 0 0 0.988  0 0 0 0 0.961  1 0 0 0 0"/><feComponentTransfer><feFuncA type="discrete" tableValues="0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0"/></feComponentTransfer></filter></defs><rect width="600" height="450" fill="#0C1805"/><rect width="600" height="450" filter="url(#micro)"/><rect x="424" y="402" width="158" height="34" fill="#0C1805"/><g fill="none" stroke="#FAFCF5" stroke-width="1.25"><line x1="438" y1="424" x2="508" y2="424" vector-effect="non-scaling-stroke"/><line x1="438" y1="419" x2="438" y2="429" vector-effect="non-scaling-stroke"/><line x1="508" y1="419" x2="508" y2="429" vector-effect="non-scaling-stroke"/></g><text x="572" y="429" font-size="15" font-style="italic" text-anchor="end" fill="#FAFCF5">100 µm</text></svg>
+<!-- /FIG:micrograph -->
+            </div>
+            <figcaption>
+              <span class="fig__no">Plate I.</span>
+              A texture in the manner of a plant-tissue micrograph, a nod to the cellulose in
+              the sails’ kraft paper. Rendered, not imaged; the scale bar is nominal.
+            </figcaption>
+          </figure>
+        </div>
+      </article>
+    </section>
+
+    <!-- About -->
+    <section class="about band" id="about" aria-labelledby="about-title">
+      <div class="wrap">
+        <div class="grid">
+          <h2 id="about-title">About</h2>
+
+          <div class="prose">
+            <p>
+              I’m an undergraduate at Stanford, majoring in Mechanical Engineering with an intended
+              minor in Aeronautics and Astronautics.
+            </p>
+            <p>
+              I like taking a design all the way from CAD to a part that actually runs: modeling it
+              in Fusion 360, printing it, wiring up whatever electronics it needs, and writing the
+              code to make the whole thing work. This page grows as I finish projects.
+            </p>
+          </div>
+
+          <dl class="facts">
+            <div><dt>School</dt><dd>Stanford University, Stanford, CA</dd></div>
+            <div><dt>Degree</dt><dd>B.S. Mechanical Engineering, expected June 2029</dd></div>
+            <div><dt>Intended minor</dt><dd>Aeronautics and Astronautics</dd></div>
+            <div><dt>GPA</dt><dd>3.66</dd></div>
+          </dl>
+
+          <div class="courses">
+            <h3>Coursework</h3>
+            <ul class="list list--cols">
+              <li>Vector Calculus for Engineers <span class="small">CME 100</span></li>
+              <li>ODEs for Engineers <span class="small">CME 102</span></li>
+              <li>Linear Algebra and PDEs <span class="small">CME 104</span></li>
+              <li>Mechanics <span class="small">PHYSICS 41</span></li>
+              <li>Solid Mechanics <span class="small">ENGR 14</span></li>
+              <li>Programming Methodology <span class="small">CS 106A</span></li>
             </ul>
-            <span class="card__cta">
-              Click for more info
-              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
-            </span>
           </div>
-        </article>
 
-        <!-- Project 2 · Small-scale drag-rotor wind turbine (CEE 34N) -->
-        <article class="card card--feature card--linked" data-title="Small-Scale Wind Turbine" style="--i:2">
-          <a class="card__link" href="projects/wind-turbine.html" aria-label="Small-Scale Wind Turbine — open the full project sheet"></a>
-          <div class="card__sheet">
-            <span class="status status--built">BUILT · 2026</span>
-            <span class="card__peek">DWG CM-003</span>
-            <svg viewBox="0 0 200 200" aria-hidden="true" class="cad cad--turbine">
-              <!-- Foundation -->
-              <rect x="78" y="178" width="44" height="6" class="outline" />
-              <line x1="74" y1="186" x2="126" y2="186" class="dim" />
-              <!-- Tower -->
-              <rect x="96" y="64" width="8" height="116" class="outline" />
-              <!-- Nacelle -->
-              <rect x="90" y="54" width="20" height="14" class="outline" />
-              <!-- Generator coil callout -->
-              <line x1="110" y1="58" x2="170" y2="38" class="dim dash" />
-              <text x="196" y="32" class="label" text-anchor="end">COIL +</text>
-              <text x="196" y="42" class="label" text-anchor="end">MAGNETS</text>
-              <!-- Drag rotor: wide sails, high solidity (the version that worked) -->
-              <g class="rotor" style="transform-origin:100px 60px">
-                <g transform="rotate(0 100 60)">
-                  <path d="M100 52 L87 20 L113 20 Z" class="outline" />
-                </g>
-                <g transform="rotate(60 100 60)">
-                  <path d="M100 52 L87 20 L113 20 Z" class="outline" />
-                </g>
-                <g transform="rotate(120 100 60)">
-                  <path d="M100 52 L87 20 L113 20 Z" class="outline" />
-                </g>
-                <g transform="rotate(180 100 60)">
-                  <path d="M100 52 L87 20 L113 20 Z" class="outline" />
-                </g>
-                <g transform="rotate(240 100 60)">
-                  <path d="M100 52 L87 20 L113 20 Z" class="outline" />
-                </g>
-                <g transform="rotate(300 100 60)">
-                  <path d="M100 52 L87 20 L113 20 Z" class="outline" />
-                </g>
-              </g>
-              <!-- Hub -->
-              <circle cx="100" cy="60" r="6" class="outline" />
-              <circle cx="100" cy="60" r="2" class="fill accent" />
-              <!-- Output wires to LED -->
-              <line x1="110" y1="62" x2="172" y2="62" class="dim" />
-              <line x1="172" y1="62" x2="172" y2="98" class="dim" />
-              <circle cx="172" cy="104" r="5" class="outline" />
-              <line x1="169" y1="104" x2="175" y2="104" class="dim" />
-              <line x1="172" y1="101" x2="172" y2="107" class="dim" />
-              <text x="160" y="124" class="label">LED</text>
-              <!-- Cable + lifted weight -->
-              <line x1="90" y1="62" x2="32" y2="62" class="dim" />
-              <line x1="32" y1="62" x2="32" y2="148" class="dim" />
-              <rect x="24" y="148" width="16" height="14" class="outline" />
-              <text x="14" y="174" class="label">LIFT</text>
-              <text x="100" y="198" class="label" text-anchor="middle">DRAG ROTOR · PAPER SAILS</text>
-            </svg>
+          <div class="tools">
+            <h3>Tools I use</h3>
+            <p>
+              Fusion 360, MATLAB and Python; FDM 3D printing; ESP32 boards with embedded C++; and
+              circuit work with I2S and SPI devices.
+            </p>
           </div>
-          <div class="card__meta">
-            <span class="card__num">02</span>
-            <h3>Small-Scale Wind Turbine</h3>
-            <p>A CEE 34N team build. Our 3D-printed three-blade airfoil rotor wouldn't self-start, so we rebuilt it as a high-solidity drag rotor with wide paper sails. A hand-wound generator running six magnets on a printed shaft lights an LED, while the same shaft lifts a weight on a string. I designed and printed the blades.</p>
-            <ul class="card__tags">
-              <li>3D Print</li><li>Generator</li><li>Wind Energy</li>
-            </ul>
-            <span class="card__cta">
-              Click for more info
-              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg>
-            </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap">
+        <div class="grid">
+          <h2 id="contact-title">Get in touch</h2>
+          <div class="prose">
+            <p>I’m open to research positions, internships, and interesting fabrication problems.</p>
           </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- DIVIDER -->
-    <div class="divider">
-      <span class="divider__dim">SECTION</span>
-      <span class="divider__num">02</span>
-      <span class="divider__title">ENGINEER NOTES</span>
-      <span class="divider__dim divider__right">REV · 04</span>
-    </div>
-
-    <!-- ABOUT -->
-    <section class="about" id="about">
-      <div class="about__text">
-        <h2>About the engineer</h2>
-        <p>
-          I'm an <em>undergraduate student</em> at Stanford, majoring in Mechanical
-          Engineering with a minor in <em>Aeronautics &amp; Astronautics</em>. I care about problems where
-          clean geometry meets real physics — energy systems, aerodynamics, and anything where
-          a small part has to do a specific job well.
-        </p>
-        <p>
-          I like taking a design all the way from <em>CAD to a part that actually runs</em> —
-          modeling it in Fusion 360, printing it, wiring up whatever electronics it needs, and
-          writing the code to make the whole thing work. This page grows as I finish projects.
-        </p>
-        <a class="btn btn--ghost" href="mailto:cmejia74@stanford.edu">Get in touch →</a>
-      </div>
-      <aside class="about__facts">
-        <div class="fact"><span>SCHOOL</span><strong>Stanford · '29</strong></div>
-        <div class="fact"><span>FOCUS</span><strong>ME · Aero/Astro</strong></div>
-        <div class="fact"><span>TOOLS</span><strong>Fusion 360 · MATLAB</strong></div>
-        <div class="fact"><span>SCOPE</span><strong>Personal projects</strong></div>
-      </aside>
-    </section>
-
-    <!-- EDUCATION STRIP -->
-    <section class="edu">
-      <div class="edu__block">
-        <span class="edu__k">EDUCATION</span>
-        <h3>Stanford University <em>· Stanford, CA</em></h3>
-        <p>B.S. Mechanical Engineering · Minor in Aeronautics &amp; Astronautics · Expected June 2029 · GPA 3.6</p>
-        <ul class="edu__courses">
-          <li>CME 100 · Vector Calculus for Engineers</li>
-          <li>CME 102 · ODEs for Engineers</li>
-          <li>CME 104 · Linear Algebra &amp; PDEs</li>
-          <li>PHYSICS 41 · Mechanics</li>
-          <li>ENGR 14 · Solid Mechanics</li>
-          <li>CS 106A · Programming Methodology</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- DIVIDER -->
-    <div class="divider">
-      <span class="divider__dim">SECTION</span>
-      <span class="divider__num">03</span>
-      <span class="divider__title">TOOLCHAIN</span>
-      <span class="divider__dim divider__right">08 TOOLS</span>
-    </div>
-
-    <!-- SKILLS -->
-    <section class="skills" id="skills">
-      <ul class="skills__grid">
-        <li><span class="k">CAD</span><strong>Fusion 360</strong><em>Proficient</em></li>
-        <li><span class="k">NUM</span><strong>MATLAB</strong><em>Proficient</em></li>
-        <li><span class="k">CODE</span><strong>Python</strong><em>Proficient</em></li>
-        <li><span class="k">MFG</span><strong>3D Printing · FDM</strong><em>Hands-on</em></li>
-        <li><span class="k">EMB</span><strong>ESP32 · Embedded C++</strong><em>Hands-on</em></li>
-        <li><span class="k">ELEC</span><strong>Circuits · I2S · SPI</strong><em>Hands-on</em></li>
-        <li><span class="k">ANA</span><strong>Solid Mechanics</strong><em>Coursework</em></li>
-        <li><span class="k">MATH</span><strong>Vector Calc · ODEs · LA</strong><em>Coursework</em></li>
-      </ul>
-      <div class="skills__marquee" aria-hidden="true">
-        <div class="skills__track">
-          <span>CAD</span><span>·</span>
-          <span>ADDITIVE MFG</span><span>·</span>
-          <span>EMBEDDED SYSTEMS</span><span>·</span>
-          <span>ESP32</span><span>·</span>
-          <span>SENSOR INTEGRATION</span><span>·</span>
-          <span>GENERATOR DESIGN</span><span>·</span>
-          <span>WIND POWER</span><span>·</span>
-          <span>SYSTEMS INTEGRATION</span><span>·</span>
-          <span>CAD</span><span>·</span>
-          <span>ADDITIVE MFG</span><span>·</span>
-          <span>EMBEDDED SYSTEMS</span><span>·</span>
-          <span>ESP32</span><span>·</span>
+          <dl class="links">
+            <dt>Email</dt>
+            <dd><a href="mailto:cmejia74@stanford.edu">cmejia74@stanford.edu</a></dd>
+            <dt>GitHub</dt>
+            <dd><a href="https://github.com/cmejia74-dotcom">github.com/cmejia74-dotcom</a></dd>
+            <dt>LinkedIn</dt>
+            <dd><a href="https://www.linkedin.com/in/cristian-mejia-47a534421">cristian-mejia-47a534421</a></dd>
+            <dt>Résumé</dt>
+            <dd><a href="assets/cristian-mejia-resume.pdf" type="application/pdf">One-page résumé (PDF)</a></dd>
+          </dl>
         </div>
       </div>
     </section>
-
-    <!-- DIVIDER -->
-    <div class="divider">
-      <span class="divider__dim">SECTION</span>
-      <span class="divider__num">04</span>
-      <span class="divider__title">CONTACT SHEET</span>
-      <span class="divider__dim divider__right">END OF DWG</span>
-    </div>
-
-    <!-- CONTACT -->
-    <section class="contact" id="contact">
-      <div class="contact__head">
-        <h2>Let's build<br/>something rigid.</h2>
-        <p>Open to internships, research positions, and interesting fabrication problems.</p>
-      </div>
-
-      <div class="contact__grid">
-        <a class="contact__card" href="mailto:cmejia74@stanford.edu">
-          <span>EMAIL</span>
-          <strong>cmejia74@stanford.edu</strong>
-          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
-        </a>
-        <a class="contact__card" href="#">
-          <span>LINKEDIN</span>
-          <strong>/in/cristian-mejia</strong>
-          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
-        </a>
-        <a class="contact__card" href="#" download>
-          <span>RESUME</span>
-          <strong>Download PDF</strong>
-          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
-        </a>
-        <a class="contact__card" href="https://github.com/cmejia74-dotcom" target="_blank" rel="noopener">
-          <span>GITHUB</span>
-          <strong>@cmejia74-dotcom</strong>
-          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
-        </a>
-      </div>
-    </section>
-
-    <!-- Title block footer (like a real drawing) -->
-    <footer class="titleblock">
-      <div class="tb__row tb__row--top">
-        <div class="tb__cell"><span>DRAWN BY</span><strong>C. MEJIA</strong></div>
-        <div class="tb__cell"><span>SCHOOL</span><strong>STANFORD</strong></div>
-        <div class="tb__cell"><span>DATE</span><strong id="tbDate">——</strong></div>
-        <div class="tb__cell"><span>SCALE</span><strong>1 : 1</strong></div>
-        <div class="tb__cell"><span>UNITS</span><strong>mm</strong></div>
-        <div class="tb__cell"><span>SHEET</span><strong>1 / 1</strong></div>
-      </div>
-      <div class="tb__row tb__row--bottom">
-        <div class="tb__title">
-          <span>TITLE</span>
-          <strong>Cristian Mejia · Mechanical Engineering Portfolio</strong>
-        </div>
-        <div class="tb__dwg">
-          <span>DWG N°</span>
-          <strong>CM-PORT-001</strong>
-        </div>
-        <div class="tb__rev">
-          <span>REV</span>
-          <strong>04</strong>
-        </div>
-      </div>
-    </footer>
-
   </main>
 
-  <!-- Three.js module -->
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
-    }
-  }
-  </script>
-  <script type="module" src="script.js?v=6"></script>
+  <footer class="footer band">
+    <div class="wrap">
+      <p class="small">© 2026 Cristian Mejia</p>
+      <p class="small">Text, drawings and photographs are my own unless a caption says otherwise.</p>
+    </div>
+  </footer>
 </body>
 </html>

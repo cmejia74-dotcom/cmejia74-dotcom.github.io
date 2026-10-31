@@ -1,38 +1,28 @@
 # Cristian Mejia — Mechanical Engineering Portfolio
 
-A single-page, technical-drawing-inspired portfolio for my ME work at
-Stanford (B.S. Mechanical Engineering, minor in Aeronautics &
-Astronautics, Class of 2029). Built as a lightweight static site:
+Portfolio for my ME work at Stanford (B.S. Mechanical Engineering, intended minor
+in Aeronautics and Astronautics, Class of 2029). It is laid out like a feature
+spread in a botanical science journal: deep forest-green pages, near-white
+type, one editorial serif, and white hairline technical drawings.
 
-- **HTML + CSS + vanilla JS** (no build step)
-- **Three.js** from CDN for the interactive fighter-jet flight sim in the hero
-- Monochrome warm-cream aesthetic: custom crosshair cursor, live UTC clock,
-  boot-up sequence, registration marks, dimension callouts, and a drawing
-  title-block footer.
+Plain HTML and CSS. No JavaScript, no build step for the pages themselves.
 
 ## File map
 
 ```
-index.html                  home page
-projects/task-manager.html  project detail sheet (DWG CM-002)
-projects/wind-turbine.html  project detail sheet (DWG CM-003)
-styles.css                  shared theme + tokens (palette lives at the top)
-project.css                 detail-sheet-only styles, loaded after styles.css
-script.js                   shared chrome: cursor, clock, boot, scroll reveals
-hero-jet.js                 the Three.js flight sim
-assets/task-manager/        build photos
-assets/wind-turbine/        build photos
+index.html                               home: hero, project features, about, contact
+projects/task-manager.html               project article
+projects/wind-turbine.html               project article
+projects/motor-controller-enclosure.html project article
+styles.css                               the whole design system (tokens at the top)
+tools/build_figs.py                      generates the hairline SVG drawings
+assets/task-manager/                     build photos
+assets/wind-turbine/                     build photos
+assets/motor-controller-enclosure/       Fusion 360 screenshots
+assets/cristian-mejia-resume.pdf         résumé linked from Contact
 ```
 
-`script.js` runs on every page and guards every element it touches, so a page
-can omit the boot overlay or the clock without breaking. It pulls in
-`hero-jet.js` with a dynamic `import()` only when the hero canvas is on the
-page — so detail pages never download Three.js.
-
 ## Run locally
-
-Because the page uses ES modules + an import map, open it through a
-local web server (not by double-clicking the file).
 
 ```bash
 cd portfolio
@@ -40,96 +30,91 @@ python3 -m http.server 8080
 # open http://localhost:8080
 ```
 
-```bash
-# Node alternative (no install)
-cd portfolio
-npx --yes serve .
+## Design system
+
+### Color
+
+Every color has one job. Don't introduce new ones.
+
+| Token              | Hex       | Use                                              |
+| ------------------ | --------- | ------------------------------------------------ |
+| `--moss`           | `#1B2F0A` | page background                                  |
+| `--understory`     | `#0C1805` | footer and alternating bands (`.band`)           |
+| `--leaf`           | `#424C26` | panels and image placeholders                    |
+| `--vein`           | `#606A39` | hairline rules and drawing grids, **never text** |
+| `--lotus`          | `#FAFCF5` | headlines, body text, all line art               |
+| `--sage`           | `#A3AE96` | captions and secondary text, on Moss/Understory  |
+
+### Type
+
+Newsreader only, loaded from Google Fonts as a variable font. Optical size
+is set explicitly with `font-variation-settings: "opsz" N` so it doesn't
+drift with font size: 72 for display headlines, 16 for body, 12 for captions.
+Headlines are sentence case with tight leading; body is 18px (17px on
+phones) with prose capped at 64ch; captions and bylines are small italic in
+Sage.
+
+### Layout
+
+A 12-column grid (`.grid`) inside `.wrap`, with wide side margins
+(`--margin`). Text is left-aligned and ragged right. Figures run wider than
+the text column and captions align to the figure's left edge. Projects are
+separated by a single Vein hairline (`.rule`) — no cards.
+
+Things deliberately absent: rounded corners, shadows, gradients, blur,
+uppercase labels, scroll animations, icon fonts.
+
+## Drawings
+
+All line art is inline SVG in `currentColor` (Lotus), 1.1px strokes with no
+fills, using `vector-effect: non-scaling-stroke` so hairlines stay hairlines
+at any size. Stroke styles are classes in `styles.css`: `.cl` dash-dot
+centerline, `.ph` phantom, `.hid` dashed hidden line, `.fl` dotted field
+line, `.h` section hatching, `.grid` Vein grid.
+
+The drawings are generated, not hand-edited. `tools/build_figs.py` builds each
+one and injects it into every page between markers:
+
+```html
+<!-- FIG:generator -->
+…generated SVG…
+<!-- /FIG:generator -->
 ```
 
-## Sections
-
-1. **Hero** — 3D fighter-jet flight sim, intro, quick stats.
-2. **Selected Work** — completed builds only. Both cards are clickable and
-   open a detail sheet:
-   - `01` Automated Task Management System _(built · independent)_ →
-     `projects/task-manager.html`
-   - `02` Small-Scale Wind Turbine _(built · CEE 34N)_ →
-     `projects/wind-turbine.html`
-3. **About** — personal background + interests.
-4. **Education** — Stanford details and relevant coursework.
-5. **Toolchain** — CAD, MATLAB, Python, 3D printing, etc.
-6. **Contact** — email, LinkedIn, GitHub, resume.
-
-## Adding a project
-
-Each project is an `<article class="card">` inside `.work__grid` in
-`index.html`. Copy the existing one and update the `<h3>`, `<p>`, and
-`<li>` tags. Swap the inline `<svg class="cad …">` for an
-`<img src="renders/yourProject.png">` once you have real renders or photos.
-
-Status badges: `status--built` (finished, shows a filled square) or
-`status--concept` (in progress / not built yet).
-
-Projects currently use `card card--feature`, which spans the full grid width
-and puts the drawing beside its details, alternating sides as they stack. This
-suits a short, detailed list. **Once there are roughly four or more projects,
-drop `card--feature`** so they flow into the normal 3-column grid instead.
-Also bump the `NN DRAWINGS` count in the section divider.
-
-The palette is at the top of `styles.css` as CSS variables — `--bg`,
-`--ink` (warm cream), and `--ink-dim`.
-
-## Cache busting — bump this when you edit CSS or JS
-
-GitHub Pages serves assets with `max-age=600`, so a visitor can end up with
-new HTML and a ten-minute-old stylesheet. That combination looks badly broken
-rather than merely stale: hover-only elements show permanently, and inline
-SVGs with no CSS balloon to their 300×150 default.
-
-So `styles.css`, `project.css`, and `script.js` are linked with a `?v=N`
-query. **After editing any of them, bump `N` in every page** (currently `v=5`):
+To change a drawing, edit its function in the script and re-run it:
 
 ```bash
-rg -n '\?v=' *.html projects/*.html
+python3 tools/build_figs.py
 ```
 
-`script.js` passes its own `?v=` through to `hero-jet.js` via `import.meta.url`,
-so that one updates itself.
+It is idempotent, so it's safe to run any time. Each SVG gets a `<title>`
+and `<desc>` for screen readers.
 
-As a second line of defence, icon `<svg>`s carry `width`/`height` attributes so
-they stay small even with no CSS at all. CSS still overrides them, so the
-attributes only matter when something has gone wrong. Diagram SVGs (`.cad`,
-`.chain`, `.ticks`, `.annot`) deliberately omit them — they scale to fit.
+**Labels on small screens.** Every leader ends in both a word label
+(`.word`) and a single-letter key (`.key`). A container query swaps them
+when the figure is narrower than 560px, and the caption's `.fig__key`
+paragraph spells out the key. If you add a leader, add it to that caption
+line too.
 
-## Adding a detail sheet
+**Honesty.** Drawings are schematic and carry no invented dimensions —
+dimension lines use words ("rotor diameter"), not numbers. Plate I on the
+home page is a rendered texture, not a real micrograph, and its caption says
+so. A photo that isn't our build (the reference drag rotor) says so in its
+caption.
 
-Only cards that actually have a page get the clickable treatment, so a card
-never promises a page that doesn't exist. To wire one up, add to the
-`<article>`:
+## Photos
 
-1. `card--linked` on the article's class list.
-2. `<a class="card__link" href="projects/your-project.html" aria-label="…">`
-   as the first child — it stretches over the whole card.
-3. `<span class="card__peek">DWG CM-00N</span>` inside `.card__sheet`
-   (appears on the drawing on hover).
-4. `<span class="card__cta">Click for more info …</span>` at the end of
-   `.card__meta` (the arrow that slides in on hover).
+Photos sit in a `<div class="photo">` inside their `<figure>` and are shown in
+their original color.
 
-Then copy either existing sheet as a starting point. Both share the structure
-`.proj` header → `.proj__intro` → `.log` (numbered `.phase` build stages) →
-`.arch` (diagram) → `.stack` (three-column grid) → `.cadblock` → `.nextnav`.
-The `.stack__grid`/`.sub` pair is generic enough to hold a bill of materials
-(task manager) or findings and team credits (wind turbine).
+Until a real image exists, use a `.placeholder` panel (Leaf, crossed by two
+hairline diagonals) whose text names the file it is waiting for — copy the
+one at the bottom of `projects/task-manager.html`. To fill it, swap the
+whole `<div class="placeholder">` for
+`<div class="photo"><img src="…" alt="…"></div>` and drop "Image to come"
+from the caption.
 
-If a plate shows something that **isn't my own work** — a reference design or
-a photo taken from elsewhere — add `plate--ref` alongside `plate`. It switches
-the frame to a dashed rule, desaturates the image until hover, and tints the
-caption key, so it can't be skimmed as part of the build. Say so in the
-caption too; the wind turbine sheet uses this for its reference rotor.
-
-Photos go in `assets/<project>/`. Bake EXIF rotation into the pixels rather
-than relying on the orientation flag, since the `.shot` frames use a fixed
-`aspect-ratio`:
+Bake EXIF rotation into the pixels and keep files around 1600px:
 
 ```bash
 sips -s format jpeg -Z 1800 IMG_XXXX.HEIC --out out.jpg   # HEIC → JPEG
@@ -138,9 +123,8 @@ im=ImageOps.exif_transpose(Image.open('out.jpg')).convert('RGB'); \
 im.thumbnail((1600,1600)); im.save('out.jpg',quality=84,optimize=True)"
 ```
 
-When the source is a class presentation, pull the originals out of the exported
-PDF instead of screenshotting slides — they come out at full resolution and
-already correctly oriented:
+When the source is a class presentation, pull the originals out of the
+exported PDF instead of screenshotting slides:
 
 ```bash
 python3 -c "import pymupdf; d=pymupdf.open('deck.pdf'); \
@@ -148,12 +132,30 @@ python3 -c "import pymupdf; d=pymupdf.open('deck.pdf'); \
 for p in range(len(d)) for i,x in enumerate(d[p].get_images(full=True))]"
 ```
 
-Build stages alternate sides automatically via `:nth-of-type(even)`. The
-timeline rail is drawn with `.phase__rail::before`, whose negative `bottom`
-value is tuned to `.phase`'s vertical padding — if you change that padding,
-update the offset in `project.css` or the line will break between stages.
+## Adding a project
+
+On the home page, copy one of the `<article class="feature …">` blocks.
+`feature--a` puts text left with the photo right and the drawing running
+wide underneath; `feature--b` mirrors it. Alternate them so the page doesn't
+fall into a repeating pattern, and put an `<hr class="rule">` between
+projects.
+
+For the article page, copy either file in `projects/`. Sections are
+`<section class="sec">` with a `.sec__head` (left three columns), a
+`.sec__body` prose column, and optional `.sec__aside` (right margin figure),
+`.sec__wide` or `.sec__half-l`/`.sec__half-r` figures. Wrap every other
+section in `.band` for the Understory background.
+
+## Cache busting
+
+GitHub Pages caches assets for ten minutes, so `styles.css` is linked as
+`styles.css?v=N`. **Bump `N` in every page after editing the CSS**
+(currently `v=8`):
+
+```bash
+rg -n '\?v=' *.html projects/*.html
+```
 
 ## Deploy
 
-Static files — drop the `portfolio/` folder on GitHub Pages, Netlify,
-Vercel, or Cloudflare Pages.
+Static files. Pushing `main` publishes to GitHub Pages.
