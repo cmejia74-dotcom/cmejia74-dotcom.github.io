@@ -262,16 +262,55 @@ figure { margin: 0; }
 .hero { padding-block: clamp(56px, 9vw, 132px) clamp(64px, 9vw, 140px); }
 .hero .grid { align-items: start; }
 .hero__head { grid-column: 1 / span 10; grid-row: 1; }
-.hero__text { grid-column: 1 / span 4; grid-row: 2; margin-top: clamp(28px, 3.5vw, 48px); }
+.hero__text {
+  grid-column: 1 / span 5;
+  grid-row: 2;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  margin-top: clamp(28px, 3.5vw, 48px);
+}
 .hero__text .standfirst { font-size: clamp(1.25rem, 1.1rem + 0.35vw, 1.375rem); }
 .hero__text .byline { margin-top: 1.4rem; }
+
+/* Contents list: pinned to the bottom of the hero text column so it ends with the figure */
+.toc { margin-top: auto; padding-top: clamp(40px, 5vw, 64px); }
+.toc__title { font-style: italic; color: var(--sage); font-size: 0.9375rem; margin-bottom: 0.9rem; }
+.toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+.toc li {
+  counter-increment: toc;
+  display: grid;
+  grid-template-columns: 1.75em 1fr;
+  column-gap: 0.4em;
+  padding-block: 0.75rem;
+  border-top: 1px solid var(--vein);
+}
+.toc li::before {
+  content: counter(toc);
+  grid-row: 1 / span 2;
+  font-style: italic;
+  color: var(--sage);
+  font-variation-settings: "opsz" 36;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+.toc a { font-size: 1.0625rem; line-height: 1.35; text-decoration-color: transparent; }
+.toc a:hover { text-decoration-color: var(--lotus); }
+.toc .small { color: var(--sage); font-style: italic; }
+[id$="-title"] { scroll-margin-top: 32px; }
 .hero__fig {
-  grid-column: 5 / -1;
+  grid-column: 6 / -1;
   grid-row: 2;
   margin-right: calc(-1 * var(--margin));
   margin-top: clamp(8px, 2vw, 24px);
 }
 .hero__fig figcaption { padding-right: var(--margin); }
+
+/* Wide screens: headline moves beside the drawing so both columns end together */
+@media (min-width: 1360px) {
+  .hero__head { grid-column: 1 / span 5; font-size: clamp(4rem, 1rem + 4.6vw, 5.5rem); }
+  .hero__fig { grid-row: 1 / span 2; }
+}
 
 @media (max-width: 960px) {
   .hero__head, .hero__text { grid-column: 1 / -1; }

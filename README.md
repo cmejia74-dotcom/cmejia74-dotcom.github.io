@@ -150,7 +150,7 @@ section in `.band` for the Understory background.
 
 GitHub Pages caches assets for ten minutes, so `styles.css` is linked as
 `styles.css?v=N`. **Bump `N` in every page after editing the CSS**
-(currently `v=8`):
+(currently `v=9`):
 
 ```bash
 rg -n '\?v=' *.html projects/*.html
